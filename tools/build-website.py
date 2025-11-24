@@ -249,8 +249,7 @@ class WebsiteBuilder:
                     'title': other_novel['title'],
                     'slug': slug,
                     'url': f"/novels/{slug}/",
-                    'chapters': other_novel['total_chapters'],
-                    'cover_url': self.get_cover_url(other_novel)
+                    'chapters': other_novel['total_chapters']
                 })
             
             # 准备渲染数据（两个版本使用相同的数据）
