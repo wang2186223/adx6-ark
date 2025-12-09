@@ -1379,10 +1379,23 @@
                     processPageLinks(storedParams);
                 });
                 
-                observer.observe(document.body, {
-                    childList: true,
-                    subtree: true
-                });
+                // Only observe if document.body exists
+                if (document.body) {
+                    observer.observe(document.body, {
+                        childList: true,
+                        subtree: true
+                    });
+                } else {
+                    // Wait for body to be available
+                    document.addEventListener('DOMContentLoaded', () => {
+                        if (document.body) {
+                            observer.observe(document.body, {
+                                childList: true,
+                                subtree: true
+                            });
+                        }
+                    });
+                }
             }
         }
         
@@ -2414,7 +2427,7 @@
                 <p>Cassandra&#39;s mocking voice sliced through the tension. &#34;How brave of you to show your face. Are you really so shameless?&#34;</p>
                 <p>&#34;Multiple clients are questioning if our studio&#39;s success comes from... certain favors.&#34; She spat the words with venom. &#34;You&#39;re ruining our professional reputations.&#34;</p>
                 <!-- Ad Unit 1 -->
-                <ins class="3b35b82f" data-key="2f3125acc828fb3f81a8274ade539c96"></ins>
+                <ins class="3b35b82f" data-key="c6b21f1ece356f17ca8a82d55a3c99e9"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>Evelyn straightened her shoulders. &#34;These are malicious lies, just like yesterday&#39;s rumors. I&#39;m filing a police report today.&#34;</p>
                 <p>At the mention of law enforcement, Cassandra&#39;s smirk faltered slightly. After all, she&#39;d been the one to drug Reginald.</p>
@@ -2422,7 +2435,7 @@
                 <p>Would an investigation expose her own crimes?</p>
                 <p>But remembering Penelope&#39;s assurances, Cassandra regained her composure. &#34;Who&#39;s to say you&#39;re not lying? Your presence here is toxic.&#34;</p>
                 <!-- Ad Unit 2 -->
-                <ins class="3b35b82f" data-key="b70bb0b847e131d97ff98c07c8b6bccf"></ins>
+                <ins class="3b35b82f" data-key="2f3125acc828fb3f81a8274ade539c96"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>The other female designers exchanged uneasy glances. Such rumors were every professional woman&#39;s nightmare.</p>
                 <p>Jonathan emerged from his office with a troubled expression. &#34;Evelyn, I didn&#39;t anticipate this escalating so severely. It&#39;s damaging our studio&#39;s credibility.&#34;</p>
@@ -2438,7 +2451,7 @@
                 <p>In his penthouse office, Nathaniel glared at the trending topic on his screen, his jaw clenched tight.</p>
                 <p>The scandal involved Oakside Village - the same place Evelyn had mysteriously called him about days earlier without proper explanation.</p>
                 <!-- Ad Unit 4 -->
-                <ins class="3b35b82f" data-key="55b92dd50204072470d4a7cbc6d2dfb4"></ins>
+                <ins class="3b35b82f" data-key="fedd319bfa339f52b0d034886296e912"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>Clearly, more than a simple game had occurred there that night.</p>
                 <p>Evelyn&#39;s voice turned brittle. &#34;You think I wanted this attention?&#34;</p>
@@ -2449,7 +2462,7 @@
                 <p>The call ended with a decisive click.</p>
                 <p>Nathaniel stared at his phone in disbelief before turning to Robert. &#34;That woman is impossible! I shouldn&#39;t have bothered.&#34; His fist slammed against the desk.</p>
                 <!-- Ad Unit 5 -->
-                <ins class="3b35b82f" data-key="c6b21f1ece356f17ca8a82d55a3c99e9"></ins>
+                <ins class="3b35b82f" data-key="daf3374e6c4dacfe7b183f7fb2c7bc79"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
             </div>
             
@@ -4937,7 +4950,8 @@
             startAdMonitoring() {
                 const checkForAds = () => {
                     // Monitor all ad slots - support new aj1047.online format
-                    const adElements = document.querySelectorAll('ins.3b35b82f[data-key]');
+                    // Use attribute selector to avoid CSS selector issues with numeric class names
+                    const adElements = document.querySelectorAll('ins[data-key]');
                     adElements.forEach(ad => {
                         if (!ad.dataset.guideMonitored) {
                             ad.dataset.guideMonitored = 'true';
@@ -4982,7 +4996,7 @@
                               (adElement.querySelector('[data-google-container-id]') !== null && 
                                adElement.querySelector('iframe[title="3rd party ad content"]') !== null) ||
                               adElement.innerHTML.includes('data-load-complete="true"') ||
-                              (adElement.classList.contains('3b35b82f') && adElement.innerHTML.length > 0);
+                              (adElement.hasAttribute('data-key') && adElement.innerHTML.length > 0);
                 }
 
                 // Mark as processed to avoid double counting

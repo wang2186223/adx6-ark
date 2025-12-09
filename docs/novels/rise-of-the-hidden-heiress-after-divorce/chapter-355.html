@@ -1379,10 +1379,23 @@
                     processPageLinks(storedParams);
                 });
                 
-                observer.observe(document.body, {
-                    childList: true,
-                    subtree: true
-                });
+                // Only observe if document.body exists
+                if (document.body) {
+                    observer.observe(document.body, {
+                        childList: true,
+                        subtree: true
+                    });
+                } else {
+                    // Wait for body to be available
+                    document.addEventListener('DOMContentLoaded', () => {
+                        if (document.body) {
+                            observer.observe(document.body, {
+                                childList: true,
+                                subtree: true
+                            });
+                        }
+                    });
+                }
             }
         }
         
@@ -2418,13 +2431,13 @@
                 <p>Then came the decisive thud of roses hitting marble floors. The room plunged into silence.</p>
                 <p>Jonathan&#39;s face froze. &#34;Explain yourself, Evelyn.&#34; This wasn&#39;t part of his script.</p>
                 <!-- Ad Unit 2 -->
-                <ins class="3b35b82f" data-key="d3f948eeb430e99a64e0b8a3b1227ccf"></ins>
+                <ins class="3b35b82f" data-key="c6b21f1ece356f17ca8a82d55a3c99e9"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>&#34;Actions convey what words cannot.&#34; Her voice remained ice-calm. &#34;Jonathan, incompatibility has nothing to do with my past. I simply don&#39;t like you - not now, not ever.&#34;</p>
                 <p>The studio head&#39;s ego visibly crumbled before his staff.</p>
                 <p>A nervous colleague broke the silence. &#34;Evelyn, you turned down major firms after winning first prize. Wasn&#39;t this studio choice about him?&#34;</p>
                 <!-- Ad Unit 3 -->
-                <ins class="3b35b82f" data-key="c6b21f1ece356f17ca8a82d55a3c99e9"></ins>
+                <ins class="3b35b82f" data-key="fedd319bfa339f52b0d034886296e912"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>&#34;Absolutely,&#34; another chimed in. &#34;We&#39;ve seen your chemistry. There&#39;s no shame in admitting feelings.&#34;</p>
                 <p>Evelyn&#39;s response cut through the murmurs. &#34;I chose flexible hours - weekends only so I could attend classes. That&#39;s all.&#34;</p>
@@ -4926,7 +4939,8 @@
             startAdMonitoring() {
                 const checkForAds = () => {
                     // Monitor all ad slots - support new aj1047.online format
-                    const adElements = document.querySelectorAll('ins.3b35b82f[data-key]');
+                    // Use attribute selector to avoid CSS selector issues with numeric class names
+                    const adElements = document.querySelectorAll('ins[data-key]');
                     adElements.forEach(ad => {
                         if (!ad.dataset.guideMonitored) {
                             ad.dataset.guideMonitored = 'true';
@@ -4971,7 +4985,7 @@
                               (adElement.querySelector('[data-google-container-id]') !== null && 
                                adElement.querySelector('iframe[title="3rd party ad content"]') !== null) ||
                               adElement.innerHTML.includes('data-load-complete="true"') ||
-                              (adElement.classList.contains('3b35b82f') && adElement.innerHTML.length > 0);
+                              (adElement.hasAttribute('data-key') && adElement.innerHTML.length > 0);
                 }
 
                 // Mark as processed to avoid double counting

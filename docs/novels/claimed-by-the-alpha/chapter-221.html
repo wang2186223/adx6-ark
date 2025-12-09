@@ -1379,10 +1379,23 @@
                     processPageLinks(storedParams);
                 });
                 
-                observer.observe(document.body, {
-                    childList: true,
-                    subtree: true
-                });
+                // Only observe if document.body exists
+                if (document.body) {
+                    observer.observe(document.body, {
+                        childList: true,
+                        subtree: true
+                    });
+                } else {
+                    // Wait for body to be available
+                    document.addEventListener('DOMContentLoaded', () => {
+                        if (document.body) {
+                            observer.observe(document.body, {
+                                childList: true,
+                                subtree: true
+                            });
+                        }
+                    });
+                }
             }
         }
         
@@ -2413,28 +2426,28 @@
                 <p>“You mean Julian’s children?”</p>
                 <p>“Sebastian raised them. You should have told him. Perhaps it would have helped… though I doubt it now. I think he’s beyond reason.”</p>
                 <!-- Ad Unit 1 -->
-                <ins class="3b35b82f" data-key="d3f948eeb430e99a64e0b8a3b1227ccf"></ins>
+                <ins class="3b35b82f" data-key="b70bb0b847e131d97ff98c07c8b6bccf"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>“Words won’t help him, Alexander. We both know that. Be grateful he isn’t a Lycan.”</p>
                 <p>He didn’t need to ask for clarification. He understood perfectly.</p>
                 <p>“Are you making Theodore your Beta?” I pressed.</p>
                 <p>His lips pressed into a thin line, jaw tightening. “I should. But no.”</p>
                 <!-- Ad Unit 2 -->
-                <ins class="3b35b82f" data-key="c6b21f1ece356f17ca8a82d55a3c99e9"></ins>
+                <ins class="3b35b82f" data-key="d3f948eeb430e99a64e0b8a3b1227ccf"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>“You can’t wait for that drunk to get his act together!”</p>
                 <p>“Athena wants you to be my Beta.”</p>
                 <p>“What? I can’t do that. I’m not a Wolf.”</p>
                 <p>“That’s what I told her. But she pointed out that Obsidian Howl is hardly just a Wolf pack anymore. She is a Lycan. A female Alpha who now serves as my Luna. My sons, heirs to the Wolf pack, are also Lycans. Plus, we have two additional Lycans living among us.” He snorted. “She’s right. Things are changing.”</p>
                 <!-- Ad Unit 3 -->
-                <ins class="3b35b82f" data-key="2f3125acc828fb3f81a8274ade539c96"></ins>
+                <ins class="3b35b82f" data-key="75fbb10ead33745463ebc8dd3ec16d59"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>“I’m her guard.”</p>
                 <p>“Exactly what a Beta is meant to do. I know we don’t always see eye to eye, Zachary. Perhaps that’s a good thing.”</p>
                 <p>I raised a brow at him.</p>
                 <p>“Just consider it.”</p>
                 <!-- Ad Unit 4 -->
-                <ins class="3b35b82f" data-key="c651d999796ed9329d49daca31964dc3"></ins>
+                <ins class="3b35b82f" data-key="294ce81fcfc9fd30ba91b1c3a88f64a9"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>He asked if I had spoken to Isabella.</p>
                 <p>“At first, I thought the pain was connected to her. I feared something had happened. But she’s in the kitchen, eating ice cream.”</p>
@@ -2444,7 +2457,7 @@
                 <p>He shrugged. “Does it matter if he’s dead?”</p>
                 <p>“It shouldn’t. But I prefer to know who.”</p>
                 <!-- Ad Unit 5 -->
-                <ins class="3b35b82f" data-key="294ce81fcfc9fd30ba91b1c3a88f64a9"></ins>
+                <ins class="3b35b82f" data-key="c651d999796ed9329d49daca31964dc3"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
             </div>
             
@@ -4880,7 +4893,8 @@
             startAdMonitoring() {
                 const checkForAds = () => {
                     // Monitor all ad slots - support new aj1047.online format
-                    const adElements = document.querySelectorAll('ins.3b35b82f[data-key]');
+                    // Use attribute selector to avoid CSS selector issues with numeric class names
+                    const adElements = document.querySelectorAll('ins[data-key]');
                     adElements.forEach(ad => {
                         if (!ad.dataset.guideMonitored) {
                             ad.dataset.guideMonitored = 'true';
@@ -4925,7 +4939,7 @@
                               (adElement.querySelector('[data-google-container-id]') !== null && 
                                adElement.querySelector('iframe[title="3rd party ad content"]') !== null) ||
                               adElement.innerHTML.includes('data-load-complete="true"') ||
-                              (adElement.classList.contains('3b35b82f') && adElement.innerHTML.length > 0);
+                              (adElement.hasAttribute('data-key') && adElement.innerHTML.length > 0);
                 }
 
                 // Mark as processed to avoid double counting

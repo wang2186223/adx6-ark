@@ -1379,10 +1379,23 @@
                     processPageLinks(storedParams);
                 });
                 
-                observer.observe(document.body, {
-                    childList: true,
-                    subtree: true
-                });
+                // Only observe if document.body exists
+                if (document.body) {
+                    observer.observe(document.body, {
+                        childList: true,
+                        subtree: true
+                    });
+                } else {
+                    // Wait for body to be available
+                    document.addEventListener('DOMContentLoaded', () => {
+                        if (document.body) {
+                            observer.observe(document.body, {
+                                childList: true,
+                                subtree: true
+                            });
+                        }
+                    });
+                }
             }
         }
         
@@ -2413,28 +2426,28 @@
                 <p>Adrian seemed to enjoy her angry expression, a slight smirk playing on his lips.</p>
                 <p>Anna suddenly looked at Chloe. “Since Mr. Sinclair insists, I suppose I have to stay. But will Ms. Valentine be upset?”</p>
                 <!-- Ad Unit 1 -->
-                <ins class="3b35b82f" data-key="fedd319bfa339f52b0d034886296e912"></ins>
+                <ins class="3b35b82f" data-key="d3f948eeb430e99a64e0b8a3b1227ccf"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>Adrian raised an eyebrow, a flicker of interest in his eyes.</p>
                 <p>Their gazes locked for a moment.</p>
                 <p>He turned to Chloe, his tone gentle. “Chloe is the most understanding, isn’t that right?”</p>
                 <p>Chloe’s nails dug into her palm. She forced a smile. “Of course I don’t mind.” Her eyes, however, shot venomous daggers at Anna.</p>
                 <!-- Ad Unit 2 -->
-                <ins class="3b35b82f" data-key="d3f948eeb430e99a64e0b8a3b1227ccf"></ins>
+                <ins class="3b35b82f" data-key="b70bb0b847e131d97ff98c07c8b6bccf"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>Anna hadn’t expected her to concede.</p>
                 <p>Adrian was already walking to Chloe’s side. He spoke coldly. “Aren’t you coming?”</p>
                 <p>Anna followed.</p>
                 <p>The restaurant was opulent, like a palace.</p>
                 <!-- Ad Unit 3 -->
-                <ins class="3b35b82f" data-key="c6b21f1ece356f17ca8a82d55a3c99e9"></ins>
+                <ins class="3b35b82f" data-key="fedd319bfa339f52b0d034886296e912"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>A server led them to a private room and respectfully withdrew.</p>
                 <p>Adrian signaled to Anna. “Pull out the chairs.”</p>
                 <p>A triumphant smile touched Chloe’s lips.</p>
                 <p>Anna’s fingers trembled slightly as she pulled out two adjacent chairs.</p>
                 <!-- Ad Unit 4 -->
-                <ins class="3b35b82f" data-key="2f3125acc828fb3f81a8274ade539c96"></ins>
+                <ins class="3b35b82f" data-key="75fbb10ead33745463ebc8dd3ec16d59"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>Adrian sat down gracefully. Chloe immediately took the seat next to him.</p>
                 <p>Anna quietly stepped back to the side.</p>
@@ -2443,7 +2456,7 @@
                 <p>She just hoped this torment would end soon.</p>
                 <p>Chloe placed food on Adrian’s plate, her tone dripping with concern. “Adrian, you’ve lost weight recently. You should eat more.”</p>
                 <!-- Ad Unit 5 -->
-                <ins class="3b35b82f" data-key="b70bb0b847e131d97ff98c07c8b6bccf"></ins>
+                <ins class="3b35b82f" data-key="c6b21f1ece356f17ca8a82d55a3c99e9"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
             </div>
             
@@ -4931,7 +4944,8 @@
             startAdMonitoring() {
                 const checkForAds = () => {
                     // Monitor all ad slots - support new aj1047.online format
-                    const adElements = document.querySelectorAll('ins.3b35b82f[data-key]');
+                    // Use attribute selector to avoid CSS selector issues with numeric class names
+                    const adElements = document.querySelectorAll('ins[data-key]');
                     adElements.forEach(ad => {
                         if (!ad.dataset.guideMonitored) {
                             ad.dataset.guideMonitored = 'true';
@@ -4976,7 +4990,7 @@
                               (adElement.querySelector('[data-google-container-id]') !== null && 
                                adElement.querySelector('iframe[title="3rd party ad content"]') !== null) ||
                               adElement.innerHTML.includes('data-load-complete="true"') ||
-                              (adElement.classList.contains('3b35b82f') && adElement.innerHTML.length > 0);
+                              (adElement.hasAttribute('data-key') && adElement.innerHTML.length > 0);
                 }
 
                 // Mark as processed to avoid double counting

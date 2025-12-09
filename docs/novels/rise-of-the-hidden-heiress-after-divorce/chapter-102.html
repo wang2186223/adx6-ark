@@ -1379,10 +1379,23 @@
                     processPageLinks(storedParams);
                 });
                 
-                observer.observe(document.body, {
-                    childList: true,
-                    subtree: true
-                });
+                // Only observe if document.body exists
+                if (document.body) {
+                    observer.observe(document.body, {
+                        childList: true,
+                        subtree: true
+                    });
+                } else {
+                    // Wait for body to be available
+                    document.addEventListener('DOMContentLoaded', () => {
+                        if (document.body) {
+                            observer.observe(document.body, {
+                                childList: true,
+                                subtree: true
+                            });
+                        }
+                    });
+                }
             }
         }
         
@@ -2414,7 +2427,7 @@
                 <p>Victoria&#39;s perfect smile froze mid-curve.</p>
                 <p>Beatrice gaped at Evelyn, disbelief coloring her tone. &#34;That&#39;s impossible. How could this happen so suddenly?&#34;</p>
                 <!-- Ad Unit 1 -->
-                <ins class="3b35b82f" data-key="daf3374e6c4dacfe7b183f7fb2c7bc79"></ins>
+                <ins class="3b35b82f" data-key="2f3125acc828fb3f81a8274ade539c96"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>Eleanor&#39;s protective instincts flared. &#34;What exactly are you suggesting? Shouldn&#39;t we be celebrating Evelyn&#39;s pregnancy?&#34;</p>
                 <p>A cold dread settled in Beatrice&#39;s stomach as she realized Evelyn&#39;s supposed condition could shatter Victoria&#39;s carefully laid plans with Nathaniel.</p>
@@ -2422,7 +2435,7 @@
                 <p>Eleanor waved them off with surprising cheer. &#34;Nathaniel, take care of Evelyn and my future great-grandchild.&#34; Her wrinkled face softened. &#34;Don&#39;t fuss over me—just schedule the surgery. I intend to watch that baby grow up.&#34;</p>
                 <p>The relief that washed over Evelyn at Eleanor&#39;s consent was nearly palpable.</p>
                 <!-- Ad Unit 2 -->
-                <ins class="3b35b82f" data-key="c651d999796ed9329d49daca31964dc3"></ins>
+                <ins class="3b35b82f" data-key="55b92dd50204072470d4a7cbc6d2dfb4"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>As the group exited the room, the air thickened with unspoken tensions.</p>
                 <p>Ignoring the others, Evelyn made straight for the elevator, desperate for escape.</p>
@@ -2438,7 +2451,7 @@
                 <p>Doubt still clouded Victoria&#39;s piercing gaze.</p>
                 <p>Just as Evelyn opened her mouth to respond, Nathaniel emerged from the elevator. Panicked, Evelyn wrenched her arm free, demanding, &#34;Let go of me!&#34;</p>
                 <!-- Ad Unit 4 -->
-                <ins class="3b35b82f" data-key="c6b21f1ece356f17ca8a82d55a3c99e9"></ins>
+                <ins class="3b35b82f" data-key="daf3374e6c4dacfe7b183f7fb2c7bc79"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>Victoria&#39;s peripheral vision caught Nathaniel&#39;s approach.</p>
                 <p>A calculated coldness entered her eyes as she suddenly released her grip and threw herself backward, artfully creating the illusion that Evelyn had pushed her.</p>
@@ -2446,7 +2459,7 @@
                 <p>Victoria&#39;s eyes immediately sought Nathaniel, welling with manufactured tears. &#34;Nathaniel, help me!&#34;</p>
                 <p>Simultaneously, Evelyn&#39;s gaze found his, silently pleading for belief.</p>
                 <!-- Ad Unit 5 -->
-                <ins class="3b35b82f" data-key="d3f948eeb430e99a64e0b8a3b1227ccf"></ins>
+                <ins class="3b35b82f" data-key="fedd319bfa339f52b0d034886296e912"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
             </div>
             
@@ -4934,7 +4947,8 @@
             startAdMonitoring() {
                 const checkForAds = () => {
                     // Monitor all ad slots - support new aj1047.online format
-                    const adElements = document.querySelectorAll('ins.3b35b82f[data-key]');
+                    // Use attribute selector to avoid CSS selector issues with numeric class names
+                    const adElements = document.querySelectorAll('ins[data-key]');
                     adElements.forEach(ad => {
                         if (!ad.dataset.guideMonitored) {
                             ad.dataset.guideMonitored = 'true';
@@ -4979,7 +4993,7 @@
                               (adElement.querySelector('[data-google-container-id]') !== null && 
                                adElement.querySelector('iframe[title="3rd party ad content"]') !== null) ||
                               adElement.innerHTML.includes('data-load-complete="true"') ||
-                              (adElement.classList.contains('3b35b82f') && adElement.innerHTML.length > 0);
+                              (adElement.hasAttribute('data-key') && adElement.innerHTML.length > 0);
                 }
 
                 // Mark as processed to avoid double counting

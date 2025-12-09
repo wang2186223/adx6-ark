@@ -1379,10 +1379,23 @@
                     processPageLinks(storedParams);
                 });
                 
-                observer.observe(document.body, {
-                    childList: true,
-                    subtree: true
-                });
+                // Only observe if document.body exists
+                if (document.body) {
+                    observer.observe(document.body, {
+                        childList: true,
+                        subtree: true
+                    });
+                } else {
+                    // Wait for body to be available
+                    document.addEventListener('DOMContentLoaded', () => {
+                        if (document.body) {
+                            observer.observe(document.body, {
+                                childList: true,
+                                subtree: true
+                            });
+                        }
+                    });
+                }
             }
         }
         
@@ -2423,7 +2436,7 @@
                 <p>Anna remembered the phone call now.</p>
                 <p>Adrian had asked Noah to buy clothes.</p>
                 <!-- Ad Unit 1 -->
-                <ins class="3b35b82f" data-key="2f3125acc828fb3f81a8274ade539c96"></ins>
+                <ins class="3b35b82f" data-key="b70bb0b847e131d97ff98c07c8b6bccf"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>She hesitated, not taking the bag.</p>
                 <p>&#34;Change here.&#34;</p>
@@ -2440,7 +2453,7 @@
                 <p>The new outfit fit surprisingly well.</p>
                 <p>Noah had a good eye.</p>
                 <!-- Ad Unit 2 -->
-                <ins class="3b35b82f" data-key="75fbb10ead33745463ebc8dd3ec16d59"></ins>
+                <ins class="3b35b82f" data-key="55b92dd50204072470d4a7cbc6d2dfb4"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>She packed the wet clothes into the bag.</p>
                 <p>Planning to take them home to wash.</p>
@@ -2457,7 +2470,7 @@
                 <p>&#34;Chairman, I was just leaving.&#34;</p>
                 <p>She walked toward the door.</p>
                 <!-- Ad Unit 3 -->
-                <ins class="3b35b82f" data-key="55b92dd50204072470d4a7cbc6d2dfb4"></ins>
+                <ins class="3b35b82f" data-key="d3f948eeb430e99a64e0b8a3b1227ccf"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>Adrian grabbed her hand.</p>
                 <p>&#34;Why are you leaving?&#34;</p>
@@ -2474,7 +2487,7 @@
                 <p>Here, she felt like an outsider.</p>
                 <p>Out of place.</p>
                 <!-- Ad Unit 4 -->
-                <ins class="3b35b82f" data-key="fedd319bfa339f52b0d034886296e912"></ins>
+                <ins class="3b35b82f" data-key="c651d999796ed9329d49daca31964dc3"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>The old man&#39;s words echoed in her ears.</p>
                 <p>Adrian stared at the direction she left.</p>
@@ -2492,7 +2505,7 @@
                 <p>He knew his grandson was angry.</p>
                 <p>This was the first time he had spoken to him like this over a woman.</p>
                 <!-- Ad Unit 5 -->
-                <ins class="3b35b82f" data-key="d3f948eeb430e99a64e0b8a3b1227ccf"></ins>
+                <ins class="3b35b82f" data-key="75fbb10ead33745463ebc8dd3ec16d59"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
             </div>
             
@@ -4980,7 +4993,8 @@
             startAdMonitoring() {
                 const checkForAds = () => {
                     // Monitor all ad slots - support new aj1047.online format
-                    const adElements = document.querySelectorAll('ins.3b35b82f[data-key]');
+                    // Use attribute selector to avoid CSS selector issues with numeric class names
+                    const adElements = document.querySelectorAll('ins[data-key]');
                     adElements.forEach(ad => {
                         if (!ad.dataset.guideMonitored) {
                             ad.dataset.guideMonitored = 'true';
@@ -5025,7 +5039,7 @@
                               (adElement.querySelector('[data-google-container-id]') !== null && 
                                adElement.querySelector('iframe[title="3rd party ad content"]') !== null) ||
                               adElement.innerHTML.includes('data-load-complete="true"') ||
-                              (adElement.classList.contains('3b35b82f') && adElement.innerHTML.length > 0);
+                              (adElement.hasAttribute('data-key') && adElement.innerHTML.length > 0);
                 }
 
                 // Mark as processed to avoid double counting

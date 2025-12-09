@@ -1379,10 +1379,23 @@
                     processPageLinks(storedParams);
                 });
                 
-                observer.observe(document.body, {
-                    childList: true,
-                    subtree: true
-                });
+                // Only observe if document.body exists
+                if (document.body) {
+                    observer.observe(document.body, {
+                        childList: true,
+                        subtree: true
+                    });
+                } else {
+                    // Wait for body to be available
+                    document.addEventListener('DOMContentLoaded', () => {
+                        if (document.body) {
+                            observer.observe(document.body, {
+                                childList: true,
+                                subtree: true
+                            });
+                        }
+                    });
+                }
             }
         }
         
@@ -2413,21 +2426,21 @@
                 <p>&#34;Julian, why are you staring at me like that?&#34; Victoria forced a laugh, touching her cheek self-consciously. &#34;Do I have something on my face?&#34;</p>
                 <p>&#34;Nothing important.&#34; Julian crossed his arms. &#34;Why were you looking for me?&#34;</p>
                 <!-- Ad Unit 1 -->
-                <ins class="3b35b82f" data-key="c651d999796ed9329d49daca31964dc3"></ins>
+                <ins class="3b35b82f" data-key="c6b21f1ece356f17ca8a82d55a3c99e9"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>&#34;I&#39;ve been trying to reach you for days!&#34; Victoria&#39;s voice took on a pleading tone. &#34;You ignored all my calls and messages. Finding you here in Bern City... this must be fate!&#34;</p>
                 <p>Seeing Julian in the city reignited Victoria&#39;s hopes. Could his presence mean he was reconsidering the surgery for Eleanor?</p>
                 <p>Julian&#39;s expression remained impassive. &#34;I&#39;ve been occupied with work.&#34;</p>
                 <p>&#34;Julian, I understand why you kept your visit secret.&#34; Victoria lowered her voice conspiratorially. &#34;But I truly love Nathaniel. If you perform his grandmother&#39;s surgery, he&#39;ll finally agree to marry me. I&#39;ve never asked you for anything before. Please do this one thing for me?&#34;</p>
                 <!-- Ad Unit 2 -->
-                <ins class="3b35b82f" data-key="75fbb10ead33745463ebc8dd3ec16d59"></ins>
+                <ins class="3b35b82f" data-key="c651d999796ed9329d49daca31964dc3"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>She batted her eyelashes, adopting a pitiful slouch that made her appear smaller.</p>
                 <p>At Nathaniel&#39;s name, Julian&#39;s posture stiffened. &#34;Absolutely not.&#34;</p>
                 <p>If Victoria married Nathaniel, the Montgomery and Whitmore families would be forced to interact regularly. And what exactly did she see in that arrogant businessman anyway?</p>
                 <p>Victoria&#39;s smile faltered. &#34;Julian, why not? The Whitmores are one of Bern City&#39;s most prominent families. Nathaniel is brilliant and successful. We&#39;d be perfectly matched.&#34;</p>
                 <!-- Ad Unit 3 -->
-                <ins class="3b35b82f" data-key="d3f948eeb430e99a64e0b8a3b1227ccf"></ins>
+                <ins class="3b35b82f" data-key="fedd319bfa339f52b0d034886296e912"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>&#34;He&#39;s divorced.&#34;</p>
                 <p>&#34;That doesn&#39;t matter to me.&#34;</p>
@@ -2445,7 +2458,7 @@
                 <p>She ended the call with an exasperated sigh.</p>
                 <p>Beyond the incident three years ago, what other reason could Julian have for despising Nathaniel so intensely?</p>
                 <!-- Ad Unit 5 -->
-                <ins class="3b35b82f" data-key="fedd319bfa339f52b0d034886296e912"></ins>
+                <ins class="3b35b82f" data-key="b70bb0b847e131d97ff98c07c8b6bccf"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
             </div>
             
@@ -4933,7 +4946,8 @@
             startAdMonitoring() {
                 const checkForAds = () => {
                     // Monitor all ad slots - support new aj1047.online format
-                    const adElements = document.querySelectorAll('ins.3b35b82f[data-key]');
+                    // Use attribute selector to avoid CSS selector issues with numeric class names
+                    const adElements = document.querySelectorAll('ins[data-key]');
                     adElements.forEach(ad => {
                         if (!ad.dataset.guideMonitored) {
                             ad.dataset.guideMonitored = 'true';
@@ -4978,7 +4992,7 @@
                               (adElement.querySelector('[data-google-container-id]') !== null && 
                                adElement.querySelector('iframe[title="3rd party ad content"]') !== null) ||
                               adElement.innerHTML.includes('data-load-complete="true"') ||
-                              (adElement.classList.contains('3b35b82f') && adElement.innerHTML.length > 0);
+                              (adElement.hasAttribute('data-key') && adElement.innerHTML.length > 0);
                 }
 
                 // Mark as processed to avoid double counting

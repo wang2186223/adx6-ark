@@ -1379,10 +1379,23 @@
                     processPageLinks(storedParams);
                 });
                 
-                observer.observe(document.body, {
-                    childList: true,
-                    subtree: true
-                });
+                // Only observe if document.body exists
+                if (document.body) {
+                    observer.observe(document.body, {
+                        childList: true,
+                        subtree: true
+                    });
+                } else {
+                    // Wait for body to be available
+                    document.addEventListener('DOMContentLoaded', () => {
+                        if (document.body) {
+                            observer.observe(document.body, {
+                                childList: true,
+                                subtree: true
+                            });
+                        }
+                    });
+                }
             }
         }
         
@@ -2426,7 +2439,7 @@
                 <p>She suddenly remembered the way Lucas Evans looked at Anna.</p>
                 <p>That undisguised admiration might become a weapon in her hands.</p>
                 <!-- Ad Unit 2 -->
-                <ins class="3b35b82f" data-key="55b92dd50204072470d4a7cbc6d2dfb4"></ins>
+                <ins class="3b35b82f" data-key="75fbb10ead33745463ebc8dd3ec16d59"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>If she could push them together, there would naturally be no room left for Anna beside Adrian.</p>
                 <p>That&#39;s it!</p>
@@ -2446,7 +2459,7 @@
                 <p>&#34;If the project goes smoothly, not only could you avoid blame, but the cooperation could also be saved.&#34;</p>
                 <p>Anna almost laughed.</p>
                 <!-- Ad Unit 4 -->
-                <ins class="3b35b82f" data-key="c6b21f1ece356f17ca8a82d55a3c99e9"></ins>
+                <ins class="3b35b82f" data-key="daf3374e6c4dacfe7b183f7fb2c7bc79"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>Trading emotions for profit?</p>
                 <p>She had miscalculated.</p>
@@ -2458,7 +2471,7 @@
                 <p>Anna suddenly stood up and stepped closer, her gaze sharp as a knife.</p>
                 <p>&#34;Let me ask you something. Did you leak the confidential data?&#34;</p>
                 <!-- Ad Unit 5 -->
-                <ins class="3b35b82f" data-key="2f3125acc828fb3f81a8274ade539c96"></ins>
+                <ins class="3b35b82f" data-key="d3f948eeb430e99a64e0b8a3b1227ccf"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
             </div>
             
@@ -4946,7 +4959,8 @@
             startAdMonitoring() {
                 const checkForAds = () => {
                     // Monitor all ad slots - support new aj1047.online format
-                    const adElements = document.querySelectorAll('ins.3b35b82f[data-key]');
+                    // Use attribute selector to avoid CSS selector issues with numeric class names
+                    const adElements = document.querySelectorAll('ins[data-key]');
                     adElements.forEach(ad => {
                         if (!ad.dataset.guideMonitored) {
                             ad.dataset.guideMonitored = 'true';
@@ -4991,7 +5005,7 @@
                               (adElement.querySelector('[data-google-container-id]') !== null && 
                                adElement.querySelector('iframe[title="3rd party ad content"]') !== null) ||
                               adElement.innerHTML.includes('data-load-complete="true"') ||
-                              (adElement.classList.contains('3b35b82f') && adElement.innerHTML.length > 0);
+                              (adElement.hasAttribute('data-key') && adElement.innerHTML.length > 0);
                 }
 
                 // Mark as processed to avoid double counting

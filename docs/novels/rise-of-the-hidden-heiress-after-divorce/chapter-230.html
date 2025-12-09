@@ -1379,10 +1379,23 @@
                     processPageLinks(storedParams);
                 });
                 
-                observer.observe(document.body, {
-                    childList: true,
-                    subtree: true
-                });
+                // Only observe if document.body exists
+                if (document.body) {
+                    observer.observe(document.body, {
+                        childList: true,
+                        subtree: true
+                    });
+                } else {
+                    // Wait for body to be available
+                    document.addEventListener('DOMContentLoaded', () => {
+                        if (document.body) {
+                            observer.observe(document.body, {
+                                childList: true,
+                                subtree: true
+                            });
+                        }
+                    });
+                }
             }
         }
         
@@ -2415,7 +2428,7 @@
                 <p>Just then, Nathaniel’s phone rang.</p>
                 <p>He answered without looking. &#34;Yes?&#34;</p>
                 <!-- Ad Unit 1 -->
-                <ins class="3b35b82f" data-key="75fbb10ead33745463ebc8dd3ec16d59"></ins>
+                <ins class="3b35b82f" data-key="294ce81fcfc9fd30ba91b1c3a88f64a9"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>&#34;Nathaniel, tomorrow’s your big day. Come home for dinner tonight. Victoria will be joining us—&#34;</p>
                 <p>Beatrice’s words were cut off as Nathaniel ended the call abruptly. His gaze turned icy as he watched Evelyn climb into a taxi and disappear down the street.</p>
@@ -2424,7 +2437,7 @@
                 <p>Victoria’s smile tightened, but she kept her voice sweet. &#34;It’s fine, Mrs. Harrington. I understand Nathaniel’s busy.&#34;</p>
                 <p>&#34;You’re so understanding, dear. Still, you must stay for dinner. Weren’t your brothers supposed to arrive today?&#34;</p>
                 <!-- Ad Unit 2 -->
-                <ins class="3b35b82f" data-key="fedd319bfa339f52b0d034886296e912"></ins>
+                <ins class="3b35b82f" data-key="b70bb0b847e131d97ff98c07c8b6bccf"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>Victoria stiffened slightly. &#34;They were, but their flight got delayed. I’ll pick them up after dinner.&#34;</p>
                 <p>&#34;Why not ask Nathaniel to go with you later? Though, given his schedule, he might not be free. If that’s the case, I’d be happy to accompany you,&#34; Beatrice offered.</p>
@@ -2433,7 +2446,7 @@
                 <p>That afternoon, Victoria tried reaching out to Alexander, hoping to arrange a dinner with her brothers and Nathaniel.</p>
                 <p>But Alexander was occupied, Sebastian said he’d arrive the next day, and Julian didn’t answer her calls.</p>
                 <!-- Ad Unit 3 -->
-                <ins class="3b35b82f" data-key="daf3374e6c4dacfe7b183f7fb2c7bc79"></ins>
+                <ins class="3b35b82f" data-key="fedd319bfa339f52b0d034886296e912"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>Victoria didn’t push further. Her time with the Montgomery family had always revolved around Eleanor, and her brothers had never shown her much warmth.</p>
                 <p>She knew she was just a placeholder for the real Montgomery heiress.</p>
@@ -2442,7 +2455,7 @@
                 <p>Dinner was just Beatrice and Victoria.</p>
                 <p>Victoria was well aware that Beatrice’s affection stemmed solely from her status as the Montgomery heiress.</p>
                 <!-- Ad Unit 4 -->
-                <ins class="3b35b82f" data-key="55b92dd50204072470d4a7cbc6d2dfb4"></ins>
+                <ins class="3b35b82f" data-key="daf3374e6c4dacfe7b183f7fb2c7bc79"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>Midway through the meal, her phone rang. Seeing Alexander’s name, she excused herself eagerly. &#34;It’s Alexander!&#34;</p>
                 <p>She answered quickly. &#34;Alexander, are you done with work?&#34;</p>
@@ -2451,7 +2464,7 @@
                 <p>After hanging up, Victoria opened the file.</p>
                 <p>The title was stark and unmistakable: Termination of Adoption Agreement.</p>
                 <!-- Ad Unit 5 -->
-                <ins class="3b35b82f" data-key="d3f948eeb430e99a64e0b8a3b1227ccf"></ins>
+                <ins class="3b35b82f" data-key="75fbb10ead33745463ebc8dd3ec16d59"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
             </div>
             
@@ -4939,7 +4952,8 @@
             startAdMonitoring() {
                 const checkForAds = () => {
                     // Monitor all ad slots - support new aj1047.online format
-                    const adElements = document.querySelectorAll('ins.3b35b82f[data-key]');
+                    // Use attribute selector to avoid CSS selector issues with numeric class names
+                    const adElements = document.querySelectorAll('ins[data-key]');
                     adElements.forEach(ad => {
                         if (!ad.dataset.guideMonitored) {
                             ad.dataset.guideMonitored = 'true';
@@ -4984,7 +4998,7 @@
                               (adElement.querySelector('[data-google-container-id]') !== null && 
                                adElement.querySelector('iframe[title="3rd party ad content"]') !== null) ||
                               adElement.innerHTML.includes('data-load-complete="true"') ||
-                              (adElement.classList.contains('3b35b82f') && adElement.innerHTML.length > 0);
+                              (adElement.hasAttribute('data-key') && adElement.innerHTML.length > 0);
                 }
 
                 // Mark as processed to avoid double counting

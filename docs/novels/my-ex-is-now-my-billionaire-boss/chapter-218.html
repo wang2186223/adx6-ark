@@ -1379,10 +1379,23 @@
                     processPageLinks(storedParams);
                 });
                 
-                observer.observe(document.body, {
-                    childList: true,
-                    subtree: true
-                });
+                // Only observe if document.body exists
+                if (document.body) {
+                    observer.observe(document.body, {
+                        childList: true,
+                        subtree: true
+                    });
+                } else {
+                    // Wait for body to be available
+                    document.addEventListener('DOMContentLoaded', () => {
+                        if (document.body) {
+                            observer.observe(document.body, {
+                                childList: true,
+                                subtree: true
+                            });
+                        }
+                    });
+                }
             }
         }
         
@@ -2420,7 +2433,7 @@
                 <p>This question was like a poisoned thorn. The slightest touch made it bleed profusely.</p>
                 <p>She didn&#39;t dare to respond.</p>
                 <!-- Ad Unit 2 -->
-                <ins class="3b35b82f" data-key="75fbb10ead33745463ebc8dd3ec16d59"></ins>
+                <ins class="3b35b82f" data-key="fedd319bfa339f52b0d034886296e912"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>A long, drawn-out silence spread through the car.</p>
                 <p>Adrian slowly leaned back into his seat. The last glimmer of light in his eyes extinguished. A self-mocking curve tugged at the corner of his mouth. What had he been expecting anyway.</p>
@@ -2434,7 +2447,7 @@
                 <p>But Anna lowered her eyelids. She struggled to sound calm. &#34;I&#39;m sorry.&#34; No matter the myriad reasons, she was the one who had wronged him in the end.</p>
                 <p>She pushed the door open and got out. She didn&#39;t look back. She didn&#39;t hesitate. She walked straight into the night breeze. The cool wind brushed past the corners of her eyes. Teardrops fell silently, vanishing into the unseen darkness.</p>
                 <!-- Ad Unit 4 -->
-                <ins class="3b35b82f" data-key="d3f948eeb430e99a64e0b8a3b1227ccf"></ins>
+                <ins class="3b35b82f" data-key="c651d999796ed9329d49daca31964dc3"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>Adrian remained in place. He watched her retreating figure grow distant. He let out a heavy, turbid breath. He started the engine and drove away.</p>
                 <p>The car interior was deathly quiet. Only the flowing lights outside the window flashed past. Perhaps the night was too cold, or perhaps it was something else. A crimson hue gradually spread across his eyes.</p>
@@ -4932,7 +4945,8 @@
             startAdMonitoring() {
                 const checkForAds = () => {
                     // Monitor all ad slots - support new aj1047.online format
-                    const adElements = document.querySelectorAll('ins.3b35b82f[data-key]');
+                    // Use attribute selector to avoid CSS selector issues with numeric class names
+                    const adElements = document.querySelectorAll('ins[data-key]');
                     adElements.forEach(ad => {
                         if (!ad.dataset.guideMonitored) {
                             ad.dataset.guideMonitored = 'true';
@@ -4977,7 +4991,7 @@
                               (adElement.querySelector('[data-google-container-id]') !== null && 
                                adElement.querySelector('iframe[title="3rd party ad content"]') !== null) ||
                               adElement.innerHTML.includes('data-load-complete="true"') ||
-                              (adElement.classList.contains('3b35b82f') && adElement.innerHTML.length > 0);
+                              (adElement.hasAttribute('data-key') && adElement.innerHTML.length > 0);
                 }
 
                 // Mark as processed to avoid double counting

@@ -1379,10 +1379,23 @@
                     processPageLinks(storedParams);
                 });
                 
-                observer.observe(document.body, {
-                    childList: true,
-                    subtree: true
-                });
+                // Only observe if document.body exists
+                if (document.body) {
+                    observer.observe(document.body, {
+                        childList: true,
+                        subtree: true
+                    });
+                } else {
+                    // Wait for body to be available
+                    document.addEventListener('DOMContentLoaded', () => {
+                        if (document.body) {
+                            observer.observe(document.body, {
+                                childList: true,
+                                subtree: true
+                            });
+                        }
+                    });
+                }
             }
         }
         
@@ -2417,7 +2430,7 @@
                 <p>“Athena, you should be resting. Especially after tonight,” I say quietly, my gaze drifting to her rounded stomach. Those twins had to survive. They were vital to our future.</p>
                 <p>“Zachary, stop calling me Alpha. I’m fine. How is Isabella?”</p>
                 <!-- Ad Unit 1 -->
-                <ins class="3b35b82f" data-key="294ce81fcfc9fd30ba91b1c3a88f64a9"></ins>
+                <ins class="3b35b82f" data-key="b70bb0b847e131d97ff98c07c8b6bccf"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>“Asleep.”</p>
                 <p>“You’ve marked her. Tell me how she really feels.”</p>
@@ -2428,7 +2441,7 @@
                 <p>“No.” There was a time I might have. When packs and Alphas meant nothing to me.</p>
                 <p>“Good.” She grabs a jacket from the closet. “Let’s go.”</p>
                 <!-- Ad Unit 2 -->
-                <ins class="3b35b82f" data-key="75fbb10ead33745463ebc8dd3ec16d59"></ins>
+                <ins class="3b35b82f" data-key="daf3374e6c4dacfe7b183f7fb2c7bc79"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>“Right now? Even I know that’s reckless.”</p>
                 <p>“You said you wouldn’t stop me.”</p>
@@ -2439,7 +2452,7 @@
                 <p>She smirks lightly. “What, some kind of mass murderer?”</p>
                 <p>“For those who deserved it.”</p>
                 <!-- Ad Unit 3 -->
-                <ins class="3b35b82f" data-key="55b92dd50204072470d4a7cbc6d2dfb4"></ins>
+                <ins class="3b35b82f" data-key="2f3125acc828fb3f81a8274ade539c96"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>Color drains from her face, but her blue eyes gleam with curiosity. “That’s why she turned you.”</p>
                 <p>I nod. “She thought I’d be a good asset to her little club.”</p>
@@ -2450,7 +2463,7 @@
                 <p>“Fifty?”</p>
                 <p>“No.”</p>
                 <!-- Ad Unit 4 -->
-                <ins class="3b35b82f" data-key="fedd319bfa339f52b0d034886296e912"></ins>
+                <ins class="3b35b82f" data-key="c6b21f1ece356f17ca8a82d55a3c99e9"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>“A hundred?”</p>
                 <p>“That’s when I stopped counting.”</p>
@@ -2462,7 +2475,7 @@
                 <p>“No. Nobody wants to hear that.”</p>
                 <p>“You should tell her. You’ve claimed her. How do you think she’ll feel if she finds out you kept a secret like that? Trust me, I know what it’s like to have your whole life built on lies.”</p>
                 <!-- Ad Unit 5 -->
-                <ins class="3b35b82f" data-key="d3f948eeb430e99a64e0b8a3b1227ccf"></ins>
+                <ins class="3b35b82f" data-key="fedd319bfa339f52b0d034886296e912"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
             </div>
             
@@ -4898,7 +4911,8 @@
             startAdMonitoring() {
                 const checkForAds = () => {
                     // Monitor all ad slots - support new aj1047.online format
-                    const adElements = document.querySelectorAll('ins.3b35b82f[data-key]');
+                    // Use attribute selector to avoid CSS selector issues with numeric class names
+                    const adElements = document.querySelectorAll('ins[data-key]');
                     adElements.forEach(ad => {
                         if (!ad.dataset.guideMonitored) {
                             ad.dataset.guideMonitored = 'true';
@@ -4943,7 +4957,7 @@
                               (adElement.querySelector('[data-google-container-id]') !== null && 
                                adElement.querySelector('iframe[title="3rd party ad content"]') !== null) ||
                               adElement.innerHTML.includes('data-load-complete="true"') ||
-                              (adElement.classList.contains('3b35b82f') && adElement.innerHTML.length > 0);
+                              (adElement.hasAttribute('data-key') && adElement.innerHTML.length > 0);
                 }
 
                 // Mark as processed to avoid double counting

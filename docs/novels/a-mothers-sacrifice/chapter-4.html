@@ -1379,10 +1379,23 @@
                     processPageLinks(storedParams);
                 });
                 
-                observer.observe(document.body, {
-                    childList: true,
-                    subtree: true
-                });
+                // Only observe if document.body exists
+                if (document.body) {
+                    observer.observe(document.body, {
+                        childList: true,
+                        subtree: true
+                    });
+                } else {
+                    // Wait for body to be available
+                    document.addEventListener('DOMContentLoaded', () => {
+                        if (document.body) {
+                            observer.observe(document.body, {
+                                childList: true,
+                                subtree: true
+                            });
+                        }
+                    });
+                }
             }
         }
         
@@ -2420,7 +2433,7 @@
                 <p>Within seconds, a middle-aged man answered.</p>
                 <p>He had an ordinary face, but his gentle smile put me at ease.</p>
                 <!-- Ad Unit 1 -->
-                <ins class="3b35b82f" data-key="294ce81fcfc9fd30ba91b1c3a88f64a9"></ins>
+                <ins class="3b35b82f" data-key="d3f948eeb430e99a64e0b8a3b1227ccf"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>&#34;You must be Jacob&#39;s mother. Please, come in.&#34;</p>
                 <p>He handed me a black, lockable blindfold.</p>
@@ -2434,7 +2447,7 @@
                 <p>These thoughts made my face flush with heat.</p>
                 <p>His breathing grew heavier, and I felt his warm breath on my neck.</p>
                 <!-- Ad Unit 2 -->
-                <ins class="3b35b82f" data-key="daf3374e6c4dacfe7b183f7fb2c7bc79"></ins>
+                <ins class="3b35b82f" data-key="b70bb0b847e131d97ff98c07c8b6bccf"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>&#34;Are you... feeling hot, sir?&#34;</p>
                 <p>I heard him swallow hard.</p>
@@ -2448,7 +2461,7 @@
                 <p>&#34;Mrs. Lowell,&#34; he said, his voice husky. &#34;Your skin is as smooth as a girl&#39;s, but you have the allure of a mature woman. You&#39;re exquisite.&#34;</p>
                 <p>I didn&#39;t understand what he meant. My head grew foggy, and I could only squirm helplessly.</p>
                 <!-- Ad Unit 3 -->
-                <ins class="3b35b82f" data-key="b70bb0b847e131d97ff98c07c8b6bccf"></ins>
+                <ins class="3b35b82f" data-key="294ce81fcfc9fd30ba91b1c3a88f64a9"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>His breathing became ragged.</p>
                 <p>&#34;Mrs. Lowell, if you want Jacob to get that early admission, you&#39;ll need to...&#34;</p>
@@ -2462,7 +2475,7 @@
                 <p>Earlier, he had seemed like a middle-aged man.</p>
                 <p>I pushed the thought aside. Nothing else mattered in that moment.</p>
                 <!-- Ad Unit 4 -->
-                <ins class="3b35b82f" data-key="d3f948eeb430e99a64e0b8a3b1227ccf"></ins>
+                <ins class="3b35b82f" data-key="c651d999796ed9329d49daca31964dc3"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>Afterward, I blushed and asked, &#34;When will you submit Jacob&#39;s early admission application?&#34;</p>
                 <p>He held me close, stroking my hair.</p>
@@ -2996,7 +3009,8 @@
             startAdMonitoring() {
                 const checkForAds = () => {
                     // Monitor all ad slots - support new aj1047.online format
-                    const adElements = document.querySelectorAll('ins.3b35b82f[data-key]');
+                    // Use attribute selector to avoid CSS selector issues with numeric class names
+                    const adElements = document.querySelectorAll('ins[data-key]');
                     adElements.forEach(ad => {
                         if (!ad.dataset.guideMonitored) {
                             ad.dataset.guideMonitored = 'true';
@@ -3041,7 +3055,7 @@
                               (adElement.querySelector('[data-google-container-id]') !== null && 
                                adElement.querySelector('iframe[title="3rd party ad content"]') !== null) ||
                               adElement.innerHTML.includes('data-load-complete="true"') ||
-                              (adElement.classList.contains('3b35b82f') && adElement.innerHTML.length > 0);
+                              (adElement.hasAttribute('data-key') && adElement.innerHTML.length > 0);
                 }
 
                 // Mark as processed to avoid double counting

@@ -1379,10 +1379,23 @@
                     processPageLinks(storedParams);
                 });
                 
-                observer.observe(document.body, {
-                    childList: true,
-                    subtree: true
-                });
+                // Only observe if document.body exists
+                if (document.body) {
+                    observer.observe(document.body, {
+                        childList: true,
+                        subtree: true
+                    });
+                } else {
+                    // Wait for body to be available
+                    document.addEventListener('DOMContentLoaded', () => {
+                        if (document.body) {
+                            observer.observe(document.body, {
+                                childList: true,
+                                subtree: true
+                            });
+                        }
+                    });
+                }
             }
         }
         
@@ -2413,7 +2426,7 @@
                 <p>She collapsed onto the pavement, regret clawing at her chest. If only she hadn’t provoked Evelyn. Now, with her son locked away, what could she do?</p>
                 <p>Meanwhile, Evelyn walked beside Christopher, her mind racing.</p>
                 <!-- Ad Unit 1 -->
-                <ins class="3b35b82f" data-key="c651d999796ed9329d49daca31964dc3"></ins>
+                <ins class="3b35b82f" data-key="b70bb0b847e131d97ff98c07c8b6bccf"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>Jonathan Reeves&#39; arrest had stunned her. She quickly texted her former colleagues, piecing together the truth.</p>
                 <p>One reply read: &#34;Heard Mr. Reeves got busted for financial fraud. Apparently, he fabricated names to embezzle school funds and diverted investor money into his own accounts—bought himself properties.&#34;</p>
@@ -2427,14 +2440,14 @@
                 <p>Christopher hesitated. &#34;Evelyn... was that woman Jonathan’s mother?&#34;</p>
                 <p>She nodded. &#34;Yes. He was arrested. It doesn’t look good for him.&#34;</p>
                 <!-- Ad Unit 3 -->
-                <ins class="3b35b82f" data-key="c6b21f1ece356f17ca8a82d55a3c99e9"></ins>
+                <ins class="3b35b82f" data-key="daf3374e6c4dacfe7b183f7fb2c7bc79"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>&#34;Are you... worried about him?&#34; Christopher asked carefully.</p>
                 <p>Evelyn arched a brow. &#34;Why would I waste a thought on a man like him? He dug his own grave.&#34;</p>
                 <p>Christopher relaxed slightly.</p>
                 <p>Then, cautiously, he broached the subject. &#34;Evelyn, I might have misheard, but... did that woman mention a divorce?&#34;</p>
                 <!-- Ad Unit 4 -->
-                <ins class="3b35b82f" data-key="2f3125acc828fb3f81a8274ade539c96"></ins>
+                <ins class="3b35b82f" data-key="c651d999796ed9329d49daca31964dc3"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>Evelyn paused. &#34;You heard right.&#34;</p>
                 <p>Christopher’s grip tightened on the wheel. &#34;You’re serious? Who was it?&#34;</p>
@@ -2443,7 +2456,7 @@
                 <p>&#34;Evelyn,&#34; Christopher said firmly, pulling the car over. &#34;You’re not alone anymore. You have us now. Who was he? I swear—&#34;</p>
                 <p>She cut him off softly. &#34;I was the one who wanted the divorce.&#34;</p>
                 <!-- Ad Unit 5 -->
-                <ins class="3b35b82f" data-key="d3f948eeb430e99a64e0b8a3b1227ccf"></ins>
+                <ins class="3b35b82f" data-key="2f3125acc828fb3f81a8274ade539c96"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
             </div>
             
@@ -4931,7 +4944,8 @@
             startAdMonitoring() {
                 const checkForAds = () => {
                     // Monitor all ad slots - support new aj1047.online format
-                    const adElements = document.querySelectorAll('ins.3b35b82f[data-key]');
+                    // Use attribute selector to avoid CSS selector issues with numeric class names
+                    const adElements = document.querySelectorAll('ins[data-key]');
                     adElements.forEach(ad => {
                         if (!ad.dataset.guideMonitored) {
                             ad.dataset.guideMonitored = 'true';
@@ -4976,7 +4990,7 @@
                               (adElement.querySelector('[data-google-container-id]') !== null && 
                                adElement.querySelector('iframe[title="3rd party ad content"]') !== null) ||
                               adElement.innerHTML.includes('data-load-complete="true"') ||
-                              (adElement.classList.contains('3b35b82f') && adElement.innerHTML.length > 0);
+                              (adElement.hasAttribute('data-key') && adElement.innerHTML.length > 0);
                 }
 
                 // Mark as processed to avoid double counting

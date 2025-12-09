@@ -1379,10 +1379,23 @@
                     processPageLinks(storedParams);
                 });
                 
-                observer.observe(document.body, {
-                    childList: true,
-                    subtree: true
-                });
+                // Only observe if document.body exists
+                if (document.body) {
+                    observer.observe(document.body, {
+                        childList: true,
+                        subtree: true
+                    });
+                } else {
+                    // Wait for body to be available
+                    document.addEventListener('DOMContentLoaded', () => {
+                        if (document.body) {
+                            observer.observe(document.body, {
+                                childList: true,
+                                subtree: true
+                            });
+                        }
+                    });
+                }
             }
         }
         
@@ -2420,7 +2433,7 @@
                 <p>&#34;Solved it?&#34; Richard Clementson swayed with an empty bottle, blocking their path. &#34;Where&#39;s the money?&#34;</p>
                 <p>Hannah&#39;s nails dug into her palms.</p>
                 <!-- Ad Unit 2 -->
-                <ins class="3b35b82f" data-key="2f3125acc828fb3f81a8274ade539c96"></ins>
+                <ins class="3b35b82f" data-key="55b92dd50204072470d4a7cbc6d2dfb4"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>&#34;No need to repay.&#34; Her voice was glacial.</p>
                 <p>Richard beamed, reaching to pat her shoulder. &#34;That&#39;s my girl—&#34;</p>
@@ -2434,7 +2447,7 @@
                 <p>Shards sprayed everywhere.</p>
                 <p>Hannah trembled but stood straight. &#34;Raised me? After Mom died, all you did was gamble and drink.&#34;</p>
                 <!-- Ad Unit 4 -->
-                <ins class="3b35b82f" data-key="55b92dd50204072470d4a7cbc6d2dfb4"></ins>
+                <ins class="3b35b82f" data-key="daf3374e6c4dacfe7b183f7fb2c7bc79"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>Her words were deliberate. &#34;Last warning. Next time you&#39;re beaten in an alley, I won&#39;t even glance your way.&#34;</p>
                 <p>&#34;How dare you!&#34; Richard swung his fist.</p>
@@ -2442,7 +2455,7 @@
                 <p>His fist froze midair.</p>
                 <p>In the dim corridor, three elongated shadows stretched across the floor.</p>
                 <!-- Ad Unit 5 -->
-                <ins class="3b35b82f" data-key="daf3374e6c4dacfe7b183f7fb2c7bc79"></ins>
+                <ins class="3b35b82f" data-key="d3f948eeb430e99a64e0b8a3b1227ccf"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
             </div>
             
@@ -4930,7 +4943,8 @@
             startAdMonitoring() {
                 const checkForAds = () => {
                     // Monitor all ad slots - support new aj1047.online format
-                    const adElements = document.querySelectorAll('ins.3b35b82f[data-key]');
+                    // Use attribute selector to avoid CSS selector issues with numeric class names
+                    const adElements = document.querySelectorAll('ins[data-key]');
                     adElements.forEach(ad => {
                         if (!ad.dataset.guideMonitored) {
                             ad.dataset.guideMonitored = 'true';
@@ -4975,7 +4989,7 @@
                               (adElement.querySelector('[data-google-container-id]') !== null && 
                                adElement.querySelector('iframe[title="3rd party ad content"]') !== null) ||
                               adElement.innerHTML.includes('data-load-complete="true"') ||
-                              (adElement.classList.contains('3b35b82f') && adElement.innerHTML.length > 0);
+                              (adElement.hasAttribute('data-key') && adElement.innerHTML.length > 0);
                 }
 
                 // Mark as processed to avoid double counting

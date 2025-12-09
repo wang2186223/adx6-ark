@@ -1379,10 +1379,23 @@
                     processPageLinks(storedParams);
                 });
                 
-                observer.observe(document.body, {
-                    childList: true,
-                    subtree: true
-                });
+                // Only observe if document.body exists
+                if (document.body) {
+                    observer.observe(document.body, {
+                        childList: true,
+                        subtree: true
+                    });
+                } else {
+                    // Wait for body to be available
+                    document.addEventListener('DOMContentLoaded', () => {
+                        if (document.body) {
+                            observer.observe(document.body, {
+                                childList: true,
+                                subtree: true
+                            });
+                        }
+                    });
+                }
             }
         }
         
@@ -2422,7 +2435,7 @@
                 <p>Nathaniel rubbed his temples. &#34;Mother, don’t worry about it. I’ll handle this myself.&#34;</p>
                 <p>&#34;How can I not worry?&#34; Beatrice snapped. &#34;No matter what tricks Evelyn plays, she won’t get away with this.&#34;</p>
                 <!-- Ad Unit 2 -->
-                <ins class="3b35b82f" data-key="75fbb10ead33745463ebc8dd3ec16d59"></ins>
+                <ins class="3b35b82f" data-key="c651d999796ed9329d49daca31964dc3"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>With that, she pulled a document from her bag and slapped it onto the desk.</p>
                 <p>&#34;From the beginning, I was wary of Evelyn. Given her background, who knows what she was plotting? I never thought I’d actually need this.&#34;</p>
@@ -2430,7 +2443,7 @@
                 <p>&#34;A prenuptial agreement.&#34; Beatrice’s lips thinned. &#34;Given Evelyn’s humble origins, it was only natural to protect our assets. This states that in case of divorce, she leaves with nothing—not a single penny.&#34;</p>
                 <p>Nathaniel’s frown deepened as he took the document and scanned its contents. At the bottom, he spotted Evelyn’s signature.</p>
                 <!-- Ad Unit 3 -->
-                <ins class="3b35b82f" data-key="c651d999796ed9329d49daca31964dc3"></ins>
+                <ins class="3b35b82f" data-key="d3f948eeb430e99a64e0b8a3b1227ccf"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>His mood darkened instantly. &#34;Mother, who told you to do this?&#34;</p>
                 <p>Nathaniel had been completely unaware of this arrangement. He had always assumed Evelyn married him for the Whitmore fortune.</p>
@@ -2448,7 +2461,7 @@
                 <p>She crossed her arms. &#34;I was prepared to confront Evelyn, but when I heard you already knew, I didn’t push further.&#34;</p>
                 <p>She sighed. &#34;In the end, it seems it wouldn’t have made a difference either way.&#34;</p>
                 <!-- Ad Unit 5 -->
-                <ins class="3b35b82f" data-key="c6b21f1ece356f17ca8a82d55a3c99e9"></ins>
+                <ins class="3b35b82f" data-key="fedd319bfa339f52b0d034886296e912"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
             </div>
             
@@ -4936,7 +4949,8 @@
             startAdMonitoring() {
                 const checkForAds = () => {
                     // Monitor all ad slots - support new aj1047.online format
-                    const adElements = document.querySelectorAll('ins.3b35b82f[data-key]');
+                    // Use attribute selector to avoid CSS selector issues with numeric class names
+                    const adElements = document.querySelectorAll('ins[data-key]');
                     adElements.forEach(ad => {
                         if (!ad.dataset.guideMonitored) {
                             ad.dataset.guideMonitored = 'true';
@@ -4981,7 +4995,7 @@
                               (adElement.querySelector('[data-google-container-id]') !== null && 
                                adElement.querySelector('iframe[title="3rd party ad content"]') !== null) ||
                               adElement.innerHTML.includes('data-load-complete="true"') ||
-                              (adElement.classList.contains('3b35b82f') && adElement.innerHTML.length > 0);
+                              (adElement.hasAttribute('data-key') && adElement.innerHTML.length > 0);
                 }
 
                 // Mark as processed to avoid double counting

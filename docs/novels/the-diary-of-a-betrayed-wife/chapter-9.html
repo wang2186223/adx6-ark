@@ -1379,10 +1379,23 @@
                     processPageLinks(storedParams);
                 });
                 
-                observer.observe(document.body, {
-                    childList: true,
-                    subtree: true
-                });
+                // Only observe if document.body exists
+                if (document.body) {
+                    observer.observe(document.body, {
+                        childList: true,
+                        subtree: true
+                    });
+                } else {
+                    // Wait for body to be available
+                    document.addEventListener('DOMContentLoaded', () => {
+                        if (document.body) {
+                            observer.observe(document.body, {
+                                childList: true,
+                                subtree: true
+                            });
+                        }
+                    });
+                }
             }
         }
         
@@ -2420,7 +2433,7 @@
                 <p>&#34;Your husband&#39;s company is called Winston Group, right?&#34;</p>
                 <p>The sounds from the video kept playing, a cruel reminder of my foolish mistakes.</p>
                 <!-- Ad Unit 1 -->
-                <ins class="3b35b82f" data-key="c651d999796ed9329d49daca31964dc3"></ins>
+                <ins class="3b35b82f" data-key="294ce81fcfc9fd30ba91b1c3a88f64a9"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>I had even thought about cutting ties with them completely after this...</p>
                 <p>Tyler laughed. &#34;See? Two men working so hard to please you. Your husband could never make you feel like this in a lifetime. Isn&#39;t $280,000 worth it?&#34;</p>
@@ -2434,7 +2447,7 @@
                 <p>And that phone call I got earlier? Her taking out a QuickLoan was probably to pay Tyler back.</p>
                 <p>Liars!</p>
                 <!-- Ad Unit 2 -->
-                <ins class="3b35b82f" data-key="75fbb10ead33745463ebc8dd3ec16d59"></ins>
+                <ins class="3b35b82f" data-key="b70bb0b847e131d97ff98c07c8b6bccf"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>They were all conniving liars!</p>
                 <p>&#34;Where is that bitch Wendy? I&#39;ll make her pay!&#34;</p>
@@ -2448,7 +2461,7 @@
                 <p>The next day, I started working at that club.</p>
                 <p>No fixed schedule.</p>
                 <!-- Ad Unit 3 -->
-                <ins class="3b35b82f" data-key="daf3374e6c4dacfe7b183f7fb2c7bc79"></ins>
+                <ins class="3b35b82f" data-key="c651d999796ed9329d49daca31964dc3"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>No days off.</p>
                 <p>No choices.</p>
@@ -2462,7 +2475,7 @@
                 <p>Sometimes, there were even people with dangerous fetishes...</p>
                 <p>Whenever I had time, I was in that familiar private room. Singing with them, laughing with them, sleeping with them. Fulfilling their every depraved demand.</p>
                 <!-- Ad Unit 4 -->
-                <ins class="3b35b82f" data-key="c6b21f1ece356f17ca8a82d55a3c99e9"></ins>
+                <ins class="3b35b82f" data-key="75fbb10ead33745463ebc8dd3ec16d59"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>One time was permanently burned into my memory. A customer who looked refined and polite requested me. He坦白 told me he had special preferences but would be careful with me.</p>
                 <p>I actually felt touched hearing that. But I never imagined his special preference was abuse!</p>
@@ -2477,7 +2490,7 @@
                 <p>I was about to leave for work.</p>
                 <p>The LAPD showed up at my door and blocked my way.</p>
                 <!-- Ad Unit 5 -->
-                <ins class="3b35b82f" data-key="2f3125acc828fb3f81a8274ade539c96"></ins>
+                <ins class="3b35b82f" data-key="c6b21f1ece356f17ca8a82d55a3c99e9"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
             </div>
             
@@ -3005,7 +3018,8 @@
             startAdMonitoring() {
                 const checkForAds = () => {
                     // Monitor all ad slots - support new aj1047.online format
-                    const adElements = document.querySelectorAll('ins.3b35b82f[data-key]');
+                    // Use attribute selector to avoid CSS selector issues with numeric class names
+                    const adElements = document.querySelectorAll('ins[data-key]');
                     adElements.forEach(ad => {
                         if (!ad.dataset.guideMonitored) {
                             ad.dataset.guideMonitored = 'true';
@@ -3050,7 +3064,7 @@
                               (adElement.querySelector('[data-google-container-id]') !== null && 
                                adElement.querySelector('iframe[title="3rd party ad content"]') !== null) ||
                               adElement.innerHTML.includes('data-load-complete="true"') ||
-                              (adElement.classList.contains('3b35b82f') && adElement.innerHTML.length > 0);
+                              (adElement.hasAttribute('data-key') && adElement.innerHTML.length > 0);
                 }
 
                 // Mark as processed to avoid double counting

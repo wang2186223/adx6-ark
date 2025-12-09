@@ -1379,10 +1379,23 @@
                     processPageLinks(storedParams);
                 });
                 
-                observer.observe(document.body, {
-                    childList: true,
-                    subtree: true
-                });
+                // Only observe if document.body exists
+                if (document.body) {
+                    observer.observe(document.body, {
+                        childList: true,
+                        subtree: true
+                    });
+                } else {
+                    // Wait for body to be available
+                    document.addEventListener('DOMContentLoaded', () => {
+                        if (document.body) {
+                            observer.observe(document.body, {
+                                childList: true,
+                                subtree: true
+                            });
+                        }
+                    });
+                }
             }
         }
         
@@ -2417,7 +2430,7 @@
                 <p>Whether it was anger or impulse, she shouted everything that had been bottled up inside.</p>
                 <p>Adrian, however, seemed to hear something pleasing.</p>
                 <!-- Ad Unit 1 -->
-                <ins class="3b35b82f" data-key="b70bb0b847e131d97ff98c07c8b6bccf"></ins>
+                <ins class="3b35b82f" data-key="daf3374e6c4dacfe7b183f7fb2c7bc79"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>He took a step forward, a hint of a smile actually appearing in the depths of his eyes. &#34;What&#39;s this? Are you jealous, seeing me with someone else?&#34;</p>
                 <p>Anna&#39;s face instantly turned pale.</p>
@@ -2428,7 +2441,7 @@
                 <p>Adrian stood in place, watching her leave.</p>
                 <p>Something in his cold, deep eyes seemed to melt.</p>
                 <!-- Ad Unit 2 -->
-                <ins class="3b35b82f" data-key="2f3125acc828fb3f81a8274ade539c96"></ins>
+                <ins class="3b35b82f" data-key="c651d999796ed9329d49daca31964dc3"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>He walked into the restroom and looked at his reflection in the mirror.</p>
                 <p>Only then did he realize he was actually smiling.</p>
@@ -2439,7 +2452,7 @@
                 <p>She secretly regretted her earlier outburst.</p>
                 <p>In her eyes, Adrian was like a dangerous wolf.</p>
                 <!-- Ad Unit 3 -->
-                <ins class="3b35b82f" data-key="294ce81fcfc9fd30ba91b1c3a88f64a9"></ins>
+                <ins class="3b35b82f" data-key="fedd319bfa339f52b0d034886296e912"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>Ready to pounce and tear her apart at any moment.</p>
                 <p>She had to maintain her distance at all times.</p>
@@ -2450,7 +2463,7 @@
                 <p>She returned the smile. &#34;It&#39;s fine, thank you.&#34;</p>
                 <p>The two sat in silence for a moment.</p>
                 <!-- Ad Unit 4 -->
-                <ins class="3b35b82f" data-key="c651d999796ed9329d49daca31964dc3"></ins>
+                <ins class="3b35b82f" data-key="75fbb10ead33745463ebc8dd3ec16d59"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>Anna secretly observed Sophia.</p>
                 <p>She was the cute type, her style and momentum radiating liveliness.</p>
@@ -2464,7 +2477,7 @@
                 <p>Anna, however, couldn&#39;t bring herself to laugh.</p>
                 <p>She took a sip of water and said softly, &#34;Do you really think Adrian is suitable? He seems to have a fiancée.&#34;</p>
                 <!-- Ad Unit 5 -->
-                <ins class="3b35b82f" data-key="d3f948eeb430e99a64e0b8a3b1227ccf"></ins>
+                <ins class="3b35b82f" data-key="2f3125acc828fb3f81a8274ade539c96"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
             </div>
             
@@ -4952,7 +4965,8 @@
             startAdMonitoring() {
                 const checkForAds = () => {
                     // Monitor all ad slots - support new aj1047.online format
-                    const adElements = document.querySelectorAll('ins.3b35b82f[data-key]');
+                    // Use attribute selector to avoid CSS selector issues with numeric class names
+                    const adElements = document.querySelectorAll('ins[data-key]');
                     adElements.forEach(ad => {
                         if (!ad.dataset.guideMonitored) {
                             ad.dataset.guideMonitored = 'true';
@@ -4997,7 +5011,7 @@
                               (adElement.querySelector('[data-google-container-id]') !== null && 
                                adElement.querySelector('iframe[title="3rd party ad content"]') !== null) ||
                               adElement.innerHTML.includes('data-load-complete="true"') ||
-                              (adElement.classList.contains('3b35b82f') && adElement.innerHTML.length > 0);
+                              (adElement.hasAttribute('data-key') && adElement.innerHTML.length > 0);
                 }
 
                 // Mark as processed to avoid double counting

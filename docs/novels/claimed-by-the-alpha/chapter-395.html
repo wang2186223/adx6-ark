@@ -1379,10 +1379,23 @@
                     processPageLinks(storedParams);
                 });
                 
-                observer.observe(document.body, {
-                    childList: true,
-                    subtree: true
-                });
+                // Only observe if document.body exists
+                if (document.body) {
+                    observer.observe(document.body, {
+                        childList: true,
+                        subtree: true
+                    });
+                } else {
+                    // Wait for body to be available
+                    document.addEventListener('DOMContentLoaded', () => {
+                        if (document.body) {
+                            observer.observe(document.body, {
+                                childList: true,
+                                subtree: true
+                            });
+                        }
+                    });
+                }
             }
         }
         
@@ -2413,7 +2426,7 @@
                 <p>Don&#39;t be stupid. This is the hand I&#39;ve been dealt. This is what I have to live with now.</p>
                 <p>No. I refuse to believe you came into my life just to wither away in front of me. The higher powers work in messed up ways, but your death isn&#39;t part of their plan.</p>
                 <!-- Ad Unit 1 -->
-                <ins class="3b35b82f" data-key="75fbb10ead33745463ebc8dd3ec16d59"></ins>
+                <ins class="3b35b82f" data-key="2f3125acc828fb3f81a8274ade539c96"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>Luc, it&#39;s fine. I know what&#39;s coming. I&#39;ve made peace with it.</p>
                 <p>You can be so fucking frustrating. I snap. She wasn&#39;t even willing to hear me out.</p>
@@ -2427,14 +2440,14 @@
                 <p>But I&#39;m...</p>
                 <p>Not if I can convince Athena to bite you.</p>
                 <!-- Ad Unit 3 -->
-                <ins class="3b35b82f" data-key="c6b21f1ece356f17ca8a82d55a3c99e9"></ins>
+                <ins class="3b35b82f" data-key="b70bb0b847e131d97ff98c07c8b6bccf"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>Bite me? As in mark me? I don&#39;t understand. She&#39;s already mated.</p>
                 <p>Not marking you. That&#39;s different. You would be like Zachary and Brianna.</p>
                 <p>Her eyes widen. Her brows shoot up. I still don&#39;t understand.</p>
                 <p>They aren&#39;t pure-blooded Lycans. They were created. They were once Human before they were turned.</p>
                 <!-- Ad Unit 4 -->
-                <ins class="3b35b82f" data-key="2f3125acc828fb3f81a8274ade539c96"></ins>
+                <ins class="3b35b82f" data-key="75fbb10ead33745463ebc8dd3ec16d59"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>She frowns, sucking in her cheeks. When her eyes meet mine again, they&#39;re filled with a deep sadness that wasn&#39;t there before. But you&#39;re a Hunter. Why would you make me Lycan again?</p>
                 <p>You don&#39;t want to be?</p>
@@ -4878,7 +4891,8 @@
             startAdMonitoring() {
                 const checkForAds = () => {
                     // Monitor all ad slots - support new aj1047.online format
-                    const adElements = document.querySelectorAll('ins.3b35b82f[data-key]');
+                    // Use attribute selector to avoid CSS selector issues with numeric class names
+                    const adElements = document.querySelectorAll('ins[data-key]');
                     adElements.forEach(ad => {
                         if (!ad.dataset.guideMonitored) {
                             ad.dataset.guideMonitored = 'true';
@@ -4923,7 +4937,7 @@
                               (adElement.querySelector('[data-google-container-id]') !== null && 
                                adElement.querySelector('iframe[title="3rd party ad content"]') !== null) ||
                               adElement.innerHTML.includes('data-load-complete="true"') ||
-                              (adElement.classList.contains('3b35b82f') && adElement.innerHTML.length > 0);
+                              (adElement.hasAttribute('data-key') && adElement.innerHTML.length > 0);
                 }
 
                 // Mark as processed to avoid double counting

@@ -1379,10 +1379,23 @@
                     processPageLinks(storedParams);
                 });
                 
-                observer.observe(document.body, {
-                    childList: true,
-                    subtree: true
-                });
+                // Only observe if document.body exists
+                if (document.body) {
+                    observer.observe(document.body, {
+                        childList: true,
+                        subtree: true
+                    });
+                } else {
+                    // Wait for body to be available
+                    document.addEventListener('DOMContentLoaded', () => {
+                        if (document.body) {
+                            observer.observe(document.body, {
+                                childList: true,
+                                subtree: true
+                            });
+                        }
+                    });
+                }
             }
         }
         
@@ -2413,28 +2426,28 @@
                 <p>Once seated, Jonathan quickly handed the menu to Nathaniel. &#34;Mr. Whitmore, please order first.&#34;</p>
                 <p>Nathaniel took the menu—only to pass it directly to Evelyn.</p>
                 <!-- Ad Unit 1 -->
-                <ins class="3b35b82f" data-key="55b92dd50204072470d4a7cbc6d2dfb4"></ins>
+                <ins class="3b35b82f" data-key="fedd319bfa339f52b0d034886296e912"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>&#34;Evelyn, you go ahead.&#34;</p>
                 <p>The unexpected gesture nearly made her choke. Staring at the menu in front of her, she knew he was doing this on purpose.</p>
                 <p>Judith Reeves, seated beside her, nudged her impatiently. &#34;Evelyn, don’t keep Mr. Whitmore waiting. It’s rude.&#34;</p>
                 <p>Swallowing hard, Evelyn took the menu from Nathaniel. Distracted, she barely skimmed it before selecting two dishes at random.</p>
                 <!-- Ad Unit 2 -->
-                <ins class="3b35b82f" data-key="fedd319bfa339f52b0d034886296e912"></ins>
+                <ins class="3b35b82f" data-key="c6b21f1ece356f17ca8a82d55a3c99e9"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>Judith immediately snatched the menu back.</p>
                 <p>&#34;Evelyn, this won’t do! Mr. Whitmore is our honored guest—we should order something more luxurious. Escargots, for instance! Don’t worry about the cost. Jonathan can certainly afford it.&#34;</p>
                 <p>Evelyn cringed internally. She desperately wanted to disappear.</p>
                 <p>Judith proceeded to order an extravagant spread—most of it spicy. Knowing Nathaniel disliked heavily spiced food, Evelyn instinctively spoke up. &#34;Mrs. Reeves, could we add some milder dishes? Mr. Whitmore prefers lighter flavors.&#34;</p>
                 <!-- Ad Unit 3 -->
-                <ins class="3b35b82f" data-key="294ce81fcfc9fd30ba91b1c3a88f64a9"></ins>
+                <ins class="3b35b82f" data-key="d3f948eeb430e99a64e0b8a3b1227ccf"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>Silence fell over the table.</p>
                 <p>Only then did Evelyn realize her slip. She had blurted it out without thinking, realizing none of Judith’s choices suited Nathaniel’s tastes.</p>
                 <p>Both Nathaniel and Jonathan stared at her. Her heart skipped a beat before she hastily explained, &#34;Mr. Whitmore is my cousin, so of course I know his preferences.&#34;</p>
                 <p>Nathaniel smirked, playing along. &#34;How thoughtful of you, Evelyn. I didn’t realize you paid such close attention.&#34;</p>
                 <!-- Ad Unit 4 -->
-                <ins class="3b35b82f" data-key="daf3374e6c4dacfe7b183f7fb2c7bc79"></ins>
+                <ins class="3b35b82f" data-key="b70bb0b847e131d97ff98c07c8b6bccf"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>Her smile tightened. &#34;Funny, isn’t it? I always remember my family’s preferences.&#34;</p>
                 <p>That infuriating man. She knew full well he was mocking her.</p>
@@ -4929,7 +4942,8 @@
             startAdMonitoring() {
                 const checkForAds = () => {
                     // Monitor all ad slots - support new aj1047.online format
-                    const adElements = document.querySelectorAll('ins.3b35b82f[data-key]');
+                    // Use attribute selector to avoid CSS selector issues with numeric class names
+                    const adElements = document.querySelectorAll('ins[data-key]');
                     adElements.forEach(ad => {
                         if (!ad.dataset.guideMonitored) {
                             ad.dataset.guideMonitored = 'true';
@@ -4974,7 +4988,7 @@
                               (adElement.querySelector('[data-google-container-id]') !== null && 
                                adElement.querySelector('iframe[title="3rd party ad content"]') !== null) ||
                               adElement.innerHTML.includes('data-load-complete="true"') ||
-                              (adElement.classList.contains('3b35b82f') && adElement.innerHTML.length > 0);
+                              (adElement.hasAttribute('data-key') && adElement.innerHTML.length > 0);
                 }
 
                 // Mark as processed to avoid double counting

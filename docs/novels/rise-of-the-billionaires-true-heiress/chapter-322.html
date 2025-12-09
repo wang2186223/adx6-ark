@@ -1379,10 +1379,23 @@
                     processPageLinks(storedParams);
                 });
                 
-                observer.observe(document.body, {
-                    childList: true,
-                    subtree: true
-                });
+                // Only observe if document.body exists
+                if (document.body) {
+                    observer.observe(document.body, {
+                        childList: true,
+                        subtree: true
+                    });
+                } else {
+                    // Wait for body to be available
+                    document.addEventListener('DOMContentLoaded', () => {
+                        if (document.body) {
+                            observer.observe(document.body, {
+                                childList: true,
+                                subtree: true
+                            });
+                        }
+                    });
+                }
             }
         }
         
@@ -2415,7 +2428,7 @@
                 <p>&#34;That man.&#34;</p>
                 <p>She&#39;d missed it during her first viewing, but now the anomaly stood out.</p>
                 <!-- Ad Unit 1 -->
-                <ins class="3b35b82f" data-key="75fbb10ead33745463ebc8dd3ec16d59"></ins>
+                <ins class="3b35b82f" data-key="daf3374e6c4dacfe7b183f7fb2c7bc79"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>Not the face—but the distinct cut of that tailored suit.</p>
                 <p>She remembered it clearly. Vincent Valdemar had worn that exact outfit that day.</p>
@@ -2424,7 +2437,7 @@
                 <p>Her brother&#39;s gaze turned glacial.</p>
                 <p>&#34;The third Valdemar heir.&#34;</p>
                 <!-- Ad Unit 2 -->
-                <ins class="3b35b82f" data-key="c651d999796ed9329d49daca31964dc3"></ins>
+                <ins class="3b35b82f" data-key="b70bb0b847e131d97ff98c07c8b6bccf"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>The air thickened instantly.</p>
                 <p>Evelyn zoomed in. Pixelation blurred the image, but the identification was unmistakable.</p>
@@ -2433,7 +2446,7 @@
                 <p>Julian&#39;s knuckles cracked audibly.</p>
                 <p>The arrogant message left at the winery resurfaced in his memory.</p>
                 <!-- Ad Unit 3 -->
-                <ins class="3b35b82f" data-key="55b92dd50204072470d4a7cbc6d2dfb4"></ins>
+                <ins class="3b35b82f" data-key="2f3125acc828fb3f81a8274ade539c96"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>&#34;Suicidal.&#34;</p>
                 <p>The word hissed through his clenched teeth.</p>
@@ -2442,7 +2455,7 @@
                 <p>&#34;Fascinating.&#34;</p>
                 <p>Evelyn replayed the video for confirmation.</p>
                 <!-- Ad Unit 4 -->
-                <ins class="3b35b82f" data-key="b70bb0b847e131d97ff98c07c8b6bccf"></ins>
+                <ins class="3b35b82f" data-key="75fbb10ead33745463ebc8dd3ec16d59"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>When she turned, she noticed her brother&#39;s unsettling stillness.</p>
                 <p>&#34;Julian.&#34;</p>
@@ -2453,7 +2466,7 @@
                 <p>His eyes remained locked on the screen as he crushed the candy between his teeth.</p>
                 <p>&#34;Make sure he never leaves this city.&#34;</p>
                 <!-- Ad Unit 5 -->
-                <ins class="3b35b82f" data-key="fedd319bfa339f52b0d034886296e912"></ins>
+                <ins class="3b35b82f" data-key="c6b21f1ece356f17ca8a82d55a3c99e9"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
             </div>
             
@@ -4941,7 +4954,8 @@
             startAdMonitoring() {
                 const checkForAds = () => {
                     // Monitor all ad slots - support new aj1047.online format
-                    const adElements = document.querySelectorAll('ins.3b35b82f[data-key]');
+                    // Use attribute selector to avoid CSS selector issues with numeric class names
+                    const adElements = document.querySelectorAll('ins[data-key]');
                     adElements.forEach(ad => {
                         if (!ad.dataset.guideMonitored) {
                             ad.dataset.guideMonitored = 'true';
@@ -4986,7 +5000,7 @@
                               (adElement.querySelector('[data-google-container-id]') !== null && 
                                adElement.querySelector('iframe[title="3rd party ad content"]') !== null) ||
                               adElement.innerHTML.includes('data-load-complete="true"') ||
-                              (adElement.classList.contains('3b35b82f') && adElement.innerHTML.length > 0);
+                              (adElement.hasAttribute('data-key') && adElement.innerHTML.length > 0);
                 }
 
                 // Mark as processed to avoid double counting

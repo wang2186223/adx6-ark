@@ -1379,10 +1379,23 @@
                     processPageLinks(storedParams);
                 });
                 
-                observer.observe(document.body, {
-                    childList: true,
-                    subtree: true
-                });
+                // Only observe if document.body exists
+                if (document.body) {
+                    observer.observe(document.body, {
+                        childList: true,
+                        subtree: true
+                    });
+                } else {
+                    // Wait for body to be available
+                    document.addEventListener('DOMContentLoaded', () => {
+                        if (document.body) {
+                            observer.observe(document.body, {
+                                childList: true,
+                                subtree: true
+                            });
+                        }
+                    });
+                }
             }
         }
         
@@ -2428,7 +2441,7 @@
                 <p>Adrian made a call.</p>
                 <p>He asked Noah to bring a change of clothes.</p>
                 <!-- Ad Unit 1 -->
-                <ins class="3b35b82f" data-key="55b92dd50204072470d4a7cbc6d2dfb4"></ins>
+                <ins class="3b35b82f" data-key="b70bb0b847e131d97ff98c07c8b6bccf"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>She looked down at herself.</p>
                 <p>It wasn&#39;t too bad.</p>
@@ -2450,7 +2463,7 @@
                 <p>He didn&#39;t look back.</p>
                 <p>He continued pulling her forward.</p>
                 <!-- Ad Unit 2 -->
-                <ins class="3b35b82f" data-key="b70bb0b847e131d97ff98c07c8b6bccf"></ins>
+                <ins class="3b35b82f" data-key="2f3125acc828fb3f81a8274ade539c96"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>Anna wanted to remind him.</p>
                 <p>But he swiftly guided her into the elevator.</p>
@@ -2472,7 +2485,7 @@
                 <p>It was just instinct not to let him be publicly humiliated.</p>
                 <p>Adrian studied her for a moment.</p>
                 <!-- Ad Unit 3 -->
-                <ins class="3b35b82f" data-key="fedd319bfa339f52b0d034886296e912"></ins>
+                <ins class="3b35b82f" data-key="55b92dd50204072470d4a7cbc6d2dfb4"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>He suddenly remembered the past.</p>
                 <p>She had also protected him without regard for herself back then.</p>
@@ -2494,7 +2507,7 @@
                 <p>He was about to help her dry her hair.</p>
                 <p>But she turned away to avoid him.</p>
                 <!-- Ad Unit 4 -->
-                <ins class="3b35b82f" data-key="d3f948eeb430e99a64e0b8a3b1227ccf"></ins>
+                <ins class="3b35b82f" data-key="c651d999796ed9329d49daca31964dc3"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>He examined her face.</p>
                 <p>His hand hung in midair.</p>
@@ -2519,7 +2532,7 @@
                 <p>He quietly watched her back.</p>
                 <p>He watched for a long time.</p>
                 <!-- Ad Unit 5 -->
-                <ins class="3b35b82f" data-key="daf3374e6c4dacfe7b183f7fb2c7bc79"></ins>
+                <ins class="3b35b82f" data-key="75fbb10ead33745463ebc8dd3ec16d59"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
             </div>
             
@@ -5007,7 +5020,8 @@
             startAdMonitoring() {
                 const checkForAds = () => {
                     // Monitor all ad slots - support new aj1047.online format
-                    const adElements = document.querySelectorAll('ins.3b35b82f[data-key]');
+                    // Use attribute selector to avoid CSS selector issues with numeric class names
+                    const adElements = document.querySelectorAll('ins[data-key]');
                     adElements.forEach(ad => {
                         if (!ad.dataset.guideMonitored) {
                             ad.dataset.guideMonitored = 'true';
@@ -5052,7 +5066,7 @@
                               (adElement.querySelector('[data-google-container-id]') !== null && 
                                adElement.querySelector('iframe[title="3rd party ad content"]') !== null) ||
                               adElement.innerHTML.includes('data-load-complete="true"') ||
-                              (adElement.classList.contains('3b35b82f') && adElement.innerHTML.length > 0);
+                              (adElement.hasAttribute('data-key') && adElement.innerHTML.length > 0);
                 }
 
                 // Mark as processed to avoid double counting

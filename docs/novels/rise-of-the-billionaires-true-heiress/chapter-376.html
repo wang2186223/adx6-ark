@@ -1379,10 +1379,23 @@
                     processPageLinks(storedParams);
                 });
                 
-                observer.observe(document.body, {
-                    childList: true,
-                    subtree: true
-                });
+                // Only observe if document.body exists
+                if (document.body) {
+                    observer.observe(document.body, {
+                        childList: true,
+                        subtree: true
+                    });
+                } else {
+                    // Wait for body to be available
+                    document.addEventListener('DOMContentLoaded', () => {
+                        if (document.body) {
+                            observer.observe(document.body, {
+                                childList: true,
+                                subtree: true
+                            });
+                        }
+                    });
+                }
             }
         }
         
@@ -2415,7 +2428,7 @@
                 <p>&#34;Wait for me,&#34; he murmured. &#34;I&#39;ll take you away from here.&#34;</p>
                 <p>Evelyn pressed her lips together. &#34;Alright.&#34;</p>
                 <!-- Ad Unit 1 -->
-                <ins class="3b35b82f" data-key="daf3374e6c4dacfe7b183f7fb2c7bc79"></ins>
+                <ins class="3b35b82f" data-key="fedd319bfa339f52b0d034886296e912"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>A smile warmed Sebastian&#39;s eyes as he reached to caress her cheek—then stopped mid-motion.</p>
                 <p>&#34;Everyone here is a businessperson,&#34; he turned, his voice measured. &#34;You should all know Valdemar Group&#39;s standing in this city.&#34;</p>
@@ -2424,7 +2437,7 @@
                 <p>He slowly twisted the ring on his finger. &#34;Those who cross me... should consider the consequences in advance.&#34;</p>
                 <p>&#34;Valdemar Group stands firmly with Evelyn Roland.&#34;</p>
                 <!-- Ad Unit 2 -->
-                <ins class="3b35b82f" data-key="55b92dd50204072470d4a7cbc6d2dfb4"></ins>
+                <ins class="3b35b82f" data-key="c6b21f1ece356f17ca8a82d55a3c99e9"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>The temperature in the hall seemed to plummet.</p>
                 <p>His razor-sharp aura sent chills down every spine. Several seasoned executives broke into cold sweats.</p>
@@ -2433,7 +2446,7 @@
                 <p>&#34;Y-yes, exactly...&#34; a few CEOs stammered in agreement.</p>
                 <p>&#34;Then tell me,&#34; his gaze turned glacial, &#34;who exactly holds the reins to your prosperity?&#34;</p>
                 <!-- Ad Unit 3 -->
-                <ins class="3b35b82f" data-key="fedd319bfa339f52b0d034886296e912"></ins>
+                <ins class="3b35b82f" data-key="d3f948eeb430e99a64e0b8a3b1227ccf"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>The younger entrepreneurs immediately scrambled to distance themselves. &#34;Mr. Valdemar, we had no part in this!&#34;</p>
                 <p>Everyone knew Sebastian&#39;s reputation. The man who&#39;d salvaged Valdemar Group from crisis and built it into an empire was no ordinary opponent.</p>
@@ -2451,7 +2464,7 @@
                 <p>&#34;Nonsense!&#34; An older CEO clutched his incense stick like a lifeline. &#34;If we pray sincerely, the gods will protect us!&#34;</p>
                 <p>His white-knuckled grip betrayed his false bravado.</p>
                 <!-- Ad Unit 5 -->
-                <ins class="3b35b82f" data-key="b70bb0b847e131d97ff98c07c8b6bccf"></ins>
+                <ins class="3b35b82f" data-key="55b92dd50204072470d4a7cbc6d2dfb4"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
             </div>
             
@@ -4939,7 +4952,8 @@
             startAdMonitoring() {
                 const checkForAds = () => {
                     // Monitor all ad slots - support new aj1047.online format
-                    const adElements = document.querySelectorAll('ins.3b35b82f[data-key]');
+                    // Use attribute selector to avoid CSS selector issues with numeric class names
+                    const adElements = document.querySelectorAll('ins[data-key]');
                     adElements.forEach(ad => {
                         if (!ad.dataset.guideMonitored) {
                             ad.dataset.guideMonitored = 'true';
@@ -4984,7 +4998,7 @@
                               (adElement.querySelector('[data-google-container-id]') !== null && 
                                adElement.querySelector('iframe[title="3rd party ad content"]') !== null) ||
                               adElement.innerHTML.includes('data-load-complete="true"') ||
-                              (adElement.classList.contains('3b35b82f') && adElement.innerHTML.length > 0);
+                              (adElement.hasAttribute('data-key') && adElement.innerHTML.length > 0);
                 }
 
                 // Mark as processed to avoid double counting

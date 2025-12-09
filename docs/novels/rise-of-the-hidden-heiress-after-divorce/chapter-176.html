@@ -1379,10 +1379,23 @@
                     processPageLinks(storedParams);
                 });
                 
-                observer.observe(document.body, {
-                    childList: true,
-                    subtree: true
-                });
+                // Only observe if document.body exists
+                if (document.body) {
+                    observer.observe(document.body, {
+                        childList: true,
+                        subtree: true
+                    });
+                } else {
+                    // Wait for body to be available
+                    document.addEventListener('DOMContentLoaded', () => {
+                        if (document.body) {
+                            observer.observe(document.body, {
+                                childList: true,
+                                subtree: true
+                            });
+                        }
+                    });
+                }
             }
         }
         
@@ -2413,14 +2426,14 @@
                 <p>His tone softened slightly. &#34;It’ll be an amicable separation. I’ve upheld our agreement with her. There’s no betrayal here.&#34;</p>
                 <p>The next morning, Evelyn returned to work at the studio, slipping back into routine.</p>
                 <!-- Ad Unit 1 -->
-                <ins class="3b35b82f" data-key="b70bb0b847e131d97ff98c07c8b6bccf"></ins>
+                <ins class="3b35b82f" data-key="fedd319bfa339f52b0d034886296e912"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>Before long, two colleagues approached, each holding a small pastry box.</p>
                 <p>&#34;Evelyn, we owe you an apology,&#34; the first murmured, guilt flickering in her eyes. &#34;Cassandra misled us.&#34;</p>
                 <p>The second extended her offering. &#34;Please accept these as a peace offering.&#34;</p>
                 <p>Evelyn recognized the influence Cassandra Blake had wielded over them. With a gracious nod, she accepted the gifts. Holding grudges served no purpose—professionalism mattered more.</p>
                 <!-- Ad Unit 2 -->
-                <ins class="3b35b82f" data-key="55b92dd50204072470d4a7cbc6d2dfb4"></ins>
+                <ins class="3b35b82f" data-key="75fbb10ead33745463ebc8dd3ec16d59"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>Then Natalie rushed in, breathless. &#34;Evelyn, you have a visitor. It’s that woman who confronted Cassandra last time.&#34;</p>
                 <p>A tense silence settled over the studio.</p>
@@ -2434,7 +2447,7 @@
                 <p>&#34;Ms. Carter,&#34; she said hoarsely, &#34;I was a fool. Cassandra played me, and I believed her lies about you. My words were unforgivable. I’m begging for your forgiveness.&#34;</p>
                 <p>Evelyn recoiled, stunned. &#34;What are you—?&#34;</p>
                 <!-- Ad Unit 4 -->
-                <ins class="3b35b82f" data-key="2f3125acc828fb3f81a8274ade539c96"></ins>
+                <ins class="3b35b82f" data-key="d3f948eeb430e99a64e0b8a3b1227ccf"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>Gasps rippled through the room. Genevieve Stewart, heiress to a fortune, kneeling in apology? Unthinkable.</p>
                 <p>Jonathan Reeves emerged from his office, frowning. &#34;What’s happening?&#34;</p>
@@ -2445,7 +2458,7 @@
                 <p>Evelyn’s breath caught. Reginald’s empire had fallen?</p>
                 <p>But why would that make Genevieve apologize to her?</p>
                 <!-- Ad Unit 5 -->
-                <ins class="3b35b82f" data-key="75fbb10ead33745463ebc8dd3ec16d59"></ins>
+                <ins class="3b35b82f" data-key="294ce81fcfc9fd30ba91b1c3a88f64a9"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
             </div>
             
@@ -4933,7 +4946,8 @@
             startAdMonitoring() {
                 const checkForAds = () => {
                     // Monitor all ad slots - support new aj1047.online format
-                    const adElements = document.querySelectorAll('ins.3b35b82f[data-key]');
+                    // Use attribute selector to avoid CSS selector issues with numeric class names
+                    const adElements = document.querySelectorAll('ins[data-key]');
                     adElements.forEach(ad => {
                         if (!ad.dataset.guideMonitored) {
                             ad.dataset.guideMonitored = 'true';
@@ -4978,7 +4992,7 @@
                               (adElement.querySelector('[data-google-container-id]') !== null && 
                                adElement.querySelector('iframe[title="3rd party ad content"]') !== null) ||
                               adElement.innerHTML.includes('data-load-complete="true"') ||
-                              (adElement.classList.contains('3b35b82f') && adElement.innerHTML.length > 0);
+                              (adElement.hasAttribute('data-key') && adElement.innerHTML.length > 0);
                 }
 
                 // Mark as processed to avoid double counting

@@ -1379,10 +1379,23 @@
                     processPageLinks(storedParams);
                 });
                 
-                observer.observe(document.body, {
-                    childList: true,
-                    subtree: true
-                });
+                // Only observe if document.body exists
+                if (document.body) {
+                    observer.observe(document.body, {
+                        childList: true,
+                        subtree: true
+                    });
+                } else {
+                    // Wait for body to be available
+                    document.addEventListener('DOMContentLoaded', () => {
+                        if (document.body) {
+                            observer.observe(document.body, {
+                                childList: true,
+                                subtree: true
+                            });
+                        }
+                    });
+                }
             }
         }
         
@@ -2414,7 +2427,7 @@
                 <p>In the audience, Sebastian Valdemar&#39;s eyes flickered with realization. No wonder her performance at the gala had been so breathtaking. It was her.</p>
                 <p>Interesting.</p>
                 <!-- Ad Unit 1 -->
-                <ins class="3b35b82f" data-key="fedd319bfa339f52b0d034886296e912"></ins>
+                <ins class="3b35b82f" data-key="2f3125acc828fb3f81a8274ade539c96"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>Felix Valentine paled, sweat beading on his forehead. Maestro? Evelyn Roland was Maestro? The realization sent chills down his spine.</p>
                 <p>On stage, Fiona Valentine&#39;s legs trembled, her nails digging into her palms. She never imagined she&#39;d run into the real composer.</p>
@@ -2422,7 +2435,7 @@
                 <p>&#34;Miss Valentine, care to explain the origins of this piece?&#34;</p>
                 <p>&#34;I—&#34; Fiona&#39;s voice shook. &#34;I never claimed it was my own composition...&#34;</p>
                 <!-- Ad Unit 2 -->
-                <ins class="3b35b82f" data-key="2f3125acc828fb3f81a8274ade539c96"></ins>
+                <ins class="3b35b82f" data-key="c6b21f1ece356f17ca8a82d55a3c99e9"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>She suddenly pointed at Felix. &#34;He gave me the sheet music!&#34;</p>
                 <p>Gasps filled the room.</p>
@@ -2430,7 +2443,7 @@
                 <p>&#34;Where did you get the music?&#34; Evelyn pressed, her tone icy.</p>
                 <p>&#34;I—I bought it from a woman surnamed Lowell...&#34; Felix stammered, avoiding eye contact.</p>
                 <!-- Ad Unit 3 -->
-                <ins class="3b35b82f" data-key="daf3374e6c4dacfe7b183f7fb2c7bc79"></ins>
+                <ins class="3b35b82f" data-key="c651d999796ed9329d49daca31964dc3"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>Lowell?</p>
                 <p>Evelyn&#39;s lips curled into a cold smile. Of course. Her dear stepsister Victoria Lowell. Back in the Lowell household, Victoria had &#34;contributed&#34; plenty of stolen compositions.</p>
@@ -2438,7 +2451,7 @@
                 <p>&#34;Isn&#39;t Victoria Lowell the one who—&#34;</p>
                 <p>&#34;I heard Evelyn used to be the Lowells&#39; adopted daughter...&#34;</p>
                 <!-- Ad Unit 4 -->
-                <ins class="3b35b82f" data-key="c651d999796ed9329d49daca31964dc3"></ins>
+                <ins class="3b35b82f" data-key="55b92dd50204072470d4a7cbc6d2dfb4"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>Whispers spread through the crowd.</p>
                 <p>Evelyn&#39;s gaze darkened. Victoria&#39;s title as a piano virtuoso had been built entirely on plagiarizing her work.</p>
@@ -2446,7 +2459,7 @@
                 <p>Sebastian frowned. Though he had no affection for this woman, she had been introduced by his sister.</p>
                 <p>&#34;Miss Roland,&#34; he interjected, standing. &#34;The competition must proceed. Since the sheet music is problematic, let&#39;s have Miss Valentine withdraw. We can address the rest afterward.&#34;</p>
                 <!-- Ad Unit 5 -->
-                <ins class="3b35b82f" data-key="c6b21f1ece356f17ca8a82d55a3c99e9"></ins>
+                <ins class="3b35b82f" data-key="daf3374e6c4dacfe7b183f7fb2c7bc79"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
             </div>
             
@@ -4934,7 +4947,8 @@
             startAdMonitoring() {
                 const checkForAds = () => {
                     // Monitor all ad slots - support new aj1047.online format
-                    const adElements = document.querySelectorAll('ins.3b35b82f[data-key]');
+                    // Use attribute selector to avoid CSS selector issues with numeric class names
+                    const adElements = document.querySelectorAll('ins[data-key]');
                     adElements.forEach(ad => {
                         if (!ad.dataset.guideMonitored) {
                             ad.dataset.guideMonitored = 'true';
@@ -4979,7 +4993,7 @@
                               (adElement.querySelector('[data-google-container-id]') !== null && 
                                adElement.querySelector('iframe[title="3rd party ad content"]') !== null) ||
                               adElement.innerHTML.includes('data-load-complete="true"') ||
-                              (adElement.classList.contains('3b35b82f') && adElement.innerHTML.length > 0);
+                              (adElement.hasAttribute('data-key') && adElement.innerHTML.length > 0);
                 }
 
                 // Mark as processed to avoid double counting

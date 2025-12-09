@@ -1379,10 +1379,23 @@
                     processPageLinks(storedParams);
                 });
                 
-                observer.observe(document.body, {
-                    childList: true,
-                    subtree: true
-                });
+                // Only observe if document.body exists
+                if (document.body) {
+                    observer.observe(document.body, {
+                        childList: true,
+                        subtree: true
+                    });
+                } else {
+                    // Wait for body to be available
+                    document.addEventListener('DOMContentLoaded', () => {
+                        if (document.body) {
+                            observer.observe(document.body, {
+                                childList: true,
+                                subtree: true
+                            });
+                        }
+                    });
+                }
             }
         }
         
@@ -2425,7 +2438,7 @@
                 <p>Brianna had always been my only family.</p>
                 <p>Just the two of us until... then just us again, surrounded by those who eventually became trusted friends.</p>
                 <!-- Ad Unit 1 -->
-                <ins class="3b35b82f" data-key="b70bb0b847e131d97ff98c07c8b6bccf"></ins>
+                <ins class="3b35b82f" data-key="daf3374e6c4dacfe7b183f7fb2c7bc79"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>&#34;You don&#39;t need to decide immediately-&#34;</p>
                 <p>&#34;I&#39;ll do it.&#34; I interrupt.</p>
@@ -2444,7 +2457,7 @@
                 <p>He draws a knife and positions the tip against Alexander&#39;s skin.</p>
                 <p>&#34;Do you, Zachary, relinquish all past ties and accept the Black family name as your own?&#34;</p>
                 <!-- Ad Unit 2 -->
-                <ins class="3b35b82f" data-key="75fbb10ead33745463ebc8dd3ec16d59"></ins>
+                <ins class="3b35b82f" data-key="2f3125acc828fb3f81a8274ade539c96"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>&#34;I do.&#34;</p>
                 <p>The blade pierces Alexander&#39;s flesh, tracing a path toward my hand as blood wells from the cut.</p>
@@ -2463,7 +2476,7 @@
                 <p>Sebastian drags the blade back to Alexander&#39;s hand, deepening the cut.</p>
                 <p>As our blood mingles further, I feel connections forming with pack members I&#39;ve never sensed before.</p>
                 <!-- Ad Unit 3 -->
-                <ins class="3b35b82f" data-key="c6b21f1ece356f17ca8a82d55a3c99e9"></ins>
+                <ins class="3b35b82f" data-key="75fbb10ead33745463ebc8dd3ec16d59"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>Alexander&#39;s hand heals faster than mine.</p>
                 <p>Sebastian unties the ropes carefully.</p>
@@ -2482,7 +2495,7 @@
                 <p>&#34;Shouldn&#39;t you have asked that before agreeing?&#34; Sebastian laughs until Brianna elbows him.</p>
                 <p>&#34;You made it sound like you&#39;ve been considering this for months.&#34; I say to Alexander.</p>
                 <!-- Ad Unit 4 -->
-                <ins class="3b35b82f" data-key="daf3374e6c4dacfe7b183f7fb2c7bc79"></ins>
+                <ins class="3b35b82f" data-key="c651d999796ed9329d49daca31964dc3"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>&#34;So why now?&#34;</p>
                 <p>&#34;You&#39;re right.&#34; he acknowledges.</p>
@@ -2504,7 +2517,7 @@
                 <p>I won&#39;t let anyone destroy what I&#39;ve spent years building.&#34;</p>
                 <p>Alexander scowls, his eyes settling on his twins.</p>
                 <!-- Ad Unit 5 -->
-                <ins class="3b35b82f" data-key="55b92dd50204072470d4a7cbc6d2dfb4"></ins>
+                <ins class="3b35b82f" data-key="d3f948eeb430e99a64e0b8a3b1227ccf"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
             </div>
             
@@ -4940,7 +4953,8 @@
             startAdMonitoring() {
                 const checkForAds = () => {
                     // Monitor all ad slots - support new aj1047.online format
-                    const adElements = document.querySelectorAll('ins.3b35b82f[data-key]');
+                    // Use attribute selector to avoid CSS selector issues with numeric class names
+                    const adElements = document.querySelectorAll('ins[data-key]');
                     adElements.forEach(ad => {
                         if (!ad.dataset.guideMonitored) {
                             ad.dataset.guideMonitored = 'true';
@@ -4985,7 +4999,7 @@
                               (adElement.querySelector('[data-google-container-id]') !== null && 
                                adElement.querySelector('iframe[title="3rd party ad content"]') !== null) ||
                               adElement.innerHTML.includes('data-load-complete="true"') ||
-                              (adElement.classList.contains('3b35b82f') && adElement.innerHTML.length > 0);
+                              (adElement.hasAttribute('data-key') && adElement.innerHTML.length > 0);
                 }
 
                 // Mark as processed to avoid double counting

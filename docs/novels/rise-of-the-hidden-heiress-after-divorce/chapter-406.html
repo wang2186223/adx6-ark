@@ -1379,10 +1379,23 @@
                     processPageLinks(storedParams);
                 });
                 
-                observer.observe(document.body, {
-                    childList: true,
-                    subtree: true
-                });
+                // Only observe if document.body exists
+                if (document.body) {
+                    observer.observe(document.body, {
+                        childList: true,
+                        subtree: true
+                    });
+                } else {
+                    // Wait for body to be available
+                    document.addEventListener('DOMContentLoaded', () => {
+                        if (document.body) {
+                            observer.observe(document.body, {
+                                childList: true,
+                                subtree: true
+                            });
+                        }
+                    });
+                }
             }
         }
         
@@ -2415,7 +2428,7 @@
                 <p>Meanwhile, Evelyn hailed a cab and headed back to campus.</p>
                 <p>Her phone buzzed mid-ride. Andrew Montgomery&#39;s name flashed on the screen.</p>
                 <!-- Ad Unit 1 -->
-                <ins class="3b35b82f" data-key="b70bb0b847e131d97ff98c07c8b6bccf"></ins>
+                <ins class="3b35b82f" data-key="55b92dd50204072470d4a7cbc6d2dfb4"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>&#34;Evelyn, there&#39;s been a major update in Jonathan Reeves&#39; case. The fraud charges against him have been confirmed.&#34;</p>
                 <p>His voice was steady. &#34;He&#39;s looking at several years in prison. As for Judith Reeves, she&#39;s been sentenced to a year for assault.&#34;</p>
@@ -2424,7 +2437,7 @@
                 <p>Andrew hesitated. &#34;There wasn&#39;t enough evidence to pursue it. Nathaniel isn&#39;t implicated.&#34;</p>
                 <p>&#34;Of course not,&#34; Evelyn murmured. She had expected nothing less.</p>
                 <!-- Ad Unit 2 -->
-                <ins class="3b35b82f" data-key="daf3374e6c4dacfe7b183f7fb2c7bc79"></ins>
+                <ins class="3b35b82f" data-key="c651d999796ed9329d49daca31964dc3"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>&#34;Andrew, thank you for your help. I owe you coffee later. But right now, I need to rest before my afternoon lectures.&#34; She stifled a yawn.</p>
                 <p>&#34;Take care of yourself, Evelyn. Don&#39;t push too hard,&#34; he replied before hanging up.</p>
@@ -2442,7 +2455,7 @@
                 <p>A beat of silence. Then Julian sighed. &#34;You found out, huh?&#34;</p>
                 <p>Of course he had. As a lawyer, Andrew was bound to uncover the truth eventually.</p>
                 <!-- Ad Unit 4 -->
-                <ins class="3b35b82f" data-key="75fbb10ead33745463ebc8dd3ec16d59"></ins>
+                <ins class="3b35b82f" data-key="294ce81fcfc9fd30ba91b1c3a88f64a9"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>Andrew&#39;s frown deepened. &#34;You knew. Why didn&#39;t you tell us?&#34;</p>
                 <p>&#34;I found out by accident, and Evelyn begged me to keep it quiet. What was I supposed to do?&#34;</p>
@@ -2455,7 +2468,7 @@
                 <p>Andrew clenched his fists.</p>
                 <p>Nathaniel Whitmore wasn&#39;t going to get away with this.</p>
                 <!-- Ad Unit 5 -->
-                <ins class="3b35b82f" data-key="fedd319bfa339f52b0d034886296e912"></ins>
+                <ins class="3b35b82f" data-key="75fbb10ead33745463ebc8dd3ec16d59"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
             </div>
             
@@ -4943,7 +4956,8 @@
             startAdMonitoring() {
                 const checkForAds = () => {
                     // Monitor all ad slots - support new aj1047.online format
-                    const adElements = document.querySelectorAll('ins.3b35b82f[data-key]');
+                    // Use attribute selector to avoid CSS selector issues with numeric class names
+                    const adElements = document.querySelectorAll('ins[data-key]');
                     adElements.forEach(ad => {
                         if (!ad.dataset.guideMonitored) {
                             ad.dataset.guideMonitored = 'true';
@@ -4988,7 +5002,7 @@
                               (adElement.querySelector('[data-google-container-id]') !== null && 
                                adElement.querySelector('iframe[title="3rd party ad content"]') !== null) ||
                               adElement.innerHTML.includes('data-load-complete="true"') ||
-                              (adElement.classList.contains('3b35b82f') && adElement.innerHTML.length > 0);
+                              (adElement.hasAttribute('data-key') && adElement.innerHTML.length > 0);
                 }
 
                 // Mark as processed to avoid double counting

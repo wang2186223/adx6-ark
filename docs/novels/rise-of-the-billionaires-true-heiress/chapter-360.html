@@ -1379,10 +1379,23 @@
                     processPageLinks(storedParams);
                 });
                 
-                observer.observe(document.body, {
-                    childList: true,
-                    subtree: true
-                });
+                // Only observe if document.body exists
+                if (document.body) {
+                    observer.observe(document.body, {
+                        childList: true,
+                        subtree: true
+                    });
+                } else {
+                    // Wait for body to be available
+                    document.addEventListener('DOMContentLoaded', () => {
+                        if (document.body) {
+                            observer.observe(document.body, {
+                                childList: true,
+                                subtree: true
+                            });
+                        }
+                    });
+                }
             }
         }
         
@@ -2413,14 +2426,14 @@
                 <p>The sharp ring of the phone shattered the silence.</p>
                 <p>&#34;Olivia?&#34;</p>
                 <!-- Ad Unit 1 -->
-                <ins class="3b35b82f" data-key="c651d999796ed9329d49daca31964dc3"></ins>
+                <ins class="3b35b82f" data-key="55b92dd50204072470d4a7cbc6d2dfb4"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>&#34;Evelyn, is Sebastian at the vineyard?&#34; Olivia Valdemar&#39;s voice trembled with barely concealed anxiety.</p>
                 <p>&#34;Yes. He just fell asleep.&#34;</p>
                 <p>&#34;Oh, thank God he&#39;s with you.&#34; Olivia&#39;s voice suddenly rose. &#34;Wait—asleep? What happened?&#34;</p>
                 <p>Evelyn recounted the events truthfully.</p>
                 <!-- Ad Unit 2 -->
-                <ins class="3b35b82f" data-key="fedd319bfa339f52b0d034886296e912"></ins>
+                <ins class="3b35b82f" data-key="75fbb10ead33745463ebc8dd3ec16d59"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>A heavy sigh traveled through the line.</p>
                 <p>&#34;Today... is the anniversary of my parents&#39; death.&#34;</p>
@@ -2434,7 +2447,7 @@
                 <p>&#34;After that, he became hypersensitive to anything related to cars.&#34;</p>
                 <p>Evelyn&#39;s grip on the phone turned white-knuckled. Now she understood why Sebastian had reacted that way to the cake model.</p>
                 <!-- Ad Unit 4 -->
-                <ins class="3b35b82f" data-key="c6b21f1ece356f17ca8a82d55a3c99e9"></ins>
+                <ins class="3b35b82f" data-key="2f3125acc828fb3f81a8274ade539c96"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>&#34;Olivia, I&#39;m so sorry...&#34;</p>
                 <p>After hanging up, Evelyn&#39;s gaze lingered on the second-floor guest room. What kind of pain was that man carrying?</p>
@@ -2443,7 +2456,7 @@
                 <p>&#34;Just do it.&#34; Evelyn&#39;s voice was soft. &#34;I&#39;ll explain later.&#34;</p>
                 <p>With reluctant steps, Bianca turned away, her heart heavy. But she couldn&#39;t disobey her master&#39;s orders.</p>
                 <!-- Ad Unit 5 -->
-                <ins class="3b35b82f" data-key="55b92dd50204072470d4a7cbc6d2dfb4"></ins>
+                <ins class="3b35b82f" data-key="c6b21f1ece356f17ca8a82d55a3c99e9"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
             </div>
             
@@ -4931,7 +4944,8 @@
             startAdMonitoring() {
                 const checkForAds = () => {
                     // Monitor all ad slots - support new aj1047.online format
-                    const adElements = document.querySelectorAll('ins.3b35b82f[data-key]');
+                    // Use attribute selector to avoid CSS selector issues with numeric class names
+                    const adElements = document.querySelectorAll('ins[data-key]');
                     adElements.forEach(ad => {
                         if (!ad.dataset.guideMonitored) {
                             ad.dataset.guideMonitored = 'true';
@@ -4976,7 +4990,7 @@
                               (adElement.querySelector('[data-google-container-id]') !== null && 
                                adElement.querySelector('iframe[title="3rd party ad content"]') !== null) ||
                               adElement.innerHTML.includes('data-load-complete="true"') ||
-                              (adElement.classList.contains('3b35b82f') && adElement.innerHTML.length > 0);
+                              (adElement.hasAttribute('data-key') && adElement.innerHTML.length > 0);
                 }
 
                 // Mark as processed to avoid double counting

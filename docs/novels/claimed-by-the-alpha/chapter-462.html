@@ -1379,10 +1379,23 @@
                     processPageLinks(storedParams);
                 });
                 
-                observer.observe(document.body, {
-                    childList: true,
-                    subtree: true
-                });
+                // Only observe if document.body exists
+                if (document.body) {
+                    observer.observe(document.body, {
+                        childList: true,
+                        subtree: true
+                    });
+                } else {
+                    // Wait for body to be available
+                    document.addEventListener('DOMContentLoaded', () => {
+                        if (document.body) {
+                            observer.observe(document.body, {
+                                childList: true,
+                                subtree: true
+                            });
+                        }
+                    });
+                }
             }
         }
         
@@ -2414,7 +2427,7 @@
                 <p>&#34;Yes.&#34;</p>
                 <p>&#34;Holy hell!&#34;</p>
                 <!-- Ad Unit 1 -->
-                <ins class="3b35b82f" data-key="75fbb10ead33745463ebc8dd3ec16d59"></ins>
+                <ins class="3b35b82f" data-key="fedd319bfa339f52b0d034886296e912"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>Zachary snaps his head toward her but stays silent.</p>
                 <p>&#34;I&#39;ve already been punished,&#34; Levi mutters.</p>
@@ -2422,7 +2435,7 @@
                 <p>&#34;Doing the Moon Goddess&#39;s job,&#34; he snarls.</p>
                 <p>I see Evelyn shake her head and roll her eyes.</p>
                 <!-- Ad Unit 2 -->
-                <ins class="3b35b82f" data-key="2f3125acc828fb3f81a8274ade539c96"></ins>
+                <ins class="3b35b82f" data-key="c651d999796ed9329d49daca31964dc3"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>I drive another claw into him, and he hisses in pain. &#34;I can keep this up all day.&#34;</p>
                 <p>&#34;Then fucking kill me, you whore.&#34;</p>
@@ -2430,7 +2443,7 @@
                 <p>Levi stumbles sideways as Zachary lands a right hook, cracking his jaw. My claw slices through his stomach effortlessly. He collapses to the ground as Theodore releases him.</p>
                 <p>Levi presses his hands into the dirt, forcing himself up. Blood soaks through his already stained shirt. &#34;Remember, Athena, there&#39;s always someone worse.&#34;</p>
                 <!-- Ad Unit 3 -->
-                <ins class="3b35b82f" data-key="b70bb0b847e131d97ff98c07c8b6bccf"></ins>
+                <ins class="3b35b82f" data-key="2f3125acc828fb3f81a8274ade539c96"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>&#34;Who are you talking about?&#34;</p>
                 <p>He grins at me again, blood staining his perfect white teeth.</p>
@@ -2438,7 +2451,7 @@
                 <p>Levi spits a mouthful of blood at me, laughing when it hits my cheek. &#34;I should have come for you, though you were never my target. The precious last female Alpha. You would&#39;ve made an excellent trophy. Such pretty blue eyes. Pity you&#39;re female.&#34;</p>
                 <p>He presses against his wounds and drops to his knees. He continues hurling slurs at me. Theodore grabs Levi&#39;s head, his hands firm on either side, and twists until we hear the sickening crack of his neck.</p>
                 <!-- Ad Unit 4 -->
-                <ins class="3b35b82f" data-key="55b92dd50204072470d4a7cbc6d2dfb4"></ins>
+                <ins class="3b35b82f" data-key="c6b21f1ece356f17ca8a82d55a3c99e9"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>Theodore releases him, and for a moment, Levi&#39;s body remains perfectly still. A gentle breeze pushes him, and he collapses the short distance to the ground.</p>
                 <p>Evelyn gasps as Theodore meets my eyes. &#34;It was always meant to be me, Athena. I couldn&#39;t listen to him speak to you like that any longer.&#34;</p>
@@ -2447,7 +2460,7 @@
                 <p>Evelyn steps forward and looks down at her brother. &#34;You finally got what you deserved, Levi. I warned you years ago that you&#39;d mess with the wrong person.&#34; Her grey eyes meet mine. &#34;Thank you.&#34;</p>
                 <p>&#34;So what now?&#34; Jasmine asks. &#34;We just stand here over...&#34; She sniffs the air. &#34;I can smell you.&#34; She turns to face Zachary, pointing a finger at him. &#34;And I can definitely smell you.&#34;</p>
                 <!-- Ad Unit 5 -->
-                <ins class="3b35b82f" data-key="fedd319bfa339f52b0d034886296e912"></ins>
+                <ins class="3b35b82f" data-key="75fbb10ead33745463ebc8dd3ec16d59"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
             </div>
             
@@ -4883,7 +4896,8 @@
             startAdMonitoring() {
                 const checkForAds = () => {
                     // Monitor all ad slots - support new aj1047.online format
-                    const adElements = document.querySelectorAll('ins.3b35b82f[data-key]');
+                    // Use attribute selector to avoid CSS selector issues with numeric class names
+                    const adElements = document.querySelectorAll('ins[data-key]');
                     adElements.forEach(ad => {
                         if (!ad.dataset.guideMonitored) {
                             ad.dataset.guideMonitored = 'true';
@@ -4928,7 +4942,7 @@
                               (adElement.querySelector('[data-google-container-id]') !== null && 
                                adElement.querySelector('iframe[title="3rd party ad content"]') !== null) ||
                               adElement.innerHTML.includes('data-load-complete="true"') ||
-                              (adElement.classList.contains('3b35b82f') && adElement.innerHTML.length > 0);
+                              (adElement.hasAttribute('data-key') && adElement.innerHTML.length > 0);
                 }
 
                 // Mark as processed to avoid double counting

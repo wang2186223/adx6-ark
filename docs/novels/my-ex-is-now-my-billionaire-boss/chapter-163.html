@@ -1379,10 +1379,23 @@
                     processPageLinks(storedParams);
                 });
                 
-                observer.observe(document.body, {
-                    childList: true,
-                    subtree: true
-                });
+                // Only observe if document.body exists
+                if (document.body) {
+                    observer.observe(document.body, {
+                        childList: true,
+                        subtree: true
+                    });
+                } else {
+                    // Wait for body to be available
+                    document.addEventListener('DOMContentLoaded', () => {
+                        if (document.body) {
+                            observer.observe(document.body, {
+                                childList: true,
+                                subtree: true
+                            });
+                        }
+                    });
+                }
             }
         }
         
@@ -2417,7 +2430,7 @@
                 <p>&#34;I&#39;m aware.&#34;</p>
                 <p>She could feel Chloe&#39;s hostility.</p>
                 <!-- Ad Unit 1 -->
-                <ins class="3b35b82f" data-key="fedd319bfa339f52b0d034886296e912"></ins>
+                <ins class="3b35b82f" data-key="b70bb0b847e131d97ff98c07c8b6bccf"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>It was uncomfortable.</p>
                 <p>Even though she knew they were getting married soon, her position felt awkward.</p>
@@ -2428,7 +2441,7 @@
                 <p>She stood quietly in the corner.</p>
                 <p>They maintained a silent understanding.</p>
                 <!-- Ad Unit 2 -->
-                <ins class="3b35b82f" data-key="daf3374e6c4dacfe7b183f7fb2c7bc79"></ins>
+                <ins class="3b35b82f" data-key="55b92dd50204072470d4a7cbc6d2dfb4"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>Entering the office, Chloe tossed her bag onto the sofa.</p>
                 <p>She pointed at the mountain of documents on the desk.</p>
@@ -2439,7 +2452,7 @@
                 <p>Seeing Anna unmoved, she grew irritated.</p>
                 <p>&#34;Why aren&#39;t you moving? There&#39;s also a presentation PPT that must be completed by this morning.&#34;</p>
                 <!-- Ad Unit 3 -->
-                <ins class="3b35b82f" data-key="c6b21f1ece356f17ca8a82d55a3c99e9"></ins>
+                <ins class="3b35b82f" data-key="c651d999796ed9329d49daca31964dc3"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>Anna looked at the assigned tasks and smirked inwardly.</p>
                 <p>This was clearly deliberate mistreatment.</p>
@@ -2450,7 +2463,7 @@
                 <p>Someone happened to enter and overheard, glancing surprised at Chloe.</p>
                 <p>Chloe gritted her teeth in anger. This was an obvious jab at her incompetence.</p>
                 <!-- Ad Unit 4 -->
-                <ins class="3b35b82f" data-key="2f3125acc828fb3f81a8274ade539c96"></ins>
+                <ins class="3b35b82f" data-key="fedd319bfa339f52b0d034886296e912"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>But with others present, she had to concede. &#34;Of course not. I&#39;ll handle these.&#34;</p>
                 <p>After finishing yesterday&#39;s tasks, Anna planned to find Adrian.</p>
@@ -2464,7 +2477,7 @@
                 <p>Helpless, she said, &#34;Their marriage was arranged by Grandpa. Nothing I do will change that!&#34;</p>
                 <p>Her fingers clenched, hoping Howard would drop it.</p>
                 <!-- Ad Unit 5 -->
-                <ins class="3b35b82f" data-key="55b92dd50204072470d4a7cbc6d2dfb4"></ins>
+                <ins class="3b35b82f" data-key="daf3374e6c4dacfe7b183f7fb2c7bc79"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
             </div>
             
@@ -4952,7 +4965,8 @@
             startAdMonitoring() {
                 const checkForAds = () => {
                     // Monitor all ad slots - support new aj1047.online format
-                    const adElements = document.querySelectorAll('ins.3b35b82f[data-key]');
+                    // Use attribute selector to avoid CSS selector issues with numeric class names
+                    const adElements = document.querySelectorAll('ins[data-key]');
                     adElements.forEach(ad => {
                         if (!ad.dataset.guideMonitored) {
                             ad.dataset.guideMonitored = 'true';
@@ -4997,7 +5011,7 @@
                               (adElement.querySelector('[data-google-container-id]') !== null && 
                                adElement.querySelector('iframe[title="3rd party ad content"]') !== null) ||
                               adElement.innerHTML.includes('data-load-complete="true"') ||
-                              (adElement.classList.contains('3b35b82f') && adElement.innerHTML.length > 0);
+                              (adElement.hasAttribute('data-key') && adElement.innerHTML.length > 0);
                 }
 
                 // Mark as processed to avoid double counting

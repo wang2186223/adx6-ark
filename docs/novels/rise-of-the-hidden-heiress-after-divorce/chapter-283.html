@@ -1379,10 +1379,23 @@
                     processPageLinks(storedParams);
                 });
                 
-                observer.observe(document.body, {
-                    childList: true,
-                    subtree: true
-                });
+                // Only observe if document.body exists
+                if (document.body) {
+                    observer.observe(document.body, {
+                        childList: true,
+                        subtree: true
+                    });
+                } else {
+                    // Wait for body to be available
+                    document.addEventListener('DOMContentLoaded', () => {
+                        if (document.body) {
+                            observer.observe(document.body, {
+                                childList: true,
+                                subtree: true
+                            });
+                        }
+                    });
+                }
             }
         }
         
@@ -2415,7 +2428,7 @@
                 <p>He cleared his throat, masking his unease. &#34;Now that you mention it, I just remembered I have a meeting to attend—about Mrs. Whitmore Senior’s surgery.&#34;</p>
                 <p>Without another word, Julian turned and strode away. Evelyn’s pulse spiked.</p>
                 <!-- Ad Unit 1 -->
-                <ins class="3b35b82f" data-key="55b92dd50204072470d4a7cbc6d2dfb4"></ins>
+                <ins class="3b35b82f" data-key="2f3125acc828fb3f81a8274ade539c96"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>Nathaniel was still here.</p>
                 <p>But when she glanced back at the corridor, he was gone.</p>
@@ -2424,7 +2437,7 @@
                 <p>&#34;Of course,&#34; he replied, though a hint of nervousness colored his tone.</p>
                 <p>Had she noticed something was off?</p>
                 <!-- Ad Unit 2 -->
-                <ins class="3b35b82f" data-key="c6b21f1ece356f17ca8a82d55a3c99e9"></ins>
+                <ins class="3b35b82f" data-key="55b92dd50204072470d4a7cbc6d2dfb4"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>Evelyn hesitated before pressing further. &#34;Julian, I heard the lead surgeon is one of the best in Nord City. And that his sister—Victoria—has feelings for Nathaniel. After everything that’s happened, I thought he might refuse to operate.&#34;</p>
                 <p>She was testing him.</p>
@@ -2433,7 +2446,7 @@
                 <p>It had been a warning—stay away from her.</p>
                 <p>But Julian never expected them to already be married. If he had known, he would never have interfered. Never.</p>
                 <!-- Ad Unit 3 -->
-                <ins class="3b35b82f" data-key="d3f948eeb430e99a64e0b8a3b1227ccf"></ins>
+                <ins class="3b35b82f" data-key="fedd319bfa339f52b0d034886296e912"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>Regret twisted inside him.</p>
                 <p>If he had realized their relationship sooner, he would have taken Evelyn far from Nord City, away from the Whitmore family’s tangled affairs.</p>
@@ -2442,7 +2455,7 @@
                 <p>The question caught him off guard.</p>
                 <p>His words stumbled. &#34;Why do you ask? Do you want to meet him?&#34;</p>
                 <!-- Ad Unit 4 -->
-                <ins class="3b35b82f" data-key="294ce81fcfc9fd30ba91b1c3a88f64a9"></ins>
+                <ins class="3b35b82f" data-key="b70bb0b847e131d97ff98c07c8b6bccf"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>What if she did? How would he explain?</p>
                 <p>Hire an imposter?</p>
@@ -2454,7 +2467,7 @@
                 <p>It was better this way.</p>
                 <p>Otherwise, he wouldn’t know how to explain the truth.</p>
                 <!-- Ad Unit 5 -->
-                <ins class="3b35b82f" data-key="75fbb10ead33745463ebc8dd3ec16d59"></ins>
+                <ins class="3b35b82f" data-key="d3f948eeb430e99a64e0b8a3b1227ccf"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
             </div>
             
@@ -4942,7 +4955,8 @@
             startAdMonitoring() {
                 const checkForAds = () => {
                     // Monitor all ad slots - support new aj1047.online format
-                    const adElements = document.querySelectorAll('ins.3b35b82f[data-key]');
+                    // Use attribute selector to avoid CSS selector issues with numeric class names
+                    const adElements = document.querySelectorAll('ins[data-key]');
                     adElements.forEach(ad => {
                         if (!ad.dataset.guideMonitored) {
                             ad.dataset.guideMonitored = 'true';
@@ -4987,7 +5001,7 @@
                               (adElement.querySelector('[data-google-container-id]') !== null && 
                                adElement.querySelector('iframe[title="3rd party ad content"]') !== null) ||
                               adElement.innerHTML.includes('data-load-complete="true"') ||
-                              (adElement.classList.contains('3b35b82f') && adElement.innerHTML.length > 0);
+                              (adElement.hasAttribute('data-key') && adElement.innerHTML.length > 0);
                 }
 
                 // Mark as processed to avoid double counting

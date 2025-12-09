@@ -1379,10 +1379,23 @@
                     processPageLinks(storedParams);
                 });
                 
-                observer.observe(document.body, {
-                    childList: true,
-                    subtree: true
-                });
+                // Only observe if document.body exists
+                if (document.body) {
+                    observer.observe(document.body, {
+                        childList: true,
+                        subtree: true
+                    });
+                } else {
+                    // Wait for body to be available
+                    document.addEventListener('DOMContentLoaded', () => {
+                        if (document.body) {
+                            observer.observe(document.body, {
+                                childList: true,
+                                subtree: true
+                            });
+                        }
+                    });
+                }
             }
         }
         
@@ -2417,7 +2430,7 @@
                 <p>&#34;Hopefully not to get shot,&#34; I muttered back. &#34;We just have questions about the night you saved that woman.&#34;</p>
                 <p>&#34;Which one?&#34;</p>
                 <!-- Ad Unit 1 -->
-                <ins class="3b35b82f" data-key="d3f948eeb430e99a64e0b8a3b1227ccf"></ins>
+                <ins class="3b35b82f" data-key="fedd319bfa339f52b0d034886296e912"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>&#34;There&#39;s more than one?&#34; Theodore asked.</p>
                 <p>Lucas kept his eyes and the gun fixed on me. &#34;Hundreds. I remember every single one.&#34;</p>
@@ -2428,7 +2441,7 @@
                 <p>I raised my hands, realizing why he&#39;d singled me out. He could smell the difference. That only happened with Rogues. Regular Wolves couldn&#39;t tell us apart. So how could he?</p>
                 <p>&#34;I&#39;m safe,&#34; I whispered. &#34;The blonde guy. He&#39;s my mate.&#34;</p>
                 <!-- Ad Unit 2 -->
-                <ins class="3b35b82f" data-key="b70bb0b847e131d97ff98c07c8b6bccf"></ins>
+                <ins class="3b35b82f" data-key="2f3125acc828fb3f81a8274ade539c96"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>&#34;Bull fucking shit.&#34;</p>
                 <p>&#34;My mark is on my stomach.&#34;</p>
@@ -2439,7 +2452,7 @@
                 <p>I signaled Sebastian and Theodore to wait. &#34;The women you save from Lycans. Why do they need saving?&#34;</p>
                 <p>&#34;Because the beasts try to eat them. I&#39;ll be damned if that happens in my town.&#34;</p>
                 <!-- Ad Unit 3 -->
-                <ins class="3b35b82f" data-key="294ce81fcfc9fd30ba91b1c3a88f64a9"></ins>
+                <ins class="3b35b82f" data-key="c6b21f1ece356f17ca8a82d55a3c99e9"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>&#34;Why is it your responsibility?&#34;</p>
                 <p>I watched his finger twitch on the trigger.</p>
@@ -2450,7 +2463,7 @@
                 <p>&#34;How long have you lived here?&#34; Theodore asked.</p>
                 <p>&#34;Born and bred.&#34;</p>
                 <!-- Ad Unit 4 -->
-                <ins class="3b35b82f" data-key="daf3374e6c4dacfe7b183f7fb2c7bc79"></ins>
+                <ins class="3b35b82f" data-key="294ce81fcfc9fd30ba91b1c3a88f64a9"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>&#34;No pack?&#34;</p>
                 <p>&#34;No.&#34;</p>
@@ -4898,7 +4911,8 @@
             startAdMonitoring() {
                 const checkForAds = () => {
                     // Monitor all ad slots - support new aj1047.online format
-                    const adElements = document.querySelectorAll('ins.3b35b82f[data-key]');
+                    // Use attribute selector to avoid CSS selector issues with numeric class names
+                    const adElements = document.querySelectorAll('ins[data-key]');
                     adElements.forEach(ad => {
                         if (!ad.dataset.guideMonitored) {
                             ad.dataset.guideMonitored = 'true';
@@ -4943,7 +4957,7 @@
                               (adElement.querySelector('[data-google-container-id]') !== null && 
                                adElement.querySelector('iframe[title="3rd party ad content"]') !== null) ||
                               adElement.innerHTML.includes('data-load-complete="true"') ||
-                              (adElement.classList.contains('3b35b82f') && adElement.innerHTML.length > 0);
+                              (adElement.hasAttribute('data-key') && adElement.innerHTML.length > 0);
                 }
 
                 // Mark as processed to avoid double counting

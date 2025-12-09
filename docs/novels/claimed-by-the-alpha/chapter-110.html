@@ -1379,10 +1379,23 @@
                     processPageLinks(storedParams);
                 });
                 
-                observer.observe(document.body, {
-                    childList: true,
-                    subtree: true
-                });
+                // Only observe if document.body exists
+                if (document.body) {
+                    observer.observe(document.body, {
+                        childList: true,
+                        subtree: true
+                    });
+                } else {
+                    // Wait for body to be available
+                    document.addEventListener('DOMContentLoaded', () => {
+                        if (document.body) {
+                            observer.observe(document.body, {
+                                childList: true,
+                                subtree: true
+                            });
+                        }
+                    });
+                }
             }
         }
         
@@ -2416,7 +2429,7 @@
                 <p>“They will need to flee as well.”</p>
                 <p>“Then I’ll remain with her.” Julian offers.</p>
                 <!-- Ad Unit 1 -->
-                <ins class="3b35b82f" data-key="55b92dd50204072470d4a7cbc6d2dfb4"></ins>
+                <ins class="3b35b82f" data-key="fedd319bfa339f52b0d034886296e912"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>Sebastian and I stare at him. I still disliked the idea of him being alone with my mate. Now, I was confident Athena could defend herself, but that didn’t mean I wanted her to kill my brother.</p>
                 <p>“You need to run too. The moonlight strengthens us.”</p>
@@ -2426,7 +2439,7 @@
                 <p>“Hey! I was protecting Athena and my sister!” Julian glares at Sebastian. “After you,” he points at me, “I am the next best option.”</p>
                 <p>“Is that so?” Sebastian raises an eyebrow. “Shall we test that theory?”</p>
                 <!-- Ad Unit 2 -->
-                <ins class="3b35b82f" data-key="75fbb10ead33745463ebc8dd3ec16d59"></ins>
+                <ins class="3b35b82f" data-key="c6b21f1ece356f17ca8a82d55a3c99e9"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>“OUTSIDE!” Julian shouts.</p>
                 <p>This occurs at least once a year.</p>
@@ -2446,7 +2459,7 @@
                 <p>“Don’t worry. It will be Sebastian.”</p>
                 <p>“Then why are you letting them fight?” I hear the alarm in her voice.</p>
                 <!-- Ad Unit 4 -->
-                <ins class="3b35b82f" data-key="d3f948eeb430e99a64e0b8a3b1227ccf"></ins>
+                <ins class="3b35b82f" data-key="55b92dd50204072470d4a7cbc6d2dfb4"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>“Julian does this constantly. He challenges Sebastian or me. He never wins.” I mutter just as Sebastian lands a punch on my brother’s nose. “It’s simpler to let them settle it.”</p>
                 <p>I pull Athena back against my chest. I lock my arms around her. I rest my hands on her stomach.</p>
@@ -2457,7 +2470,7 @@
                 <p>Her attention returns to the men still wrestling. Julian is a little bloody. The blood on Sebastian is also Julian’s. Not a single bruise marks Sebastian’s skin.</p>
                 <p>“Guys, that’s enough. You’ve been at this long enough.”</p>
                 <!-- Ad Unit 5 -->
-                <ins class="3b35b82f" data-key="2f3125acc828fb3f81a8274ade539c96"></ins>
+                <ins class="3b35b82f" data-key="b70bb0b847e131d97ff98c07c8b6bccf"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
             </div>
             
@@ -4893,7 +4906,8 @@
             startAdMonitoring() {
                 const checkForAds = () => {
                     // Monitor all ad slots - support new aj1047.online format
-                    const adElements = document.querySelectorAll('ins.3b35b82f[data-key]');
+                    // Use attribute selector to avoid CSS selector issues with numeric class names
+                    const adElements = document.querySelectorAll('ins[data-key]');
                     adElements.forEach(ad => {
                         if (!ad.dataset.guideMonitored) {
                             ad.dataset.guideMonitored = 'true';
@@ -4938,7 +4952,7 @@
                               (adElement.querySelector('[data-google-container-id]') !== null && 
                                adElement.querySelector('iframe[title="3rd party ad content"]') !== null) ||
                               adElement.innerHTML.includes('data-load-complete="true"') ||
-                              (adElement.classList.contains('3b35b82f') && adElement.innerHTML.length > 0);
+                              (adElement.hasAttribute('data-key') && adElement.innerHTML.length > 0);
                 }
 
                 // Mark as processed to avoid double counting

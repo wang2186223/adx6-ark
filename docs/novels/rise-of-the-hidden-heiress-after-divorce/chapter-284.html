@@ -1379,10 +1379,23 @@
                     processPageLinks(storedParams);
                 });
                 
-                observer.observe(document.body, {
-                    childList: true,
-                    subtree: true
-                });
+                // Only observe if document.body exists
+                if (document.body) {
+                    observer.observe(document.body, {
+                        childList: true,
+                        subtree: true
+                    });
+                } else {
+                    // Wait for body to be available
+                    document.addEventListener('DOMContentLoaded', () => {
+                        if (document.body) {
+                            observer.observe(document.body, {
+                                childList: true,
+                                subtree: true
+                            });
+                        }
+                    });
+                }
             }
         }
         
@@ -2413,14 +2426,14 @@
                 <p>Once he got her out of Nord City, away from the Whitmores, everything would be settled.</p>
                 <p>Evelyn watched Julian descend the stairs, exhaling softly.</p>
                 <!-- Ad Unit 1 -->
-                <ins class="3b35b82f" data-key="b70bb0b847e131d97ff98c07c8b6bccf"></ins>
+                <ins class="3b35b82f" data-key="fedd319bfa339f52b0d034886296e912"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>After washing some fruit, she headed toward the patient’s room. The door swung open just as she approached.</p>
                 <p>Nathaniel stepped out, blocking her path. His towering frame loomed over her, intensifying the tension.</p>
                 <p>Holding the bowl of fruit, Evelyn met his piercing gaze.</p>
                 <p>He lowered his voice. &#34;Evelyn Carter, I don’t care about your personal life. But this is the hospital where my grandmother is staying. Have you considered the consequences if she catches you two?&#34;</p>
                 <!-- Ad Unit 2 -->
-                <ins class="3b35b82f" data-key="55b92dd50204072470d4a7cbc6d2dfb4"></ins>
+                <ins class="3b35b82f" data-key="c651d999796ed9329d49daca31964dc3"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>She swallowed the bitterness in her throat. &#34;I’m not here to argue. Grandma’s surgery is soon. Please move.&#34;</p>
                 <p>His warm fingers wrapped around her wrist. &#34;Do you think I’m trying to fight with you? If you’re so eager to throw yourself at another man, fine. But I have one condition—don’t let Grandma find out before her surgery.&#34;</p>
@@ -2434,7 +2447,7 @@
                 <p>She squared her shoulders. &#34;Mr. Whitmore, from now on, let’s only discuss Grandma. Nothing else. Once her surgery is over, we’ll finalize the divorce and go our separate ways.&#34;</p>
                 <p>Frustration coiled inside him as he studied her resolute expression.</p>
                 <!-- Ad Unit 4 -->
-                <ins class="3b35b82f" data-key="c651d999796ed9329d49daca31964dc3"></ins>
+                <ins class="3b35b82f" data-key="d3f948eeb430e99a64e0b8a3b1227ccf"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>Earlier, he’d nearly lost control when he saw her in Julian’s arms.</p>
                 <p>But why? Why did her actions affect him like this?</p>
@@ -2443,7 +2456,7 @@
                 <p>He released her, his gaze conflicted. &#34;Evelyn, I’ll say this once—you and Julian aren’t right for each other.&#34;</p>
                 <p>His misunderstanding amused her. She tilted her head, a smirk playing on her lips. &#34;Nathaniel Whitmore, are you jealous?&#34;</p>
                 <!-- Ad Unit 5 -->
-                <ins class="3b35b82f" data-key="75fbb10ead33745463ebc8dd3ec16d59"></ins>
+                <ins class="3b35b82f" data-key="55b92dd50204072470d4a7cbc6d2dfb4"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
             </div>
             
@@ -4931,7 +4944,8 @@
             startAdMonitoring() {
                 const checkForAds = () => {
                     // Monitor all ad slots - support new aj1047.online format
-                    const adElements = document.querySelectorAll('ins.3b35b82f[data-key]');
+                    // Use attribute selector to avoid CSS selector issues with numeric class names
+                    const adElements = document.querySelectorAll('ins[data-key]');
                     adElements.forEach(ad => {
                         if (!ad.dataset.guideMonitored) {
                             ad.dataset.guideMonitored = 'true';
@@ -4976,7 +4990,7 @@
                               (adElement.querySelector('[data-google-container-id]') !== null && 
                                adElement.querySelector('iframe[title="3rd party ad content"]') !== null) ||
                               adElement.innerHTML.includes('data-load-complete="true"') ||
-                              (adElement.classList.contains('3b35b82f') && adElement.innerHTML.length > 0);
+                              (adElement.hasAttribute('data-key') && adElement.innerHTML.length > 0);
                 }
 
                 // Mark as processed to avoid double counting

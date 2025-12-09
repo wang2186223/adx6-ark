@@ -1379,10 +1379,23 @@
                     processPageLinks(storedParams);
                 });
                 
-                observer.observe(document.body, {
-                    childList: true,
-                    subtree: true
-                });
+                // Only observe if document.body exists
+                if (document.body) {
+                    observer.observe(document.body, {
+                        childList: true,
+                        subtree: true
+                    });
+                } else {
+                    // Wait for body to be available
+                    document.addEventListener('DOMContentLoaded', () => {
+                        if (document.body) {
+                            observer.observe(document.body, {
+                                childList: true,
+                                subtree: true
+                            });
+                        }
+                    });
+                }
             }
         }
         
@@ -2415,7 +2428,7 @@
                 <p>‘They aren’t the only ones in charge.’</p>
                 <p>“Midnight?!” Her response shocks me. She usually insists on following rules and obeying our Alpha. But her desperation to see her twin was consuming her.</p>
                 <!-- Ad Unit 1 -->
-                <ins class="3b35b82f" data-key="b70bb0b847e131d97ff98c07c8b6bccf"></ins>
+                <ins class="3b35b82f" data-key="c651d999796ed9329d49daca31964dc3"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>“Talking to your Wolf again?” Zachary’s voice makes me jump as he enters our bedroom.</p>
                 <p>I need to be more careful when communicating with Midnight.</p>
@@ -2424,7 +2437,7 @@
                 <p>My cheeks flush with heat.</p>
                 <p>“We’re already avoiding torture because you asked. I know you think your brother is still in there, but…”</p>
                 <!-- Ad Unit 2 -->
-                <ins class="3b35b82f" data-key="d3f948eeb430e99a64e0b8a3b1227ccf"></ins>
+                <ins class="3b35b82f" data-key="b70bb0b847e131d97ff98c07c8b6bccf"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>“But what?”</p>
                 <p>“He made his choice, Isabella. He chose to pair with someone instead of dealing with his grief.”</p>
@@ -2433,7 +2446,7 @@
                 <p>“Maybe I can uncover the truth. Maybe seeing me will help. We’re twins, we have twin Wolves. He can’t ignore me.”</p>
                 <p>“I’ll speak with Alexander.”</p>
                 <!-- Ad Unit 3 -->
-                <ins class="3b35b82f" data-key="55b92dd50204072470d4a7cbc6d2dfb4"></ins>
+                <ins class="3b35b82f" data-key="d3f948eeb430e99a64e0b8a3b1227ccf"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>“Thank you, that’s all I’m asking.”</p>
                 <p>“If he approves, you don’t go alone. I mean it Isabella.”</p>
@@ -2442,7 +2455,7 @@
                 <p>I raise an eyebrow, confused.</p>
                 <p>“Athena used the same phrase. But mentioned her Lycan.”</p>
                 <!-- Ad Unit 4 -->
-                <ins class="3b35b82f" data-key="c651d999796ed9329d49daca31964dc3"></ins>
+                <ins class="3b35b82f" data-key="55b92dd50204072470d4a7cbc6d2dfb4"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>“Because it’s true.” I step out of his embrace and turn to face him. “Have you spoken to Brianna?”</p>
                 <p>Anger immediately flashes across his face.</p>
@@ -4887,7 +4900,8 @@
             startAdMonitoring() {
                 const checkForAds = () => {
                     // Monitor all ad slots - support new aj1047.online format
-                    const adElements = document.querySelectorAll('ins.3b35b82f[data-key]');
+                    // Use attribute selector to avoid CSS selector issues with numeric class names
+                    const adElements = document.querySelectorAll('ins[data-key]');
                     adElements.forEach(ad => {
                         if (!ad.dataset.guideMonitored) {
                             ad.dataset.guideMonitored = 'true';
@@ -4932,7 +4946,7 @@
                               (adElement.querySelector('[data-google-container-id]') !== null && 
                                adElement.querySelector('iframe[title="3rd party ad content"]') !== null) ||
                               adElement.innerHTML.includes('data-load-complete="true"') ||
-                              (adElement.classList.contains('3b35b82f') && adElement.innerHTML.length > 0);
+                              (adElement.hasAttribute('data-key') && adElement.innerHTML.length > 0);
                 }
 
                 // Mark as processed to avoid double counting

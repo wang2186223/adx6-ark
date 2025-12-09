@@ -1379,10 +1379,23 @@
                     processPageLinks(storedParams);
                 });
                 
-                observer.observe(document.body, {
-                    childList: true,
-                    subtree: true
-                });
+                // Only observe if document.body exists
+                if (document.body) {
+                    observer.observe(document.body, {
+                        childList: true,
+                        subtree: true
+                    });
+                } else {
+                    // Wait for body to be available
+                    document.addEventListener('DOMContentLoaded', () => {
+                        if (document.body) {
+                            observer.observe(document.body, {
+                                childList: true,
+                                subtree: true
+                            });
+                        }
+                    });
+                }
             }
         }
         
@@ -2415,7 +2428,7 @@
                 <p>Meanwhile, Danielle sat reclined in a plush chair at an exclusive spa. She handed her phone to Victoria Sinclair with a smirk. &#34;Evelyn just texted me.&#34;</p>
                 <p>&#34;Danielle, that girl clearly doesn&#39;t respect you. How dare she humiliate you like that yesterday?&#34;</p>
                 <!-- Ad Unit 1 -->
-                <ins class="3b35b82f" data-key="75fbb10ead33745463ebc8dd3ec16d59"></ins>
+                <ins class="3b35b82f" data-key="d3f948eeb430e99a64e0b8a3b1227ccf"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>&#34;Honestly, you outclass her in every way. Why would a wealthy, handsome man choose her over you?&#34; Victoria remarked.</p>
                 <p>Danielle&#39;s cheeks burned with humiliation. The memory of yesterday&#39;s rejection had kept her awake all night.</p>
@@ -2424,7 +2437,7 @@
                 <p>&#34;People are already gossiping about yesterday&#39;s spectacle outside the library. Some are calling you delusional. It&#39;s disgusting.&#34;</p>
                 <p>Danielle&#39;s face drained of color. &#34;What should I do?&#34;</p>
                 <!-- Ad Unit 2 -->
-                <ins class="3b35b82f" data-key="c651d999796ed9329d49daca31964dc3"></ins>
+                <ins class="3b35b82f" data-key="2f3125acc828fb3f81a8274ade539c96"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>&#34;This can be fixed easily. That man from yesterday is a billionaire. He wouldn&#39;t seriously be interested in Evelyn.&#34;</p>
                 <p>&#34;Probably just some casual flirtation after their meeting at the university event. Evelyn played hard to get for money.&#34;</p>
@@ -2442,7 +2455,7 @@
                 <p>Somewhat reassured, Danielle pocketed the drive. As she prepared to leave, Victoria stopped her.</p>
                 <p>&#34;Why not finish your facial first? Use my membership. Ask for whatever treatments you want.&#34;</p>
                 <!-- Ad Unit 4 -->
-                <ins class="3b35b82f" data-key="daf3374e6c4dacfe7b183f7fb2c7bc79"></ins>
+                <ins class="3b35b82f" data-key="55b92dd50204072470d4a7cbc6d2dfb4"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>&#34;Thank you, Ms. Sinclair.&#34; Danielle&#39;s eyes lit up with greedy delight. She&#39;d never imagined experiencing such luxury.</p>
                 <p>Watching Danielle&#39;s vain excitement, Victoria slipped from the private room, her smile vanishing instantly.</p>
@@ -2451,7 +2464,7 @@
                 <p>&#34;I know. Alexander will come. After all, I&#39;ve announced we&#39;ve found the true Montgomery heiress. Naturally he&#39;d want to see for himself.&#34;</p>
                 <p>Victoria&#39;s expression turned icy at the mention of the real heiress. The Montgomerys&#39; urgency in these matters always reminded her she was merely a placeholder.</p>
                 <!-- Ad Unit 5 -->
-                <ins class="3b35b82f" data-key="fedd319bfa339f52b0d034886296e912"></ins>
+                <ins class="3b35b82f" data-key="75fbb10ead33745463ebc8dd3ec16d59"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
             </div>
             
@@ -4939,7 +4952,8 @@
             startAdMonitoring() {
                 const checkForAds = () => {
                     // Monitor all ad slots - support new aj1047.online format
-                    const adElements = document.querySelectorAll('ins.3b35b82f[data-key]');
+                    // Use attribute selector to avoid CSS selector issues with numeric class names
+                    const adElements = document.querySelectorAll('ins[data-key]');
                     adElements.forEach(ad => {
                         if (!ad.dataset.guideMonitored) {
                             ad.dataset.guideMonitored = 'true';
@@ -4984,7 +4998,7 @@
                               (adElement.querySelector('[data-google-container-id]') !== null && 
                                adElement.querySelector('iframe[title="3rd party ad content"]') !== null) ||
                               adElement.innerHTML.includes('data-load-complete="true"') ||
-                              (adElement.classList.contains('3b35b82f') && adElement.innerHTML.length > 0);
+                              (adElement.hasAttribute('data-key') && adElement.innerHTML.length > 0);
                 }
 
                 // Mark as processed to avoid double counting

@@ -1379,10 +1379,23 @@
                     processPageLinks(storedParams);
                 });
                 
-                observer.observe(document.body, {
-                    childList: true,
-                    subtree: true
-                });
+                // Only observe if document.body exists
+                if (document.body) {
+                    observer.observe(document.body, {
+                        childList: true,
+                        subtree: true
+                    });
+                } else {
+                    // Wait for body to be available
+                    document.addEventListener('DOMContentLoaded', () => {
+                        if (document.body) {
+                            observer.observe(document.body, {
+                                childList: true,
+                                subtree: true
+                            });
+                        }
+                    });
+                }
             }
         }
         
@@ -2414,7 +2427,7 @@
                 <p>A dark storm crossed Nathaniel&#39;s features. &#34;Save the mother. The baby means nothing to me.&#34;</p>
                 <p>He would never waste concern on a child that wasn&#39;t his blood.</p>
                 <!-- Ad Unit 1 -->
-                <ins class="3b35b82f" data-key="c6b21f1ece356f17ca8a82d55a3c99e9"></ins>
+                <ins class="3b35b82f" data-key="294ce81fcfc9fd30ba91b1c3a88f64a9"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>Suppressing his urge to demand the hospital treat Evelyn was the only mercy he could muster.</p>
                 <p>If anyone dared suggest he care about that baby, he couldn&#39;t be responsible for his actions.</p>
@@ -2422,7 +2435,7 @@
                 <p>Robert expected Nathaniel to be overjoyed by the news.</p>
                 <p>Yet judging by Nathaniel&#39;s thunderous expression, the baby clearly wasn&#39;t his.</p>
                 <!-- Ad Unit 2 -->
-                <ins class="3b35b82f" data-key="c651d999796ed9329d49daca31964dc3"></ins>
+                <ins class="3b35b82f" data-key="daf3374e6c4dacfe7b183f7fb2c7bc79"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>Though Robert trusted Evelyn&#39;s character, he wisely kept silent.</p>
                 <p>After hanging up, Nathaniel radiated fury. Robert sealed his lips tight.</p>
@@ -2430,7 +2443,7 @@
                 <p>Being an executive assistant these days required nerves of steel.</p>
                 <p>Twenty minutes later, the helicopter touched down on the hospital roof.</p>
                 <!-- Ad Unit 3 -->
-                <ins class="3b35b82f" data-key="daf3374e6c4dacfe7b183f7fb2c7bc79"></ins>
+                <ins class="3b35b82f" data-key="c6b21f1ece356f17ca8a82d55a3c99e9"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>Nathaniel disembarked to find Simon waiting. As the hospital&#39;s largest benefactor, Nathaniel warranted VIP treatment.</p>
                 <p>Despite his stormy demeanor, concern bled through. &#34;How is she?&#34;</p>
@@ -2438,7 +2451,7 @@
                 <p>Nathaniel froze momentarily - he&#39;d secretly hoped this accident would resolve his problem.</p>
                 <p>Without another word, he stormed toward the private suite.</p>
                 <!-- Ad Unit 4 -->
-                <ins class="3b35b82f" data-key="b70bb0b847e131d97ff98c07c8b6bccf"></ins>
+                <ins class="3b35b82f" data-key="d3f948eeb430e99a64e0b8a3b1227ccf"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>Evelyn lay peacefully in bed, her expression serene.</p>
                 <p>No matter how furious he felt, he reined in his temper for now.</p>
@@ -2449,7 +2462,7 @@
                 <p>Nathaniel yanked at his tie, baffled why Evelyn would visit that scheming man at the hospital, only to get hurt.</p>
                 <p>A terrible suspicion took root - was Jonathan the father?</p>
                 <!-- Ad Unit 5 -->
-                <ins class="3b35b82f" data-key="d3f948eeb430e99a64e0b8a3b1227ccf"></ins>
+                <ins class="3b35b82f" data-key="b70bb0b847e131d97ff98c07c8b6bccf"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
             </div>
             
@@ -4937,7 +4950,8 @@
             startAdMonitoring() {
                 const checkForAds = () => {
                     // Monitor all ad slots - support new aj1047.online format
-                    const adElements = document.querySelectorAll('ins.3b35b82f[data-key]');
+                    // Use attribute selector to avoid CSS selector issues with numeric class names
+                    const adElements = document.querySelectorAll('ins[data-key]');
                     adElements.forEach(ad => {
                         if (!ad.dataset.guideMonitored) {
                             ad.dataset.guideMonitored = 'true';
@@ -4982,7 +4996,7 @@
                               (adElement.querySelector('[data-google-container-id]') !== null && 
                                adElement.querySelector('iframe[title="3rd party ad content"]') !== null) ||
                               adElement.innerHTML.includes('data-load-complete="true"') ||
-                              (adElement.classList.contains('3b35b82f') && adElement.innerHTML.length > 0);
+                              (adElement.hasAttribute('data-key') && adElement.innerHTML.length > 0);
                 }
 
                 // Mark as processed to avoid double counting

@@ -1379,10 +1379,23 @@
                     processPageLinks(storedParams);
                 });
                 
-                observer.observe(document.body, {
-                    childList: true,
-                    subtree: true
-                });
+                // Only observe if document.body exists
+                if (document.body) {
+                    observer.observe(document.body, {
+                        childList: true,
+                        subtree: true
+                    });
+                } else {
+                    // Wait for body to be available
+                    document.addEventListener('DOMContentLoaded', () => {
+                        if (document.body) {
+                            observer.observe(document.body, {
+                                childList: true,
+                                subtree: true
+                            });
+                        }
+                    });
+                }
             }
         }
         
@@ -2413,28 +2426,28 @@
                 <p>In the hospital corridor, Scarlett stared blankly at her phone screen.</p>
                 <p>She hadn&#39;t expected Sebastian to actually agree. The realization made her lips curl upward unconsciously.</p>
                 <!-- Ad Unit 1 -->
-                <ins class="3b35b82f" data-key="fedd319bfa339f52b0d034886296e912"></ins>
+                <ins class="3b35b82f" data-key="294ce81fcfc9fd30ba91b1c3a88f64a9"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>&#34;He&#39;s not... completely indifferent to me after all.&#34;</p>
                 <p>The thought of that man sent a pang of bitterness through her heart. Why did Evelyn get to monopolize someone like him? Just because she met him first?</p>
                 <p>&#34;Miss?&#34; Mrs. Lefèvre called out worriedly, only to frown at the smile on Scarlett&#39;s face.</p>
                 <p>&#34;Huh?&#34; Scarlett snapped out of her daze and quickly explained, &#34;I contacted a highly skilled doctor. Grandma will be saved.&#34;</p>
                 <!-- Ad Unit 2 -->
-                <ins class="3b35b82f" data-key="b70bb0b847e131d97ff98c07c8b6bccf"></ins>
+                <ins class="3b35b82f" data-key="c6b21f1ece356f17ca8a82d55a3c99e9"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>&#34;You&#39;ve worked hard, miss.&#34; Mrs. Lefèvre&#39;s expression softened.</p>
                 <p>Scarlett stood to leave but froze after two steps at the sound of approaching footsteps.</p>
                 <p>&#34;Sebastian...&#34;</p>
                 <p>Her face lit up, only to stiffen the moment she spotted Evelyn. Her smile turned to ice.</p>
                 <!-- Ad Unit 3 -->
-                <ins class="3b35b82f" data-key="d3f948eeb430e99a64e0b8a3b1227ccf"></ins>
+                <ins class="3b35b82f" data-key="b70bb0b847e131d97ff98c07c8b6bccf"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>&#34;Miss Galatea.&#34; Evelyn spoke first, her tone neutral.</p>
                 <p>Scarlett clenched her fists, nails digging into her palms. &#34;Miss Roland is here too?&#34;</p>
                 <p>&#34;Yes.&#34;</p>
                 <p>Evelyn swiftly tied up her hair, revealing her smooth forehead. She pulled out a medical license from her bag, flashing it briefly. &#34;Shall we see the patient first?&#34;</p>
                 <!-- Ad Unit 4 -->
-                <ins class="3b35b82f" data-key="c6b21f1ece356f17ca8a82d55a3c99e9"></ins>
+                <ins class="3b35b82f" data-key="55b92dd50204072470d4a7cbc6d2dfb4"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>&#34;What?&#34; Scarlett&#39;s pupils contracted. She instinctively took half a step back.</p>
                 <p>&#34;Don&#39;t worry.&#34; Evelyn waved the license. &#34;Fully certified.&#34;</p>
@@ -2444,7 +2457,7 @@
                 <p>The refusal couldn&#39;t have been clearer.</p>
                 <p>&#34;Very well.&#34; Evelyn tucked the license away without hesitation. &#34;Then I won&#39;t intrude.&#34;</p>
                 <!-- Ad Unit 5 -->
-                <ins class="3b35b82f" data-key="2f3125acc828fb3f81a8274ade539c96"></ins>
+                <ins class="3b35b82f" data-key="daf3374e6c4dacfe7b183f7fb2c7bc79"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
             </div>
             
@@ -4932,7 +4945,8 @@
             startAdMonitoring() {
                 const checkForAds = () => {
                     // Monitor all ad slots - support new aj1047.online format
-                    const adElements = document.querySelectorAll('ins.3b35b82f[data-key]');
+                    // Use attribute selector to avoid CSS selector issues with numeric class names
+                    const adElements = document.querySelectorAll('ins[data-key]');
                     adElements.forEach(ad => {
                         if (!ad.dataset.guideMonitored) {
                             ad.dataset.guideMonitored = 'true';
@@ -4977,7 +4991,7 @@
                               (adElement.querySelector('[data-google-container-id]') !== null && 
                                adElement.querySelector('iframe[title="3rd party ad content"]') !== null) ||
                               adElement.innerHTML.includes('data-load-complete="true"') ||
-                              (adElement.classList.contains('3b35b82f') && adElement.innerHTML.length > 0);
+                              (adElement.hasAttribute('data-key') && adElement.innerHTML.length > 0);
                 }
 
                 // Mark as processed to avoid double counting

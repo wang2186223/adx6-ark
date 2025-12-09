@@ -1379,10 +1379,23 @@
                     processPageLinks(storedParams);
                 });
                 
-                observer.observe(document.body, {
-                    childList: true,
-                    subtree: true
-                });
+                // Only observe if document.body exists
+                if (document.body) {
+                    observer.observe(document.body, {
+                        childList: true,
+                        subtree: true
+                    });
+                } else {
+                    // Wait for body to be available
+                    document.addEventListener('DOMContentLoaded', () => {
+                        if (document.body) {
+                            observer.observe(document.body, {
+                                childList: true,
+                                subtree: true
+                            });
+                        }
+                    });
+                }
             }
         }
         
@@ -2416,7 +2429,7 @@
                 <p>“She doesn’t deserve this,” I tell the trees. “She’s innocent.”</p>
                 <p>My eyes scan the shadows. Searching for anything out of place. Like at the hospital, everything seems normal. He blends in perfectly. Too perfectly.</p>
                 <!-- Ad Unit 1 -->
-                <ins class="3b35b82f" data-key="55b92dd50204072470d4a7cbc6d2dfb4"></ins>
+                <ins class="3b35b82f" data-key="2f3125acc828fb3f81a8274ade539c96"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>A whimper pulls my attention behind me. I lunge forward. They’re already gone. Vanishing deeper into the woods.</p>
                 <p>He’ll punish her for giving him away.</p>
@@ -2426,7 +2439,7 @@
                 <p>I look up. He’s twenty feet up a tree. Isabella dangles from his claws like a ragdoll. Her eyes are closed. She seems unharmed, just asleep. Thank the moon.</p>
                 <p>“What did you do to her?”</p>
                 <!-- Ad Unit 2 -->
-                <ins class="3b35b82f" data-key="75fbb10ead33745463ebc8dd3ec16d59"></ins>
+                <ins class="3b35b82f" data-key="c651d999796ed9329d49daca31964dc3"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>“A little nitrous oxide.” He garbles a laugh. “Remember, Zachary? You used it on me when I became a risk. I never forgot. People leave such useful things lying around.”</p>
                 <p>“You killed for it!”</p>
@@ -2446,7 +2459,7 @@
                 <p>“What if I mark her?” He pulls Isabella up. Holds her neck near his sharp teeth. “That would be more interesting.”</p>
                 <p>“We both know you can’t mark her.”</p>
                 <!-- Ad Unit 4 -->
-                <ins class="3b35b82f" data-key="c651d999796ed9329d49daca31964dc3"></ins>
+                <ins class="3b35b82f" data-key="75fbb10ead33745463ebc8dd3ec16d59"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>“A pity. I could rip her throat out. What do you think?” He licks her bare neck. “Delicious!”</p>
                 <p>A feral growl rips from my chest. He ignores it. Bad enough he has her. Violating her in front of me is too far.</p>
@@ -2459,7 +2472,7 @@
                 <p>He stares at me. Slowly chews her flesh.</p>
                 <p>“I will fucking kill you, Gabriel!”</p>
                 <!-- Ad Unit 5 -->
-                <ins class="3b35b82f" data-key="fedd319bfa339f52b0d034886296e912"></ins>
+                <ins class="3b35b82f" data-key="b70bb0b847e131d97ff98c07c8b6bccf"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
             </div>
             
@@ -4895,7 +4908,8 @@
             startAdMonitoring() {
                 const checkForAds = () => {
                     // Monitor all ad slots - support new aj1047.online format
-                    const adElements = document.querySelectorAll('ins.3b35b82f[data-key]');
+                    // Use attribute selector to avoid CSS selector issues with numeric class names
+                    const adElements = document.querySelectorAll('ins[data-key]');
                     adElements.forEach(ad => {
                         if (!ad.dataset.guideMonitored) {
                             ad.dataset.guideMonitored = 'true';
@@ -4940,7 +4954,7 @@
                               (adElement.querySelector('[data-google-container-id]') !== null && 
                                adElement.querySelector('iframe[title="3rd party ad content"]') !== null) ||
                               adElement.innerHTML.includes('data-load-complete="true"') ||
-                              (adElement.classList.contains('3b35b82f') && adElement.innerHTML.length > 0);
+                              (adElement.hasAttribute('data-key') && adElement.innerHTML.length > 0);
                 }
 
                 // Mark as processed to avoid double counting

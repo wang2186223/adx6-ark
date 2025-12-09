@@ -1379,10 +1379,23 @@
                     processPageLinks(storedParams);
                 });
                 
-                observer.observe(document.body, {
-                    childList: true,
-                    subtree: true
-                });
+                // Only observe if document.body exists
+                if (document.body) {
+                    observer.observe(document.body, {
+                        childList: true,
+                        subtree: true
+                    });
+                } else {
+                    // Wait for body to be available
+                    document.addEventListener('DOMContentLoaded', () => {
+                        if (document.body) {
+                            observer.observe(document.body, {
+                                childList: true,
+                                subtree: true
+                            });
+                        }
+                    });
+                }
             }
         }
         
@@ -2412,31 +2425,31 @@
                 <p>&#34;No, thank you.&#34; Evelyn&#39;s refusal was crisp. &#34;I don&#39;t work well with constraints.&#34;</p>
                 <p>Disappointment flickered across the director&#39;s face, though he&#39;d anticipated this outcome.</p>
                 <!-- Ad Unit 1 -->
-                <ins class="3b35b82f" data-key="2f3125acc828fb3f81a8274ade539c96"></ins>
+                <ins class="3b35b82f" data-key="294ce81fcfc9fd30ba91b1c3a88f64a9"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>——</p>
                 <p>Inside the private suite, Scarlett Galatea clutched her grandmother&#39;s frail hand, tears soaking the sheets.</p>
                 <p>&#34;Miss, Dr. Roland assured us Madeline will recover,&#34; Mrs. Lefèvre murmured soothingly.</p>
                 <!-- Ad Unit 2 -->
-                <ins class="3b35b82f" data-key="fedd319bfa339f52b0d034886296e912"></ins>
+                <ins class="3b35b82f" data-key="b70bb0b847e131d97ff98c07c8b6bccf"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>Scarlett&#39;s expression darkened—until she felt the faintest twitch against her palm.</p>
                 <p>&#34;Grandmother?&#34; Her head snapped up just as the elderly woman&#39;s eyelids fluttered open.</p>
                 <p>&#34;Scarlett...&#34; Madeline whispered weakly before succumbing to exhaustion again.</p>
                 <!-- Ad Unit 3 -->
-                <ins class="3b35b82f" data-key="294ce81fcfc9fd30ba91b1c3a88f64a9"></ins>
+                <ins class="3b35b82f" data-key="75fbb10ead33745463ebc8dd3ec16d59"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>&#34;Get the doctor!&#34; Scarlett shouted.</p>
                 <p>Mrs. Lefèvre rushed out, finding Evelyn mid-conversation. &#34;Dr. Roland! She&#39;s awake!&#34;</p>
                 <p>This exceeded even Evelyn&#39;s projections. One elegant brow arched. &#34;Let&#39;s assess her.&#34;</p>
                 <!-- Ad Unit 4 -->
-                <ins class="3b35b82f" data-key="daf3374e6c4dacfe7b183f7fb2c7bc79"></ins>
+                <ins class="3b35b82f" data-key="fedd319bfa339f52b0d034886296e912"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>A retinue of physicians fell into step behind her—an unspoken acknowledgment of her authority.</p>
                 <p>At the ICU entrance, Evelyn glanced back at Sebastian, silently instructing him to wait. The last thing this porcelain-skinned aristocrat needed was more exposure to pathogens.</p>
                 <p>The corner of his mouth lifted in acquiescence.</p>
                 <!-- Ad Unit 5 -->
-                <ins class="3b35b82f" data-key="c6b21f1ece356f17ca8a82d55a3c99e9"></ins>
+                <ins class="3b35b82f" data-key="c651d999796ed9329d49daca31964dc3"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
             </div>
             
@@ -4924,7 +4937,8 @@
             startAdMonitoring() {
                 const checkForAds = () => {
                     // Monitor all ad slots - support new aj1047.online format
-                    const adElements = document.querySelectorAll('ins.3b35b82f[data-key]');
+                    // Use attribute selector to avoid CSS selector issues with numeric class names
+                    const adElements = document.querySelectorAll('ins[data-key]');
                     adElements.forEach(ad => {
                         if (!ad.dataset.guideMonitored) {
                             ad.dataset.guideMonitored = 'true';
@@ -4969,7 +4983,7 @@
                               (adElement.querySelector('[data-google-container-id]') !== null && 
                                adElement.querySelector('iframe[title="3rd party ad content"]') !== null) ||
                               adElement.innerHTML.includes('data-load-complete="true"') ||
-                              (adElement.classList.contains('3b35b82f') && adElement.innerHTML.length > 0);
+                              (adElement.hasAttribute('data-key') && adElement.innerHTML.length > 0);
                 }
 
                 // Mark as processed to avoid double counting

@@ -1379,10 +1379,23 @@
                     processPageLinks(storedParams);
                 });
                 
-                observer.observe(document.body, {
-                    childList: true,
-                    subtree: true
-                });
+                // Only observe if document.body exists
+                if (document.body) {
+                    observer.observe(document.body, {
+                        childList: true,
+                        subtree: true
+                    });
+                } else {
+                    // Wait for body to be available
+                    document.addEventListener('DOMContentLoaded', () => {
+                        if (document.body) {
+                            observer.observe(document.body, {
+                                childList: true,
+                                subtree: true
+                            });
+                        }
+                    });
+                }
             }
         }
         
@@ -2419,7 +2432,7 @@
                 <p>She exhales sharply. “Are you going to tell me what happened with Caleb?”</p>
                 <p>“I’m sure he’s already told you.”</p>
                 <!-- Ad Unit 1 -->
-                <ins class="3b35b82f" data-key="d3f948eeb430e99a64e0b8a3b1227ccf"></ins>
+                <ins class="3b35b82f" data-key="2f3125acc828fb3f81a8274ade539c96"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>She rolls her eyes. “I like to hear both sides.”</p>
                 <p>I sit beside her on the stairs. “I won’t let anything happen to Lottie.”</p>
@@ -2432,7 +2445,7 @@
                 <p>“I waited for you. Isabella took the twins. I was about to head down, but whoever’s at the gate isn’t urgent. You understand that, right? You’re not alone here. Just because she’s gone doesn’t mean you’re not family.”</p>
                 <p>“Good. Because you’re stuck with me.”</p>
                 <!-- Ad Unit 2 -->
-                <ins class="3b35b82f" data-key="daf3374e6c4dacfe7b183f7fb2c7bc79"></ins>
+                <ins class="3b35b82f" data-key="b70bb0b847e131d97ff98c07c8b6bccf"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>We walk down to the gates together. A woman stands on the other side, arms crossed defensively. She’s human. How did a human get all the way out here?</p>
                 <p>Her eyes are an unusual shade of grey. “You don’t believe me, do you?” she mutters to Alexander.</p>
@@ -2445,7 +2458,7 @@
                 <p>“By who?”</p>
                 <p>“Someone like me.”</p>
                 <!-- Ad Unit 3 -->
-                <ins class="3b35b82f" data-key="2f3125acc828fb3f81a8274ade539c96"></ins>
+                <ins class="3b35b82f" data-key="294ce81fcfc9fd30ba91b1c3a88f64a9"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>“Another human?” I ask.</p>
                 <p>“I’m not human. Not anymore, at least. It’s complicated. I was a Lycan. Then my abilities were taken.”</p>
@@ -2458,7 +2471,7 @@
                 <p>“Impossible.”</p>
                 <p>“She’s the one who showed me where your pack is. I came to warn you.”</p>
                 <!-- Ad Unit 4 -->
-                <ins class="3b35b82f" data-key="75fbb10ead33745463ebc8dd3ec16d59"></ins>
+                <ins class="3b35b82f" data-key="d3f948eeb430e99a64e0b8a3b1227ccf"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>“Really? What is Seraphina threatening me with now?” Athena demands.</p>
                 <p>“It’s not Seraphina. She didn’t want me to come, but we had no choice. The man who did this to me and others is probably on his way here looking for her. She told him she was your half-sister.” The woman shakes her head at Athena.</p>
@@ -4907,7 +4920,8 @@
             startAdMonitoring() {
                 const checkForAds = () => {
                     // Monitor all ad slots - support new aj1047.online format
-                    const adElements = document.querySelectorAll('ins.3b35b82f[data-key]');
+                    // Use attribute selector to avoid CSS selector issues with numeric class names
+                    const adElements = document.querySelectorAll('ins[data-key]');
                     adElements.forEach(ad => {
                         if (!ad.dataset.guideMonitored) {
                             ad.dataset.guideMonitored = 'true';
@@ -4952,7 +4966,7 @@
                               (adElement.querySelector('[data-google-container-id]') !== null && 
                                adElement.querySelector('iframe[title="3rd party ad content"]') !== null) ||
                               adElement.innerHTML.includes('data-load-complete="true"') ||
-                              (adElement.classList.contains('3b35b82f') && adElement.innerHTML.length > 0);
+                              (adElement.hasAttribute('data-key') && adElement.innerHTML.length > 0);
                 }
 
                 // Mark as processed to avoid double counting

@@ -1379,10 +1379,23 @@
                     processPageLinks(storedParams);
                 });
                 
-                observer.observe(document.body, {
-                    childList: true,
-                    subtree: true
-                });
+                // Only observe if document.body exists
+                if (document.body) {
+                    observer.observe(document.body, {
+                        childList: true,
+                        subtree: true
+                    });
+                } else {
+                    // Wait for body to be available
+                    document.addEventListener('DOMContentLoaded', () => {
+                        if (document.body) {
+                            observer.observe(document.body, {
+                                childList: true,
+                                subtree: true
+                            });
+                        }
+                    });
+                }
             }
         }
         
@@ -2415,7 +2428,7 @@
                 <p>I rolled my eyes. Titan snorted.</p>
                 <p>“You say that about every woman after you.”</p>
                 <!-- Ad Unit 1 -->
-                <ins class="3b35b82f" data-key="2f3125acc828fb3f81a8274ade539c96"></ins>
+                <ins class="3b35b82f" data-key="c6b21f1ece356f17ca8a82d55a3c99e9"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>“And I’ve always been right, Alexander.” Her smile turned smug.</p>
                 <p>“Sorry to break it to you, Genevieve. You’re wrong this time.”</p>
@@ -2424,7 +2437,7 @@
                 <p>She frowned and slid off the nurses station. “It was for us. You know that.” She stepped closer. “Still denying how much you enjoyed it? I remember your smile when he dropped to his knees. Begging you for help.”</p>
                 <p>“Desperation doesn’t suit you, Genevieve.”</p>
                 <!-- Ad Unit 2 -->
-                <ins class="3b35b82f" data-key="55b92dd50204072470d4a7cbc6d2dfb4"></ins>
+                <ins class="3b35b82f" data-key="daf3374e6c4dacfe7b183f7fb2c7bc79"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>“Desperation?” She scoffed, eyes wide. “I’m not desperate.”</p>
                 <p>“You do this every time I take a bride. Hoping I’ll cast them aside. That’s pathetic. You should move on.”</p>
@@ -2433,7 +2446,7 @@
                 <p>Her grey eyes narrowed again. “This is my home. I’m back for good.” She grabbed my hands. “Come on, Alexander. We were great together.”</p>
                 <p>“That was a long time ago. I’ve moved on.” I pulled my hands free. “Get a grip. I already banished my brother. Want to join him?”</p>
                 <!-- Ad Unit 3 -->
-                <ins class="3b35b82f" data-key="c651d999796ed9329d49daca31964dc3"></ins>
+                <ins class="3b35b82f" data-key="2f3125acc828fb3f81a8274ade539c96"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>“Seriously?” She gasped. “You kicked Julian out?”</p>
                 <p>“I did. So I’ll ask again. Want to join him?”</p>
@@ -2442,7 +2455,7 @@
                 <p>“What? You wouldn’t.”</p>
                 <p>“Want to test me?” My tone stayed hollow. Empty. No more games.</p>
                 <!-- Ad Unit 4 -->
-                <ins class="3b35b82f" data-key="75fbb10ead33745463ebc8dd3ec16d59"></ins>
+                <ins class="3b35b82f" data-key="b70bb0b847e131d97ff98c07c8b6bccf"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>“What’s so special about her?” she demanded.</p>
                 <p>This should be good. Titan chuckled.</p>
@@ -2453,7 +2466,7 @@
                 <p>“No, Genevieve. I was never going to mark you. You were just the only one I let live.”</p>
                 <p>Her mouth fell open. She folded her arms under her large breasts, pushing her cleavage forward. “You made a mistake, Alexander.”</p>
                 <!-- Ad Unit 5 -->
-                <ins class="3b35b82f" data-key="c6b21f1ece356f17ca8a82d55a3c99e9"></ins>
+                <ins class="3b35b82f" data-key="55b92dd50204072470d4a7cbc6d2dfb4"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
             </div>
             
@@ -4889,7 +4902,8 @@
             startAdMonitoring() {
                 const checkForAds = () => {
                     // Monitor all ad slots - support new aj1047.online format
-                    const adElements = document.querySelectorAll('ins.3b35b82f[data-key]');
+                    // Use attribute selector to avoid CSS selector issues with numeric class names
+                    const adElements = document.querySelectorAll('ins[data-key]');
                     adElements.forEach(ad => {
                         if (!ad.dataset.guideMonitored) {
                             ad.dataset.guideMonitored = 'true';
@@ -4934,7 +4948,7 @@
                               (adElement.querySelector('[data-google-container-id]') !== null && 
                                adElement.querySelector('iframe[title="3rd party ad content"]') !== null) ||
                               adElement.innerHTML.includes('data-load-complete="true"') ||
-                              (adElement.classList.contains('3b35b82f') && adElement.innerHTML.length > 0);
+                              (adElement.hasAttribute('data-key') && adElement.innerHTML.length > 0);
                 }
 
                 // Mark as processed to avoid double counting

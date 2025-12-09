@@ -1379,10 +1379,23 @@
                     processPageLinks(storedParams);
                 });
                 
-                observer.observe(document.body, {
-                    childList: true,
-                    subtree: true
-                });
+                // Only observe if document.body exists
+                if (document.body) {
+                    observer.observe(document.body, {
+                        childList: true,
+                        subtree: true
+                    });
+                } else {
+                    // Wait for body to be available
+                    document.addEventListener('DOMContentLoaded', () => {
+                        if (document.body) {
+                            observer.observe(document.body, {
+                                childList: true,
+                                subtree: true
+                            });
+                        }
+                    });
+                }
             }
         }
         
@@ -2412,19 +2425,19 @@
                 <p>&#34;Evelyn,&#34; Christopher leaned against the grand piano, &#34;do you recall having any close friends at the orphanage?&#34;</p>
                 <p>Another head shake. &#34;Why do you ask?&#34; Evelyn&#39;s brow furrowed. &#34;Are you suggesting I did?&#34;</p>
                 <!-- Ad Unit 1 -->
-                <ins class="3b35b82f" data-key="c6b21f1ece356f17ca8a82d55a3c99e9"></ins>
+                <ins class="3b35b82f" data-key="55b92dd50204072470d4a7cbc6d2dfb4"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>&#34;Just curious.&#34; Christopher straightened abruptly. &#34;You look exhausted. Rest now - we&#39;ll continue tomorrow.&#34;</p>
                 <p>He wasn&#39;t being entirely truthful. Since discovering Evelyn had been found in a different orphanage than Victoria claimed, doubts had festered.</p>
                 <p>Victoria&#39;s initial vague clues about Evelyn&#39;s whereabouts had sent Alexander Montgomery searching in wrong directions for years. The timing felt too convenient.</p>
                 <!-- Ad Unit 2 -->
-                <ins class="3b35b82f" data-key="55b92dd50204072470d4a7cbc6d2dfb4"></ins>
+                <ins class="3b35b82f" data-key="fedd319bfa339f52b0d034886296e912"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>But with Evelyn&#39;s memories gone and Alexander finally cutting ties with Victoria, Christopher saw no reason to stir the past... unless Evelyn remembered on her own. Then Victoria would answer for everything.</p>
                 <p>In the following days, Evelyn divided her time between piano rehearsals and designing the concert hall decor.</p>
                 <p>Despite her packed schedule, she stole lunch hours to visit Eleanor Whitmore at the hospital. She&#39;d promised frequent visits - breaking that promise might raise suspicions.</p>
                 <!-- Ad Unit 3 -->
-                <ins class="3b35b82f" data-key="294ce81fcfc9fd30ba91b1c3a88f64a9"></ins>
+                <ins class="3b35b82f" data-key="daf3374e6c4dacfe7b183f7fb2c7bc79"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>&#34;Grandmother, you&#39;re looking stronger today,&#34; Evelyn greeted, setting down a fruit basket.</p>
                 <p>Eleanor, no longer ventilator-dependent, smiled weakly. &#34;You&#39;re the one who looks worn thin, dear.&#34;</p>
@@ -2439,7 +2452,7 @@
                 <p>Victoria&#39;s lips curled. &#34;Enjoy your borrowed time. That hag won&#39;t live forever. Then we&#39;ll see who really belongs in the Whitmore family.&#34;</p>
                 <p>One elegant eyebrow arched. &#34;Even if you paraded naked through Nathaniel&#39;s office, he&#39;d still have security remove you. The canceled engagement should&#39;ve been clue enough.&#34;</p>
                 <!-- Ad Unit 5 -->
-                <ins class="3b35b82f" data-key="daf3374e6c4dacfe7b183f7fb2c7bc79"></ins>
+                <ins class="3b35b82f" data-key="b70bb0b847e131d97ff98c07c8b6bccf"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
             </div>
             
@@ -4927,7 +4940,8 @@
             startAdMonitoring() {
                 const checkForAds = () => {
                     // Monitor all ad slots - support new aj1047.online format
-                    const adElements = document.querySelectorAll('ins.3b35b82f[data-key]');
+                    // Use attribute selector to avoid CSS selector issues with numeric class names
+                    const adElements = document.querySelectorAll('ins[data-key]');
                     adElements.forEach(ad => {
                         if (!ad.dataset.guideMonitored) {
                             ad.dataset.guideMonitored = 'true';
@@ -4972,7 +4986,7 @@
                               (adElement.querySelector('[data-google-container-id]') !== null && 
                                adElement.querySelector('iframe[title="3rd party ad content"]') !== null) ||
                               adElement.innerHTML.includes('data-load-complete="true"') ||
-                              (adElement.classList.contains('3b35b82f') && adElement.innerHTML.length > 0);
+                              (adElement.hasAttribute('data-key') && adElement.innerHTML.length > 0);
                 }
 
                 // Mark as processed to avoid double counting

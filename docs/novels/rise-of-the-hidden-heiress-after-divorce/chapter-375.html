@@ -1379,10 +1379,23 @@
                     processPageLinks(storedParams);
                 });
                 
-                observer.observe(document.body, {
-                    childList: true,
-                    subtree: true
-                });
+                // Only observe if document.body exists
+                if (document.body) {
+                    observer.observe(document.body, {
+                        childList: true,
+                        subtree: true
+                    });
+                } else {
+                    // Wait for body to be available
+                    document.addEventListener('DOMContentLoaded', () => {
+                        if (document.body) {
+                            observer.observe(document.body, {
+                                childList: true,
+                                subtree: true
+                            });
+                        }
+                    });
+                }
             }
         }
         
@@ -2422,7 +2435,7 @@
                 <p>Just as she suspected—he was using the assault incident as leverage.</p>
                 <p>Desperate, she offered, &#34;Jonathan, we can compensate you. Name your price.&#34;</p>
                 <!-- Ad Unit 2 -->
-                <ins class="3b35b82f" data-key="b70bb0b847e131d97ff98c07c8b6bccf"></ins>
+                <ins class="3b35b82f" data-key="c651d999796ed9329d49daca31964dc3"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>Judith’s eyes gleamed at the mention of money, but Jonathan dismissed it instantly. &#34;I don’t want money. I want you.&#34;</p>
                 <p>Marriage would bind Evelyn to him—and grant him access to her brothers’ wealth. Far more valuable than a one-time payout.</p>
@@ -2430,7 +2443,7 @@
                 <p>&#34;My heart belongs to you, Evelyn. Your past doesn’t change that.&#34;</p>
                 <p>&#34;Then here’s the truth—I’m pregnant.&#34; She played her final card.</p>
                 <!-- Ad Unit 3 -->
-                <ins class="3b35b82f" data-key="55b92dd50204072470d4a7cbc6d2dfb4"></ins>
+                <ins class="3b35b82f" data-key="c6b21f1ece356f17ca8a82d55a3c99e9"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>Judith gasped. &#34;Pregnant? Is it yours, Jonathan?&#34;</p>
                 <p>Evelyn nearly laughed. As if she’d ever let him touch her.</p>
@@ -2438,7 +2451,7 @@
                 <p>Jonathan’s jaw clenched. The thought of raising another man’s children sickened him.</p>
                 <p>But he forced a smile. &#34;If it means having you, I’ll accept anything.&#34;</p>
                 <!-- Ad Unit 4 -->
-                <ins class="3b35b82f" data-key="c6b21f1ece356f17ca8a82d55a3c99e9"></ins>
+                <ins class="3b35b82f" data-key="75fbb10ead33745463ebc8dd3ec16d59"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>Money could buy him his own heirs later.</p>
                 <p>Evelyn hadn’t expected that answer. It almost sounded sincere—but her instincts screamed lie.</p>
@@ -2450,7 +2463,7 @@
                 <p>Madness.</p>
                 <p>Evelyn didn’t hesitate. &#34;Jonathan, I’ll never love you. Not even if you die. That’s final.&#34;</p>
                 <!-- Ad Unit 5 -->
-                <ins class="3b35b82f" data-key="daf3374e6c4dacfe7b183f7fb2c7bc79"></ins>
+                <ins class="3b35b82f" data-key="55b92dd50204072470d4a7cbc6d2dfb4"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
             </div>
             
@@ -4938,7 +4951,8 @@
             startAdMonitoring() {
                 const checkForAds = () => {
                     // Monitor all ad slots - support new aj1047.online format
-                    const adElements = document.querySelectorAll('ins.3b35b82f[data-key]');
+                    // Use attribute selector to avoid CSS selector issues with numeric class names
+                    const adElements = document.querySelectorAll('ins[data-key]');
                     adElements.forEach(ad => {
                         if (!ad.dataset.guideMonitored) {
                             ad.dataset.guideMonitored = 'true';
@@ -4983,7 +4997,7 @@
                               (adElement.querySelector('[data-google-container-id]') !== null && 
                                adElement.querySelector('iframe[title="3rd party ad content"]') !== null) ||
                               adElement.innerHTML.includes('data-load-complete="true"') ||
-                              (adElement.classList.contains('3b35b82f') && adElement.innerHTML.length > 0);
+                              (adElement.hasAttribute('data-key') && adElement.innerHTML.length > 0);
                 }
 
                 // Mark as processed to avoid double counting

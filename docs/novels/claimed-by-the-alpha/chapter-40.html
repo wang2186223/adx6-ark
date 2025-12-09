@@ -1379,10 +1379,23 @@
                     processPageLinks(storedParams);
                 });
                 
-                observer.observe(document.body, {
-                    childList: true,
-                    subtree: true
-                });
+                // Only observe if document.body exists
+                if (document.body) {
+                    observer.observe(document.body, {
+                        childList: true,
+                        subtree: true
+                    });
+                } else {
+                    // Wait for body to be available
+                    document.addEventListener('DOMContentLoaded', () => {
+                        if (document.body) {
+                            observer.observe(document.body, {
+                                childList: true,
+                                subtree: true
+                            });
+                        }
+                    });
+                }
             }
         }
         
@@ -2425,7 +2438,7 @@
                 <p>&#39;Just tell her.&#39; Titan groaned.</p>
                 <p>Do you really think now is the time? She just asked me to stop looking for someone to help her.</p>
                 <!-- Ad Unit 1 -->
-                <ins class="3b35b82f" data-key="b70bb0b847e131d97ff98c07c8b6bccf"></ins>
+                <ins class="3b35b82f" data-key="294ce81fcfc9fd30ba91b1c3a88f64a9"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>To discover her mate is right here and she can&#39;t even sense me—what do you think that will do to her?!</p>
                 <p>He rolled his eyes at me and fell silent.</p>
@@ -2444,7 +2457,7 @@
                 <p>&#34;My... my mate?&#34; she whispered while still frowning.</p>
                 <p>&#34;Yes, Athena.&#34;</p>
                 <!-- Ad Unit 2 -->
-                <ins class="3b35b82f" data-key="c6b21f1ece356f17ca8a82d55a3c99e9"></ins>
+                <ins class="3b35b82f" data-key="c651d999796ed9329d49daca31964dc3"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>&#34;I was mated to Marcus.&#34;</p>
                 <p>&#34;And yet you are mated to me too.&#34; It definitely wasn&#39;t the reaction I expected.</p>
@@ -2463,7 +2476,7 @@
                 <p>&#34;Is this... supposed to make me feel better?&#34;</p>
                 <p>The more panicked she became, the more she stuttered.</p>
                 <!-- Ad Unit 3 -->
-                <ins class="3b35b82f" data-key="294ce81fcfc9fd30ba91b1c3a88f64a9"></ins>
+                <ins class="3b35b82f" data-key="b70bb0b847e131d97ff98c07c8b6bccf"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>It would be cute if it were happening for any reason other than panic.</p>
                 <p>She really was nothing like any of the other brides or any woman I would typically pursue.</p>
@@ -2482,7 +2495,7 @@
                 <p>&#34;Is that why you were so angry when you found out what they were doing to me? Because of the mate bond?&#34;</p>
                 <p>She didn&#39;t stutter this time.</p>
                 <!-- Ad Unit 4 -->
-                <ins class="3b35b82f" data-key="c651d999796ed9329d49daca31964dc3"></ins>
+                <ins class="3b35b82f" data-key="55b92dd50204072470d4a7cbc6d2dfb4"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>&#34;You&#39;re the only one who didn&#39;t join in.&#34;</p>
                 <p>&#34;And you lied to Dominic too.&#34;</p>
@@ -4937,7 +4950,8 @@
             startAdMonitoring() {
                 const checkForAds = () => {
                     // Monitor all ad slots - support new aj1047.online format
-                    const adElements = document.querySelectorAll('ins.3b35b82f[data-key]');
+                    // Use attribute selector to avoid CSS selector issues with numeric class names
+                    const adElements = document.querySelectorAll('ins[data-key]');
                     adElements.forEach(ad => {
                         if (!ad.dataset.guideMonitored) {
                             ad.dataset.guideMonitored = 'true';
@@ -4982,7 +4996,7 @@
                               (adElement.querySelector('[data-google-container-id]') !== null && 
                                adElement.querySelector('iframe[title="3rd party ad content"]') !== null) ||
                               adElement.innerHTML.includes('data-load-complete="true"') ||
-                              (adElement.classList.contains('3b35b82f') && adElement.innerHTML.length > 0);
+                              (adElement.hasAttribute('data-key') && adElement.innerHTML.length > 0);
                 }
 
                 // Mark as processed to avoid double counting

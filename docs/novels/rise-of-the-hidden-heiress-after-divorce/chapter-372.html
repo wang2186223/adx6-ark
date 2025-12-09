@@ -1379,10 +1379,23 @@
                     processPageLinks(storedParams);
                 });
                 
-                observer.observe(document.body, {
-                    childList: true,
-                    subtree: true
-                });
+                // Only observe if document.body exists
+                if (document.body) {
+                    observer.observe(document.body, {
+                        childList: true,
+                        subtree: true
+                    });
+                } else {
+                    // Wait for body to be available
+                    document.addEventListener('DOMContentLoaded', () => {
+                        if (document.body) {
+                            observer.observe(document.body, {
+                                childList: true,
+                                subtree: true
+                            });
+                        }
+                    });
+                }
             }
         }
         
@@ -2414,7 +2427,7 @@
                 <p>&#34;Wake up, Evelyn! We&#39;re going shopping for Jonathan&#39;s recovery meal. At my age, I can&#39;t handle these early mornings anymore. Consider this your chance to learn his preferences—&#34;</p>
                 <p>Evelyn ended the call immediately. 5:03 AM glared from her screen.</p>
                 <!-- Ad Unit 1 -->
-                <ins class="3b35b82f" data-key="fedd319bfa339f52b0d034886296e912"></ins>
+                <ins class="3b35b82f" data-key="c651d999796ed9329d49daca31964dc3"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>Had Judith really called at this ungodly hour just to cook for Jonathan? Absurd!</p>
                 <p>She silenced her phone, officially resigning from unpaid maid duties. Jonathan&#39;s situation didn&#39;t concern her anymore.</p>
@@ -2430,7 +2443,7 @@
                 <p>&#34;Where&#39;s Christopher? Call him over,&#34; Margaret suggested while stirring a pot.</p>
                 <p>Evelyn dialed Christopher&#39;s number. The line connected instantly—to a woman&#39;s voice.</p>
                 <!-- Ad Unit 3 -->
-                <ins class="3b35b82f" data-key="c6b21f1ece356f17ca8a82d55a3c99e9"></ins>
+                <ins class="3b35b82f" data-key="75fbb10ead33745463ebc8dd3ec16d59"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>&#34;Hello?&#34;</p>
                 <p>Evelyn froze. This wasn&#39;t the usual assistant. Had Christopher moved on already?</p>
@@ -2438,7 +2451,7 @@
                 <p>If Christopher had female company now, they&#39;d probably spent the night together. Best not to disturb.</p>
                 <p>&#34;He&#39;s swamped with work,&#34; Evelyn told Margaret, happily devouring the entire honey-glazed chicken herself later.</p>
                 <!-- Ad Unit 4 -->
-                <ins class="3b35b82f" data-key="2f3125acc828fb3f81a8274ade539c96"></ins>
+                <ins class="3b35b82f" data-key="55b92dd50204072470d4a7cbc6d2dfb4"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>Her heart and stomach overflowed with contentment. Nothing compared to good food and peace.</p>
                 <p>&#34;Evelyn, your appetite&#39;s grown remarkably,&#34; Margaret observed. &#34;You&#39;re practically glowing. Though careful—that belly might make people think you&#39;re expecting!&#34;</p>
@@ -2450,7 +2463,7 @@
                 <p>&#34;I get that. But please ask her to stop calling me. Since I&#39;ll never be her daughter-in-law, she needn&#39;t train me for the role.&#34; Her voice stayed flat.</p>
                 <p>&#34;What&#39;s that supposed to mean? You&#39;re not coming to the hospital anymore?&#34; Jonathan&#39;s tone sharpened.</p>
                 <!-- Ad Unit 5 -->
-                <ins class="3b35b82f" data-key="d3f948eeb430e99a64e0b8a3b1227ccf"></ins>
+                <ins class="3b35b82f" data-key="c6b21f1ece356f17ca8a82d55a3c99e9"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
             </div>
             
@@ -4938,7 +4951,8 @@
             startAdMonitoring() {
                 const checkForAds = () => {
                     // Monitor all ad slots - support new aj1047.online format
-                    const adElements = document.querySelectorAll('ins.3b35b82f[data-key]');
+                    // Use attribute selector to avoid CSS selector issues with numeric class names
+                    const adElements = document.querySelectorAll('ins[data-key]');
                     adElements.forEach(ad => {
                         if (!ad.dataset.guideMonitored) {
                             ad.dataset.guideMonitored = 'true';
@@ -4983,7 +4997,7 @@
                               (adElement.querySelector('[data-google-container-id]') !== null && 
                                adElement.querySelector('iframe[title="3rd party ad content"]') !== null) ||
                               adElement.innerHTML.includes('data-load-complete="true"') ||
-                              (adElement.classList.contains('3b35b82f') && adElement.innerHTML.length > 0);
+                              (adElement.hasAttribute('data-key') && adElement.innerHTML.length > 0);
                 }
 
                 // Mark as processed to avoid double counting

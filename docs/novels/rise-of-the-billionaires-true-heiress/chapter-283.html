@@ -1379,10 +1379,23 @@
                     processPageLinks(storedParams);
                 });
                 
-                observer.observe(document.body, {
-                    childList: true,
-                    subtree: true
-                });
+                // Only observe if document.body exists
+                if (document.body) {
+                    observer.observe(document.body, {
+                        childList: true,
+                        subtree: true
+                    });
+                } else {
+                    // Wait for body to be available
+                    document.addEventListener('DOMContentLoaded', () => {
+                        if (document.body) {
+                            observer.observe(document.body, {
+                                childList: true,
+                                subtree: true
+                            });
+                        }
+                    });
+                }
             }
         }
         
@@ -2413,7 +2426,7 @@
                 <p>The weight of his gaze made the tips of Evelyn&#39;s ears burn. She noticed the faint flush on his cheeks, though the private dining room was perfectly air-conditioned.</p>
                 <p>&#34;Do you have a fever?&#34; She reached out to check his forehead.</p>
                 <!-- Ad Unit 1 -->
-                <ins class="3b35b82f" data-key="c651d999796ed9329d49daca31964dc3"></ins>
+                <ins class="3b35b82f" data-key="2f3125acc828fb3f81a8274ade539c96"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>Sebastian coughed abruptly, nearly dropping the food from his chopsticks. &#34;Just an old issue.&#34; He dodged her hand. &#34;Nothing serious.&#34;</p>
                 <p>Evelyn silently vowed to find the antidote as soon as possible.</p>
@@ -2427,14 +2440,14 @@
                 <p>&#34;Maybe we should visit her?&#34; Evelyn suggested.</p>
                 <p>When they left the restaurant, Sebastian opened the car door for her with unusual care. His hand hovered protectively above her head, ensuring she wouldn&#39;t bump against the frame.</p>
                 <!-- Ad Unit 3 -->
-                <ins class="3b35b82f" data-key="c6b21f1ece356f17ca8a82d55a3c99e9"></ins>
+                <ins class="3b35b82f" data-key="55b92dd50204072470d4a7cbc6d2dfb4"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>&#34;Thank you,&#34; Evelyn murmured.</p>
                 <p>In the hospital garden, children&#39;s laughter rang bright and clear as they chased each other.</p>
                 <p>&#34;I hope Theo can laugh like that someday,&#34; Sebastian said, watching them.</p>
                 <p>&#34;He will.&#34; Evelyn&#39;s tone left no room for doubt.</p>
                 <!-- Ad Unit 4 -->
-                <ins class="3b35b82f" data-key="2f3125acc828fb3f81a8274ade539c96"></ins>
+                <ins class="3b35b82f" data-key="75fbb10ead33745463ebc8dd3ec16d59"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>As they entered the lobby, a familiar figure made Evelyn pause mid-step.</p>
                 <p>Julian Roland strode over and pulled her aside. &#34;What are you doing with him?&#34;</p>
@@ -4932,7 +4945,8 @@
             startAdMonitoring() {
                 const checkForAds = () => {
                     // Monitor all ad slots - support new aj1047.online format
-                    const adElements = document.querySelectorAll('ins.3b35b82f[data-key]');
+                    // Use attribute selector to avoid CSS selector issues with numeric class names
+                    const adElements = document.querySelectorAll('ins[data-key]');
                     adElements.forEach(ad => {
                         if (!ad.dataset.guideMonitored) {
                             ad.dataset.guideMonitored = 'true';
@@ -4977,7 +4991,7 @@
                               (adElement.querySelector('[data-google-container-id]') !== null && 
                                adElement.querySelector('iframe[title="3rd party ad content"]') !== null) ||
                               adElement.innerHTML.includes('data-load-complete="true"') ||
-                              (adElement.classList.contains('3b35b82f') && adElement.innerHTML.length > 0);
+                              (adElement.hasAttribute('data-key') && adElement.innerHTML.length > 0);
                 }
 
                 // Mark as processed to avoid double counting

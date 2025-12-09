@@ -1379,10 +1379,23 @@
                     processPageLinks(storedParams);
                 });
                 
-                observer.observe(document.body, {
-                    childList: true,
-                    subtree: true
-                });
+                // Only observe if document.body exists
+                if (document.body) {
+                    observer.observe(document.body, {
+                        childList: true,
+                        subtree: true
+                    });
+                } else {
+                    // Wait for body to be available
+                    document.addEventListener('DOMContentLoaded', () => {
+                        if (document.body) {
+                            observer.observe(document.body, {
+                                childList: true,
+                                subtree: true
+                            });
+                        }
+                    });
+                }
             }
         }
         
@@ -2414,7 +2427,7 @@
                 <p>Knowing exactly why Victoria had sought her out, Evelyn remained composed. &#34;I&#39;ve already texted him about finalizing our divorce.&#34;</p>
                 <p>&#34;What was his response?&#34;</p>
                 <!-- Ad Unit 1 -->
-                <ins class="3b35b82f" data-key="c651d999796ed9329d49daca31964dc3"></ins>
+                <ins class="3b35b82f" data-key="fedd319bfa339f52b0d034886296e912"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>&#34;He said he&#39;s too busy with work to deal with it right now.&#34;</p>
                 <p>Victoria&#39;s perfectly manicured nails dug into her palm. &#34;Evelyn, if I discover you&#39;re lying to me, you&#39;ll regret it.&#34;</p>
@@ -2422,7 +2435,7 @@
                 <p>As Victoria scanned the messages, her unease grew visibly.</p>
                 <p>Evelyn pocketed her phone. &#34;Instead of wasting energy threatening me, you&#39;d be better off speaking to Nathaniel directly.&#34;</p>
                 <!-- Ad Unit 2 -->
-                <ins class="3b35b82f" data-key="fedd319bfa339f52b0d034886296e912"></ins>
+                <ins class="3b35b82f" data-key="d3f948eeb430e99a64e0b8a3b1227ccf"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>Victoria forced a tight smile. &#34;I&#39;m aware of his schedule. Nathaniel&#39;s been swamped with a major corporate merger. I&#39;ll discuss this with him soon. I trust you&#39;ll make the right choice when the time comes.&#34;</p>
                 <p>With that, Evelyn stood and left.</p>
@@ -2438,7 +2451,7 @@
                 <p>Robert took the hint and exited, closing the door behind him.</p>
                 <p>Nathaniel checked his watch. &#34;You have sixty seconds.&#34;</p>
                 <!-- Ad Unit 4 -->
-                <ins class="3b35b82f" data-key="294ce81fcfc9fd30ba91b1c3a88f64a9"></ins>
+                <ins class="3b35b82f" data-key="55b92dd50204072470d4a7cbc6d2dfb4"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>&#34;You and Evelyn signed divorce papers ages ago. When are you making it official?&#34;</p>
                 <p>Nathaniel&#39;s eyes turned glacial. &#34;That&#39;s none of your concern.&#34;</p>
@@ -2449,7 +2462,7 @@
                 <p>Victoria&#39;s stomach dropped as she remembered Evelyn&#39;s messages. She&#39;d never give up on Nathaniel!</p>
                 <p>Taking a steadying breath, she played her trump card. &#34;Nathaniel, my brother agreed to operate on your grandmother - on one condition!&#34;</p>
                 <!-- Ad Unit 5 -->
-                <ins class="3b35b82f" data-key="55b92dd50204072470d4a7cbc6d2dfb4"></ins>
+                <ins class="3b35b82f" data-key="daf3374e6c4dacfe7b183f7fb2c7bc79"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
             </div>
             
@@ -4937,7 +4950,8 @@
             startAdMonitoring() {
                 const checkForAds = () => {
                     // Monitor all ad slots - support new aj1047.online format
-                    const adElements = document.querySelectorAll('ins.3b35b82f[data-key]');
+                    // Use attribute selector to avoid CSS selector issues with numeric class names
+                    const adElements = document.querySelectorAll('ins[data-key]');
                     adElements.forEach(ad => {
                         if (!ad.dataset.guideMonitored) {
                             ad.dataset.guideMonitored = 'true';
@@ -4982,7 +4996,7 @@
                               (adElement.querySelector('[data-google-container-id]') !== null && 
                                adElement.querySelector('iframe[title="3rd party ad content"]') !== null) ||
                               adElement.innerHTML.includes('data-load-complete="true"') ||
-                              (adElement.classList.contains('3b35b82f') && adElement.innerHTML.length > 0);
+                              (adElement.hasAttribute('data-key') && adElement.innerHTML.length > 0);
                 }
 
                 // Mark as processed to avoid double counting

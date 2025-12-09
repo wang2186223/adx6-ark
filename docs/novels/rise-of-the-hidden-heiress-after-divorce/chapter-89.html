@@ -1379,10 +1379,23 @@
                     processPageLinks(storedParams);
                 });
                 
-                observer.observe(document.body, {
-                    childList: true,
-                    subtree: true
-                });
+                // Only observe if document.body exists
+                if (document.body) {
+                    observer.observe(document.body, {
+                        childList: true,
+                        subtree: true
+                    });
+                } else {
+                    // Wait for body to be available
+                    document.addEventListener('DOMContentLoaded', () => {
+                        if (document.body) {
+                            observer.observe(document.body, {
+                                childList: true,
+                                subtree: true
+                            });
+                        }
+                    });
+                }
             }
         }
         
@@ -2415,7 +2428,7 @@
                 <p>She had no patience for Cassandra, who cared more about gossip than her actual job.</p>
                 <p>Cassandra retreated, smug. She was certain it was the same man. Too bad he was already taken. If only she were a socialite—she’d have made her move by now.</p>
                 <!-- Ad Unit 1 -->
-                <ins class="3b35b82f" data-key="c651d999796ed9329d49daca31964dc3"></ins>
+                <ins class="3b35b82f" data-key="b70bb0b847e131d97ff98c07c8b6bccf"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>Evelyn stared at her screen, her mind too scattered to sketch.</p>
                 <p>Finally, she grabbed her phone and typed a message to Nathaniel.</p>
@@ -2424,7 +2437,7 @@
                 <p>At Whitmore Enterprises, Nathaniel’s jaw clenched as he glared at his assistant.</p>
                 <p>&#34;Who leaked this?&#34;</p>
                 <!-- Ad Unit 2 -->
-                <ins class="3b35b82f" data-key="c6b21f1ece356f17ca8a82d55a3c99e9"></ins>
+                <ins class="3b35b82f" data-key="2f3125acc828fb3f81a8274ade539c96"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>&#34;Already handled, Mr. Whitmore,&#34; Robert assured.</p>
                 <p>Nathaniel knew Evelyn had seen the post. His phone buzzed—her message. His frown deepened.</p>
@@ -2442,7 +2455,7 @@
                 <p>Penelope smirked. &#34;Why clarify? You’re marrying him anyway.&#34;</p>
                 <p>Victoria shook her head. She knew Nathaniel better than that. This was enough to push Evelyn away.</p>
                 <!-- Ad Unit 4 -->
-                <ins class="3b35b82f" data-key="fedd319bfa339f52b0d034886296e912"></ins>
+                <ins class="3b35b82f" data-key="c651d999796ed9329d49daca31964dc3"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>She checked the time. Evelyn should’ve gotten the message by now.</p>
                 <p>Penelope leaned in. &#34;When’s Eleanor’s surgery? My mother said you two should marry right after.&#34;</p>
@@ -2454,7 +2467,7 @@
                 <p>Lately, Nathaniel’s behavior had shifted. The way he looked at Evelyn… it unsettled her.</p>
                 <p>Evelyn had to go. Before it was too late.</p>
                 <!-- Ad Unit 5 -->
-                <ins class="3b35b82f" data-key="daf3374e6c4dacfe7b183f7fb2c7bc79"></ins>
+                <ins class="3b35b82f" data-key="294ce81fcfc9fd30ba91b1c3a88f64a9"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
             </div>
             
@@ -4942,7 +4955,8 @@
             startAdMonitoring() {
                 const checkForAds = () => {
                     // Monitor all ad slots - support new aj1047.online format
-                    const adElements = document.querySelectorAll('ins.3b35b82f[data-key]');
+                    // Use attribute selector to avoid CSS selector issues with numeric class names
+                    const adElements = document.querySelectorAll('ins[data-key]');
                     adElements.forEach(ad => {
                         if (!ad.dataset.guideMonitored) {
                             ad.dataset.guideMonitored = 'true';
@@ -4987,7 +5001,7 @@
                               (adElement.querySelector('[data-google-container-id]') !== null && 
                                adElement.querySelector('iframe[title="3rd party ad content"]') !== null) ||
                               adElement.innerHTML.includes('data-load-complete="true"') ||
-                              (adElement.classList.contains('3b35b82f') && adElement.innerHTML.length > 0);
+                              (adElement.hasAttribute('data-key') && adElement.innerHTML.length > 0);
                 }
 
                 // Mark as processed to avoid double counting

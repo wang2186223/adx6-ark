@@ -1379,10 +1379,23 @@
                     processPageLinks(storedParams);
                 });
                 
-                observer.observe(document.body, {
-                    childList: true,
-                    subtree: true
-                });
+                // Only observe if document.body exists
+                if (document.body) {
+                    observer.observe(document.body, {
+                        childList: true,
+                        subtree: true
+                    });
+                } else {
+                    // Wait for body to be available
+                    document.addEventListener('DOMContentLoaded', () => {
+                        if (document.body) {
+                            observer.observe(document.body, {
+                                childList: true,
+                                subtree: true
+                            });
+                        }
+                    });
+                }
             }
         }
         
@@ -2416,7 +2429,7 @@
                 <p>“That… wasn’t what I meant. There’s a possibility your lack of abilities is only temporary. They might return.”</p>
                 <p>She frowns and shakes her head firmly. “No.”</p>
                 <!-- Ad Unit 1 -->
-                <ins class="3b35b82f" data-key="2f3125acc828fb3f81a8274ade539c96"></ins>
+                <ins class="3b35b82f" data-key="fedd319bfa339f52b0d034886296e912"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>“What do you mean, ‘no’?”</p>
                 <p>“Levi told me. It’s all a bit foggy, you understand.” She taps her temple gently. “But he definitely said it. He called it my punishment for being with Luc. He said I would never experience being a Lycan again. Only those who are worthy deserve it.”</p>
@@ -2426,7 +2439,7 @@
                 <p>“He doesn’t make mistakes?”</p>
                 <p>“Sorry.” She shrugs slightly. “Like I said, it’s still fuzzy. Sometimes the memories don’t feel coherent. Occasionally, a clear memory surfaces, and I know it’s not a dream. I remember him standing over me, saying those exact words.”</p>
                 <!-- Ad Unit 2 -->
-                <ins class="3b35b82f" data-key="b70bb0b847e131d97ff98c07c8b6bccf"></ins>
+                <ins class="3b35b82f" data-key="55b92dd50204072470d4a7cbc6d2dfb4"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>‘He doesn’t make mistakes? That feels like a hidden message,’ Nyx mutters.</p>
                 <p>‘I agree.’</p>
@@ -2436,7 +2449,7 @@
                 <p>‘He doesn’t make mistakes.’</p>
                 <p>‘It’s a strange thing to say, right?’ I mutter to Nyx.</p>
                 <!-- Ad Unit 3 -->
-                <ins class="3b35b82f" data-key="c6b21f1ece356f17ca8a82d55a3c99e9"></ins>
+                <ins class="3b35b82f" data-key="75fbb10ead33745463ebc8dd3ec16d59"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>‘Yep!’ She emphasizes the ‘p’. ‘Everyone makes mistakes. Do you think she knows something more?’</p>
                 <p>I shake my head. ‘I doubt she could keep anything from Luc. Not through words, and not because he’d see it in her soul.’</p>
@@ -2446,7 +2459,7 @@
                 <p>Nothing about Levi adds up. What was his goal in turning some of Alexander’s Wolves to his side? Why target Seraphina and then Hannah? Why did he have such control over Evelyn? There are no clear connections between any of them.</p>
                 <p>‘Power?’ Nyx mutters.</p>
                 <!-- Ad Unit 4 -->
-                <ins class="3b35b82f" data-key="d3f948eeb430e99a64e0b8a3b1227ccf"></ins>
+                <ins class="3b35b82f" data-key="b70bb0b847e131d97ff98c07c8b6bccf"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>“Then why hasn’t he come after me or Alexander? He isn’t accomplishing anything by targeting the people he has. Hannah couldn’t even shift, and he knew that!”</p>
                 <p>The front door swings open, and moments later, Luc’s scent fills the room. He drops onto the sofa opposite me. His hazel eyes study me intently. “Alexander isn’t happy.”</p>
@@ -4894,7 +4907,8 @@
             startAdMonitoring() {
                 const checkForAds = () => {
                     // Monitor all ad slots - support new aj1047.online format
-                    const adElements = document.querySelectorAll('ins.3b35b82f[data-key]');
+                    // Use attribute selector to avoid CSS selector issues with numeric class names
+                    const adElements = document.querySelectorAll('ins[data-key]');
                     adElements.forEach(ad => {
                         if (!ad.dataset.guideMonitored) {
                             ad.dataset.guideMonitored = 'true';
@@ -4939,7 +4953,7 @@
                               (adElement.querySelector('[data-google-container-id]') !== null && 
                                adElement.querySelector('iframe[title="3rd party ad content"]') !== null) ||
                               adElement.innerHTML.includes('data-load-complete="true"') ||
-                              (adElement.classList.contains('3b35b82f') && adElement.innerHTML.length > 0);
+                              (adElement.hasAttribute('data-key') && adElement.innerHTML.length > 0);
                 }
 
                 // Mark as processed to avoid double counting

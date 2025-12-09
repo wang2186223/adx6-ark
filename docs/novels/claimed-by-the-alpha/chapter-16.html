@@ -1379,10 +1379,23 @@
                     processPageLinks(storedParams);
                 });
                 
-                observer.observe(document.body, {
-                    childList: true,
-                    subtree: true
-                });
+                // Only observe if document.body exists
+                if (document.body) {
+                    observer.observe(document.body, {
+                        childList: true,
+                        subtree: true
+                    });
+                } else {
+                    // Wait for body to be available
+                    document.addEventListener('DOMContentLoaded', () => {
+                        if (document.body) {
+                            observer.observe(document.body, {
+                                childList: true,
+                                subtree: true
+                            });
+                        }
+                    });
+                }
             }
         }
         
@@ -2463,7 +2476,7 @@
                 <p>&#34;Even with your gratitude, what happens if Serkan or Thalia discover her existence? I sense Lottie possesses greater potential. I feel it deeply. She has her own power, making her valuable to them. We already know Cooper reached Kade. We can&#39;t let the same happen to Lottie.&#34;</p>
                 <p>&#34;They won&#39;t touch her if they value their lives. Besides, their focus is on Athena.&#34;</p>
                 <!-- Ad Unit 3 -->
-                <ins class="3b35b82f" data-key="fedd319bfa339f52b0d034886296e912"></ins>
+                <ins class="3b35b82f" data-key="b70bb0b847e131d97ff98c07c8b6bccf"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>&#34;What better way to target someone than through the children she holds dear?&#34;</p>
                 <p>&#34;Let them try.&#34; He sneers, tapping his empty glass on the table, lost in thought.</p>
@@ -2482,7 +2495,7 @@
                 <p>&#34;Hey?&#34; Silas murmurs as he cautiously opens the door. &#34;Can I come in?&#34;</p>
                 <p>I gesture for him to enter.</p>
                 <!-- Ad Unit 4 -->
-                <ins class="3b35b82f" data-key="c6b21f1ece356f17ca8a82d55a3c99e9"></ins>
+                <ins class="3b35b82f" data-key="75fbb10ead33745463ebc8dd3ec16d59"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>&#34;I didn&#39;t want to interrupt anything again.&#34; He mutters, hesitating.</p>
                 <p>&#34;You&#39;re in luck. I&#39;m alone.&#34;</p>
@@ -2501,7 +2514,7 @@
                 <p>Content bohat &lt; she was hurt by That</p>
                 <p>&#34;She lost you. So yes, she was hurt. She likely had to watch you two together, knowing you were right there, within reach, completely unaware of who she truly was.&#34;</p>
                 <!-- Ad Unit 5 -->
-                <ins class="3b35b82f" data-key="b70bb0b847e131d97ff98c07c8b6bccf"></ins>
+                <ins class="3b35b82f" data-key="d3f948eeb430e99a64e0b8a3b1227ccf"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
             </div>
             
@@ -4937,7 +4950,8 @@
             startAdMonitoring() {
                 const checkForAds = () => {
                     // Monitor all ad slots - support new aj1047.online format
-                    const adElements = document.querySelectorAll('ins.3b35b82f[data-key]');
+                    // Use attribute selector to avoid CSS selector issues with numeric class names
+                    const adElements = document.querySelectorAll('ins[data-key]');
                     adElements.forEach(ad => {
                         if (!ad.dataset.guideMonitored) {
                             ad.dataset.guideMonitored = 'true';
@@ -4982,7 +4996,7 @@
                               (adElement.querySelector('[data-google-container-id]') !== null && 
                                adElement.querySelector('iframe[title="3rd party ad content"]') !== null) ||
                               adElement.innerHTML.includes('data-load-complete="true"') ||
-                              (adElement.classList.contains('3b35b82f') && adElement.innerHTML.length > 0);
+                              (adElement.hasAttribute('data-key') && adElement.innerHTML.length > 0);
                 }
 
                 // Mark as processed to avoid double counting

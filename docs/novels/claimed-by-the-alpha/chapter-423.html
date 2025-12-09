@@ -1379,10 +1379,23 @@
                     processPageLinks(storedParams);
                 });
                 
-                observer.observe(document.body, {
-                    childList: true,
-                    subtree: true
-                });
+                // Only observe if document.body exists
+                if (document.body) {
+                    observer.observe(document.body, {
+                        childList: true,
+                        subtree: true
+                    });
+                } else {
+                    // Wait for body to be available
+                    document.addEventListener('DOMContentLoaded', () => {
+                        if (document.body) {
+                            observer.observe(document.body, {
+                                childList: true,
+                                subtree: true
+                            });
+                        }
+                    });
+                }
             }
         }
         
@@ -2419,7 +2432,7 @@
                 <p>My eyes shifted from him to Theodore.</p>
                 <p>The color was draining swiftly from his skin.</p>
                 <!-- Ad Unit 1 -->
-                <ins class="3b35b82f" data-key="fedd319bfa339f52b0d034886296e912"></ins>
+                <ins class="3b35b82f" data-key="b70bb0b847e131d97ff98c07c8b6bccf"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>Levi merely frowned at me.</p>
                 <p>&#34;Look what you made me do!&#34;</p>
@@ -2432,7 +2445,7 @@
                 <p>I grabbed her hand, preventing her from moving forward.</p>
                 <p>I couldn&#39;t risk him stabbing her too.</p>
                 <!-- Ad Unit 2 -->
-                <ins class="3b35b82f" data-key="2f3125acc828fb3f81a8274ade539c96"></ins>
+                <ins class="3b35b82f" data-key="55b92dd50204072470d4a7cbc6d2dfb4"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>Her blue eyes met mine and I shook my head.</p>
                 <p>&#39;He&#39;s killed Theodore&#39; She whispered through the link.</p>
@@ -2445,7 +2458,7 @@
                 <p>He tapped Theodore&#39;s cheek, pleading desperately.</p>
                 <p>&#34;You stabbed him, you idiot!&#34;</p>
                 <!-- Ad Unit 3 -->
-                <ins class="3b35b82f" data-key="c6b21f1ece356f17ca8a82d55a3c99e9"></ins>
+                <ins class="3b35b82f" data-key="d3f948eeb430e99a64e0b8a3b1227ccf"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>&#34;Because he shouldn&#39;t have done that. He shouldn&#39;t have listened to you. He shouldn&#39;t have been awake.&#34;</p>
                 <p>Levi&#39;s eyes flicked up to me and he growled.</p>
@@ -2458,7 +2471,7 @@
                 <p>Levi trembled as he fought the command, but his body was forced to lower Theodore to the ground regardless of his will.</p>
                 <p>&#34;I am a Witch. You can&#39;t do this!&#34;</p>
                 <!-- Ad Unit 4 -->
-                <ins class="3b35b82f" data-key="b70bb0b847e131d97ff98c07c8b6bccf"></ins>
+                <ins class="3b35b82f" data-key="2f3125acc828fb3f81a8274ade539c96"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>&#34;No, you are only part Witch!&#34; Athena growled back at him.</p>
                 <p>&#34;I&#39;ve been wondering why I couldn&#39;t reach your Lycan half and now it&#39;s obvious. You need to be at your weakest. You need to be vulnerable. When your Witch half fails, your Lycan thrives, no longer blocked by that foolish spell.&#34;</p>
@@ -2473,7 +2486,7 @@
                 <p>With a smile, Theodore&#39;s legs buckled beneath him, dropping him to the ground while Levi&#39;s body fell in the opposite direction.</p>
                 <p>It hit the ground with a dull, heavy thud.</p>
                 <!-- Ad Unit 5 -->
-                <ins class="3b35b82f" data-key="d3f948eeb430e99a64e0b8a3b1227ccf"></ins>
+                <ins class="3b35b82f" data-key="c6b21f1ece356f17ca8a82d55a3c99e9"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
             </div>
             
@@ -4909,7 +4922,8 @@
             startAdMonitoring() {
                 const checkForAds = () => {
                     // Monitor all ad slots - support new aj1047.online format
-                    const adElements = document.querySelectorAll('ins.3b35b82f[data-key]');
+                    // Use attribute selector to avoid CSS selector issues with numeric class names
+                    const adElements = document.querySelectorAll('ins[data-key]');
                     adElements.forEach(ad => {
                         if (!ad.dataset.guideMonitored) {
                             ad.dataset.guideMonitored = 'true';
@@ -4954,7 +4968,7 @@
                               (adElement.querySelector('[data-google-container-id]') !== null && 
                                adElement.querySelector('iframe[title="3rd party ad content"]') !== null) ||
                               adElement.innerHTML.includes('data-load-complete="true"') ||
-                              (adElement.classList.contains('3b35b82f') && adElement.innerHTML.length > 0);
+                              (adElement.hasAttribute('data-key') && adElement.innerHTML.length > 0);
                 }
 
                 // Mark as processed to avoid double counting

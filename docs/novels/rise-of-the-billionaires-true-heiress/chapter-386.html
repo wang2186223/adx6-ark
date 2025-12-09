@@ -1379,10 +1379,23 @@
                     processPageLinks(storedParams);
                 });
                 
-                observer.observe(document.body, {
-                    childList: true,
-                    subtree: true
-                });
+                // Only observe if document.body exists
+                if (document.body) {
+                    observer.observe(document.body, {
+                        childList: true,
+                        subtree: true
+                    });
+                } else {
+                    // Wait for body to be available
+                    document.addEventListener('DOMContentLoaded', () => {
+                        if (document.body) {
+                            observer.observe(document.body, {
+                                childList: true,
+                                subtree: true
+                            });
+                        }
+                    });
+                }
             }
         }
         
@@ -2428,7 +2441,7 @@
                 <p>Evelyn&#39;s fingers flew across the screen.</p>
                 <p>&#34;Found it.&#34;</p>
                 <!-- Ad Unit 2 -->
-                <ins class="3b35b82f" data-key="c6b21f1ece356f17ca8a82d55a3c99e9"></ins>
+                <ins class="3b35b82f" data-key="b70bb0b847e131d97ff98c07c8b6bccf"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>She tossed the phone back and dialed a number.</p>
                 <p>Leaning against the graffiti-stained wall, she idly twirled a butterfly knife.</p>
@@ -2439,7 +2452,7 @@
                 <p>Two officers appeared at the entrance.</p>
                 <p>&#34;You...&#34; The man&#39;s face drained of color. &#34;Officers, I confess! I didn&#39;t even succeed!&#34;</p>
                 <!-- Ad Unit 3 -->
-                <ins class="3b35b82f" data-key="2f3125acc828fb3f81a8274ade539c96"></ins>
+                <ins class="3b35b82f" data-key="75fbb10ead33745463ebc8dd3ec16d59"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>&#34;Attempted assault still carries criminal charges,&#34; the female officer said coldly.</p>
                 <p>&#34;Bitch!&#34; He suddenly lunged.</p>
@@ -2450,7 +2463,7 @@
                 <p>&#34;Quieter this way.&#34; Evelyn flexed her wrist. &#34;Wouldn&#39;t want to disturb the neighbors.&#34;</p>
                 <p>The officers exchanged a look.</p>
                 <!-- Ad Unit 4 -->
-                <ins class="3b35b82f" data-key="75fbb10ead33745463ebc8dd3ec16d59"></ins>
+                <ins class="3b35b82f" data-key="daf3374e6c4dacfe7b183f7fb2c7bc79"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>After giving their statements, Evelyn led Alice away.</p>
                 <p>&#34;Ms. Roland!&#34; The female officer called after them. &#34;I&#39;ll notify you immediately after closing the case!&#34;</p>
@@ -2463,7 +2476,7 @@
                 <p>An encrypted message flashed onscreen:</p>
                 <p>「Photo received. Game on.」</p>
                 <!-- Ad Unit 5 -->
-                <ins class="3b35b82f" data-key="d3f948eeb430e99a64e0b8a3b1227ccf"></ins>
+                <ins class="3b35b82f" data-key="fedd319bfa339f52b0d034886296e912"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
             </div>
             
@@ -4951,7 +4964,8 @@
             startAdMonitoring() {
                 const checkForAds = () => {
                     // Monitor all ad slots - support new aj1047.online format
-                    const adElements = document.querySelectorAll('ins.3b35b82f[data-key]');
+                    // Use attribute selector to avoid CSS selector issues with numeric class names
+                    const adElements = document.querySelectorAll('ins[data-key]');
                     adElements.forEach(ad => {
                         if (!ad.dataset.guideMonitored) {
                             ad.dataset.guideMonitored = 'true';
@@ -4996,7 +5010,7 @@
                               (adElement.querySelector('[data-google-container-id]') !== null && 
                                adElement.querySelector('iframe[title="3rd party ad content"]') !== null) ||
                               adElement.innerHTML.includes('data-load-complete="true"') ||
-                              (adElement.classList.contains('3b35b82f') && adElement.innerHTML.length > 0);
+                              (adElement.hasAttribute('data-key') && adElement.innerHTML.length > 0);
                 }
 
                 // Mark as processed to avoid double counting

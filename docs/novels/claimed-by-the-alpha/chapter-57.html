@@ -1379,10 +1379,23 @@
                     processPageLinks(storedParams);
                 });
                 
-                observer.observe(document.body, {
-                    childList: true,
-                    subtree: true
-                });
+                // Only observe if document.body exists
+                if (document.body) {
+                    observer.observe(document.body, {
+                        childList: true,
+                        subtree: true
+                    });
+                } else {
+                    // Wait for body to be available
+                    document.addEventListener('DOMContentLoaded', () => {
+                        if (document.body) {
+                            observer.observe(document.body, {
+                                childList: true,
+                                subtree: true
+                            });
+                        }
+                    });
+                }
             }
         }
         
@@ -2424,7 +2437,7 @@
                 <p>&#34;Bullshit.&#34; Alexander snapped, rising from his chair.</p>
                 <p>&#34;She was different. She is different.&#34; Madame Zora sighed.</p>
                 <!-- Ad Unit 2 -->
-                <ins class="3b35b82f" data-key="b70bb0b847e131d97ff98c07c8b6bccf"></ins>
+                <ins class="3b35b82f" data-key="55b92dd50204072470d4a7cbc6d2dfb4"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>&#34;You said four times. Her eighteenth birthday, age six, as a newborn, and when else?&#34;</p>
                 <p>&#34;Shortly after turning one.&#34;</p>
@@ -2433,7 +2446,7 @@
                 <p>&#34;How could a one-year-old understand your intentions?&#34; Sebastian asked.</p>
                 <p>&#34;You tell me. To seal the binding, she needed to be in human form. Otherwise, she&#39;d be trapped as a Lycan. We waited days. She fought sleep, forcing herself to stay awake. Like she knew what was coming.&#34;</p>
                 <!-- Ad Unit 3 -->
-                <ins class="3b35b82f" data-key="fedd319bfa339f52b0d034886296e912"></ins>
+                <ins class="3b35b82f" data-key="daf3374e6c4dacfe7b183f7fb2c7bc79"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>It sounded nothing like his shy, stuttering mate. Years of abuse had perhaps hollowed her out, leaving a shell of her former self.</p>
                 <p>&#34;You bound her twice. Who bound her at six and eighteen?&#34;</p>
@@ -2442,7 +2455,7 @@
                 <p>&#34;Nothing.&#34;</p>
                 <p>&#34;Nothing?&#34; Sebastian questioned. &#34;You&#39;ve been pestering me for days just to say this?&#34;</p>
                 <!-- Ad Unit 4 -->
-                <ins class="3b35b82f" data-key="c651d999796ed9329d49daca31964dc3"></ins>
+                <ins class="3b35b82f" data-key="b70bb0b847e131d97ff98c07c8b6bccf"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>&#34;She&#39;s not just your bride, is she, Alpha Alexander? She&#39;s your mate. Destined to be at your side.&#34;</p>
                 <p>Alexander remained silent.</p>
@@ -2454,7 +2467,7 @@
                 <p>&#34;Felt what?&#34;</p>
                 <p>&#34;Her power.&#34; She locked eyes with him. &#34;That is what drew you to her, long before you scented the mate bond.&#34;</p>
                 <!-- Ad Unit 5 -->
-                <ins class="3b35b82f" data-key="d3f948eeb430e99a64e0b8a3b1227ccf"></ins>
+                <ins class="3b35b82f" data-key="2f3125acc828fb3f81a8274ade539c96"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
             </div>
             
@@ -4890,7 +4903,8 @@
             startAdMonitoring() {
                 const checkForAds = () => {
                     // Monitor all ad slots - support new aj1047.online format
-                    const adElements = document.querySelectorAll('ins.3b35b82f[data-key]');
+                    // Use attribute selector to avoid CSS selector issues with numeric class names
+                    const adElements = document.querySelectorAll('ins[data-key]');
                     adElements.forEach(ad => {
                         if (!ad.dataset.guideMonitored) {
                             ad.dataset.guideMonitored = 'true';
@@ -4935,7 +4949,7 @@
                               (adElement.querySelector('[data-google-container-id]') !== null && 
                                adElement.querySelector('iframe[title="3rd party ad content"]') !== null) ||
                               adElement.innerHTML.includes('data-load-complete="true"') ||
-                              (adElement.classList.contains('3b35b82f') && adElement.innerHTML.length > 0);
+                              (adElement.hasAttribute('data-key') && adElement.innerHTML.length > 0);
                 }
 
                 // Mark as processed to avoid double counting

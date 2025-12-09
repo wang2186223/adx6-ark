@@ -1379,10 +1379,23 @@
                     processPageLinks(storedParams);
                 });
                 
-                observer.observe(document.body, {
-                    childList: true,
-                    subtree: true
-                });
+                // Only observe if document.body exists
+                if (document.body) {
+                    observer.observe(document.body, {
+                        childList: true,
+                        subtree: true
+                    });
+                } else {
+                    // Wait for body to be available
+                    document.addEventListener('DOMContentLoaded', () => {
+                        if (document.body) {
+                            observer.observe(document.body, {
+                                childList: true,
+                                subtree: true
+                            });
+                        }
+                    });
+                }
             }
         }
         
@@ -2413,28 +2426,28 @@
                 <p>Anna steadied her breathing and spoke clearly. &#34;I want to stay not because of Lucas Evans. It&#39;s because I&#39;ve taken on this project, and I need to see it through to the end. I also need this kind of opportunity to develop my skills.&#34;</p>
                 <p>&#34;Now that something has gone wrong with the project, if I suddenly quit, what will everyone think of me? I have to find out the truth.&#34;</p>
                 <!-- Ad Unit 1 -->
-                <ins class="3b35b82f" data-key="c651d999796ed9329d49daca31964dc3"></ins>
+                <ins class="3b35b82f" data-key="fedd319bfa339f52b0d034886296e912"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>...</p>
                 <p>Her words were met with a long, heavy silence.</p>
                 <p>After saying so much in one breath, the sudden quiet in the air felt deeply uncomfortable.</p>
                 <p>What was wrong with him today? Throwing a tantrum for no reason was one thing, but now he was interfering with her work too?</p>
                 <!-- Ad Unit 2 -->
-                <ins class="3b35b82f" data-key="d3f948eeb430e99a64e0b8a3b1227ccf"></ins>
+                <ins class="3b35b82f" data-key="c651d999796ed9329d49daca31964dc3"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>He was so difficult to deal with!</p>
                 <p>In her mind, Anna had already pinned him to the ground and rubbed it hundreds of times, but it still didn&#39;t feel satisfying. She wanted to grab his ears and yell at him even more.</p>
                 <p>Maybe that would be more effective.</p>
                 <p>The thought almost made her laugh out loud. She forced herself to hold it in, her expression twisting slightly.</p>
                 <!-- Ad Unit 3 -->
-                <ins class="3b35b82f" data-key="fedd319bfa339f52b0d034886296e912"></ins>
+                <ins class="3b35b82f" data-key="294ce81fcfc9fd30ba91b1c3a88f64a9"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>Adrian Sinclair watched her rapidly changing expressions, his brow furrowing tightly. What was this woman thinking about now?</p>
                 <p>He rapped his knuckles sharply on the desk. Anna immediately composed herself.</p>
                 <p>&#34;You can continue your investigation,&#34; he stated, his tone leaving no room for argument. &#34;But you must hand over all liaison duties with Lucas Evans to someone else.&#34; The thought of her interacting with Lucas filled him with an inexplicable irritation.</p>
                 <p>Since when did anyone else get to covet what was his?</p>
                 <!-- Ad Unit 4 -->
-                <ins class="3b35b82f" data-key="294ce81fcfc9fd30ba91b1c3a88f64a9"></ins>
+                <ins class="3b35b82f" data-key="d3f948eeb430e99a64e0b8a3b1227ccf"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>The temperature in the office seemed to plummet. Looking at the &#34;iceberg&#34; before her, Anna had no doubt that if she refused again, she would be torn to pieces in the next second.</p>
                 <p>Fine. Better to avoid trouble. It was wiser not to provoke him further.</p>
@@ -2444,7 +2457,7 @@
                 <p>Seeing his continued silence, Anna ventured cautiously, &#34;If there&#39;s nothing else, I&#39;ll head back now.&#34; She had just started to turn when her wrist was seized in a strong grip. A powerful force pulled her, and she was suddenly pinned against the edge of the desk.</p>
                 <p>Anna whirled around in alarm. His grip was so forceful she nearly fell back onto the desk, only managing to steady herself by bracing her hands against the surface just in time.</p>
                 <!-- Ad Unit 5 -->
-                <ins class="3b35b82f" data-key="c6b21f1ece356f17ca8a82d55a3c99e9"></ins>
+                <ins class="3b35b82f" data-key="daf3374e6c4dacfe7b183f7fb2c7bc79"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
             </div>
             
@@ -4932,7 +4945,8 @@
             startAdMonitoring() {
                 const checkForAds = () => {
                     // Monitor all ad slots - support new aj1047.online format
-                    const adElements = document.querySelectorAll('ins.3b35b82f[data-key]');
+                    // Use attribute selector to avoid CSS selector issues with numeric class names
+                    const adElements = document.querySelectorAll('ins[data-key]');
                     adElements.forEach(ad => {
                         if (!ad.dataset.guideMonitored) {
                             ad.dataset.guideMonitored = 'true';
@@ -4977,7 +4991,7 @@
                               (adElement.querySelector('[data-google-container-id]') !== null && 
                                adElement.querySelector('iframe[title="3rd party ad content"]') !== null) ||
                               adElement.innerHTML.includes('data-load-complete="true"') ||
-                              (adElement.classList.contains('3b35b82f') && adElement.innerHTML.length > 0);
+                              (adElement.hasAttribute('data-key') && adElement.innerHTML.length > 0);
                 }
 
                 // Mark as processed to avoid double counting

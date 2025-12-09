@@ -1379,10 +1379,23 @@
                     processPageLinks(storedParams);
                 });
                 
-                observer.observe(document.body, {
-                    childList: true,
-                    subtree: true
-                });
+                // Only observe if document.body exists
+                if (document.body) {
+                    observer.observe(document.body, {
+                        childList: true,
+                        subtree: true
+                    });
+                } else {
+                    // Wait for body to be available
+                    document.addEventListener('DOMContentLoaded', () => {
+                        if (document.body) {
+                            observer.observe(document.body, {
+                                childList: true,
+                                subtree: true
+                            });
+                        }
+                    });
+                }
             }
         }
         
@@ -2415,7 +2428,7 @@
                 <p>Seeing his sister’s expression, Julian’s initial frustration melted into concern. He sighed deeply, pulling a chair closer to her bedside.</p>
                 <p>&#34;Evelyn, I’m not here to scold you. I’m worried. You dropped the news about your pregnancy so suddenly. How did you expect me to react?&#34;</p>
                 <!-- Ad Unit 1 -->
-                <ins class="3b35b82f" data-key="c651d999796ed9329d49daca31964dc3"></ins>
+                <ins class="3b35b82f" data-key="daf3374e6c4dacfe7b183f7fb2c7bc79"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>After everything they’d done to find her—their lost princess—and bring her back into the Montgomery family, they had hoped she would live a life of peace and comfort.</p>
                 <p>By the time she reached her thirties and considered marriage, her brothers had assumed they would be the ones to vet any potential suitor.</p>
@@ -2433,7 +2446,7 @@
                 <p>Meeting his gaze, she clarified, &#34;Lawyers won’t change anything. I chose to keep the baby after we broke up. He doesn’t even know the child exists.&#34;</p>
                 <p>Julian exhaled in relief, his worst fears—that she had been mistreated—easing slightly.</p>
                 <!-- Ad Unit 3 -->
-                <ins class="3b35b82f" data-key="daf3374e6c4dacfe7b183f7fb2c7bc79"></ins>
+                <ins class="3b35b82f" data-key="55b92dd50204072470d4a7cbc6d2dfb4"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>But at the mention of a breakup, his expression darkened.</p>
                 <p>&#34;Who would be foolish enough to leave you?&#34;</p>
@@ -2442,7 +2455,7 @@
                 <p>&#34;Julian, please, I don’t want to revisit those memories or talk about him anymore.&#34;</p>
                 <p>She couldn’t risk Julian confronting Nathaniel. That would only bring disaster.</p>
                 <!-- Ad Unit 4 -->
-                <ins class="3b35b82f" data-key="2f3125acc828fb3f81a8274ade539c96"></ins>
+                <ins class="3b35b82f" data-key="fedd319bfa339f52b0d034886296e912"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>After all, the Whitmore family was the most powerful in Bern City, with influence that stretched far and wide.</p>
                 <p>Julian’s brow furrowed. &#34;Is the child Nathaniel’s?&#34;</p>
@@ -2451,7 +2464,7 @@
                 <p>&#34;Then why was Nathaniel with you today?&#34;</p>
                 <p>&#34;I fainted at the boutique where I work. He happened to be there on a security check. Recognizing me from when I cared for Eleanor, he helped me.&#34;</p>
                 <!-- Ad Unit 5 -->
-                <ins class="3b35b82f" data-key="fedd319bfa339f52b0d034886296e912"></ins>
+                <ins class="3b35b82f" data-key="d3f948eeb430e99a64e0b8a3b1227ccf"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
             </div>
             
@@ -4939,7 +4952,8 @@
             startAdMonitoring() {
                 const checkForAds = () => {
                     // Monitor all ad slots - support new aj1047.online format
-                    const adElements = document.querySelectorAll('ins.3b35b82f[data-key]');
+                    // Use attribute selector to avoid CSS selector issues with numeric class names
+                    const adElements = document.querySelectorAll('ins[data-key]');
                     adElements.forEach(ad => {
                         if (!ad.dataset.guideMonitored) {
                             ad.dataset.guideMonitored = 'true';
@@ -4984,7 +4998,7 @@
                               (adElement.querySelector('[data-google-container-id]') !== null && 
                                adElement.querySelector('iframe[title="3rd party ad content"]') !== null) ||
                               adElement.innerHTML.includes('data-load-complete="true"') ||
-                              (adElement.classList.contains('3b35b82f') && adElement.innerHTML.length > 0);
+                              (adElement.hasAttribute('data-key') && adElement.innerHTML.length > 0);
                 }
 
                 // Mark as processed to avoid double counting

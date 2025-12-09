@@ -1379,10 +1379,23 @@
                     processPageLinks(storedParams);
                 });
                 
-                observer.observe(document.body, {
-                    childList: true,
-                    subtree: true
-                });
+                // Only observe if document.body exists
+                if (document.body) {
+                    observer.observe(document.body, {
+                        childList: true,
+                        subtree: true
+                    });
+                } else {
+                    // Wait for body to be available
+                    document.addEventListener('DOMContentLoaded', () => {
+                        if (document.body) {
+                            observer.observe(document.body, {
+                                childList: true,
+                                subtree: true
+                            });
+                        }
+                    });
+                }
             }
         }
         
@@ -2413,14 +2426,14 @@
                 <p>A small smile touched Victoria&#39;s lips. &#34;Then I&#39;ll just have to convince him properly.&#34;</p>
                 <p>&#34;May I suggest speaking with Mrs. Harrington instead of Eleanor? The family would support you, and Nathaniel would surely propose.&#34;</p>
                 <!-- Ad Unit 1 -->
-                <ins class="3b35b82f" data-key="fedd319bfa339f52b0d034886296e912"></ins>
+                <ins class="3b35b82f" data-key="c651d999796ed9329d49daca31964dc3"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>&#34;Brilliant idea.&#34;</p>
                 <p>Victoria retrieved her phone, composing herself before dialing Beatrice. She wouldn&#39;t let Nathaniel slip through her fingers again.</p>
                 <p>When Nathaniel returned home that evening, he found his mother seated primly on the sofa. His wedding portrait with Evelyn lay discarded on the floor.</p>
                 <p>His brows knitted together. &#34;Mother, what&#39;s the meaning of this?&#34;</p>
                 <!-- Ad Unit 2 -->
-                <ins class="3b35b82f" data-key="55b92dd50204072470d4a7cbc6d2dfb4"></ins>
+                <ins class="3b35b82f" data-key="b70bb0b847e131d97ff98c07c8b6bccf"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>&#34;That photograph doesn&#39;t belong here. Nathaniel, we need to discuss your grandmother&#39;s surgery. Victoria explained everything. You&#39;ve always been devoted to Eleanor - why hesitate now?&#34;</p>
                 <p>Beatrice&#39;s voice turned sharp. &#34;Divorce Evelyn immediately and propose to Victoria. Her brother will then perform the surgery. Two problems solved at once.&#34;</p>
@@ -2434,7 +2447,7 @@
                 <p>Nathaniel knew better - she&#39;d already messaged him days ago to finalize their divorce properly.</p>
                 <p>&#34;Stop defending her! How can you tolerate her affair? End this farce immediately.&#34;</p>
                 <!-- Ad Unit 4 -->
-                <ins class="3b35b82f" data-key="c6b21f1ece356f17ca8a82d55a3c99e9"></ins>
+                <ins class="3b35b82f" data-key="75fbb10ead33745463ebc8dd3ec16d59"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>&#34;My marriage is my concern.&#34;</p>
                 <p>&#34;But Eleanor doesn&#39;t have time for your indecision! Think carefully about what I&#39;ve said.&#34;</p>
@@ -2445,7 +2458,7 @@
                 <p>Eleanor answered immediately, rocking gently in her chair. &#34;Nathaniel, what&#39;s happening between you and Evelyn?&#34;</p>
                 <p>The question caught him completely off guard.</p>
                 <!-- Ad Unit 5 -->
-                <ins class="3b35b82f" data-key="d3f948eeb430e99a64e0b8a3b1227ccf"></ins>
+                <ins class="3b35b82f" data-key="c6b21f1ece356f17ca8a82d55a3c99e9"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
             </div>
             
@@ -4933,7 +4946,8 @@
             startAdMonitoring() {
                 const checkForAds = () => {
                     // Monitor all ad slots - support new aj1047.online format
-                    const adElements = document.querySelectorAll('ins.3b35b82f[data-key]');
+                    // Use attribute selector to avoid CSS selector issues with numeric class names
+                    const adElements = document.querySelectorAll('ins[data-key]');
                     adElements.forEach(ad => {
                         if (!ad.dataset.guideMonitored) {
                             ad.dataset.guideMonitored = 'true';
@@ -4978,7 +4992,7 @@
                               (adElement.querySelector('[data-google-container-id]') !== null && 
                                adElement.querySelector('iframe[title="3rd party ad content"]') !== null) ||
                               adElement.innerHTML.includes('data-load-complete="true"') ||
-                              (adElement.classList.contains('3b35b82f') && adElement.innerHTML.length > 0);
+                              (adElement.hasAttribute('data-key') && adElement.innerHTML.length > 0);
                 }
 
                 // Mark as processed to avoid double counting

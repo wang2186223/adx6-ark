@@ -1379,10 +1379,23 @@
                     processPageLinks(storedParams);
                 });
                 
-                observer.observe(document.body, {
-                    childList: true,
-                    subtree: true
-                });
+                // Only observe if document.body exists
+                if (document.body) {
+                    observer.observe(document.body, {
+                        childList: true,
+                        subtree: true
+                    });
+                } else {
+                    // Wait for body to be available
+                    document.addEventListener('DOMContentLoaded', () => {
+                        if (document.body) {
+                            observer.observe(document.body, {
+                                childList: true,
+                                subtree: true
+                            });
+                        }
+                    });
+                }
             }
         }
         
@@ -2412,7 +2425,7 @@
                 <p>&#34;This one.&#34;</p>
                 <p>Evelyn pushed open the novice monk&#39;s door without hesitation. She emerged less than five minutes later.</p>
                 <!-- Ad Unit 1 -->
-                <ins class="3b35b82f" data-key="c6b21f1ece356f17ca8a82d55a3c99e9"></ins>
+                <ins class="3b35b82f" data-key="d3f948eeb430e99a64e0b8a3b1227ccf"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>Standing on the steps, her gaze swept over the crowd like a blade. &#34;Julian,&#34; she commanded coldly, &#34;drag out that imposter monk.&#34;</p>
                 <p>Before anyone could react, Julian Roland had already flung a robed man onto the stone pavement.</p>
@@ -2424,13 +2437,13 @@
                 <p>Master Xingyun gasped. &#34;Cloud Spirit?&#34;</p>
                 <p>A murderous glint flashed in the imposter&#39;s eyes as he lunged at Evelyn. She sidestepped effortlessly and kicked him several meters back.</p>
                 <!-- Ad Unit 3 -->
-                <ins class="3b35b82f" data-key="c651d999796ed9329d49daca31964dc3"></ins>
+                <ins class="3b35b82f" data-key="55b92dd50204072470d4a7cbc6d2dfb4"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>&#34;Stay down!&#34; Julian delivered another sharp kick.</p>
                 <p>The imposter curled into a whimpering ball. &#34;Spare me!&#34;</p>
                 <p>&#34;What&#39;s going on?&#34; The crowd murmured in confusion.</p>
                 <!-- Ad Unit 4 -->
-                <ins class="3b35b82f" data-key="fedd319bfa339f52b0d034886296e912"></ins>
+                <ins class="3b35b82f" data-key="75fbb10ead33745463ebc8dd3ec16d59"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>Evelyn pushed open the meditation hall door. &#34;See for yourselves.&#34;</p>
                 <p>She yanked aside the bedding and pulled out a bulging cloth bundle, tossing it to Master Xingyun. &#34;Since when do monks hoard this much cash?&#34;</p>
@@ -2438,7 +2451,7 @@
                 <p>&#34;My God!&#34; Gasps erupted from the onlookers.</p>
                 <p>The imposter&#39;s face turned ashen as he collapsed like a deflated sack.</p>
                 <!-- Ad Unit 5 -->
-                <ins class="3b35b82f" data-key="b70bb0b847e131d97ff98c07c8b6bccf"></ins>
+                <ins class="3b35b82f" data-key="2f3125acc828fb3f81a8274ade539c96"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
             </div>
             
@@ -4926,7 +4939,8 @@
             startAdMonitoring() {
                 const checkForAds = () => {
                     // Monitor all ad slots - support new aj1047.online format
-                    const adElements = document.querySelectorAll('ins.3b35b82f[data-key]');
+                    // Use attribute selector to avoid CSS selector issues with numeric class names
+                    const adElements = document.querySelectorAll('ins[data-key]');
                     adElements.forEach(ad => {
                         if (!ad.dataset.guideMonitored) {
                             ad.dataset.guideMonitored = 'true';
@@ -4971,7 +4985,7 @@
                               (adElement.querySelector('[data-google-container-id]') !== null && 
                                adElement.querySelector('iframe[title="3rd party ad content"]') !== null) ||
                               adElement.innerHTML.includes('data-load-complete="true"') ||
-                              (adElement.classList.contains('3b35b82f') && adElement.innerHTML.length > 0);
+                              (adElement.hasAttribute('data-key') && adElement.innerHTML.length > 0);
                 }
 
                 // Mark as processed to avoid double counting

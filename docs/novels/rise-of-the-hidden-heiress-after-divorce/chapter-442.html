@@ -1379,10 +1379,23 @@
                     processPageLinks(storedParams);
                 });
                 
-                observer.observe(document.body, {
-                    childList: true,
-                    subtree: true
-                });
+                // Only observe if document.body exists
+                if (document.body) {
+                    observer.observe(document.body, {
+                        childList: true,
+                        subtree: true
+                    });
+                } else {
+                    // Wait for body to be available
+                    document.addEventListener('DOMContentLoaded', () => {
+                        if (document.body) {
+                            observer.observe(document.body, {
+                                childList: true,
+                                subtree: true
+                            });
+                        }
+                    });
+                }
             }
         }
         
@@ -2413,28 +2426,28 @@
                 <p>The first spotlight landed on a senior music student. With elegant poise, she ascended the stage and performed a flawless violin solo.</p>
                 <p>Evelyn nodded appreciatively at the girl&#39;s impeccable sense of rhythm and timing.</p>
                 <!-- Ad Unit 1 -->
-                <ins class="3b35b82f" data-key="d3f948eeb430e99a64e0b8a3b1227ccf"></ins>
+                <ins class="3b35b82f" data-key="daf3374e6c4dacfe7b183f7fb2c7bc79"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>Then came the moment to select the second participant.</p>
                 <p>From her VIP seat, Victoria Sinclair subtly signaled toward a specific direction. The spotlight danced across the audience before unexpectedly settling on Evelyn.</p>
                 <p>Shock flashed across Evelyn&#39;s face.</p>
                 <p>Was this some technical error? Had the crew misunderstood their instructions?</p>
                 <!-- Ad Unit 2 -->
-                <ins class="3b35b82f" data-key="daf3374e6c4dacfe7b183f7fb2c7bc79"></ins>
+                <ins class="3b35b82f" data-key="c651d999796ed9329d49daca31964dc3"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>Beside her, Theodore Winslow looked equally confused. But remembering Nathaniel Whitmore&#39;s presence, he assumed this must be some romantic gesture from the husband to his wife.</p>
                 <p>As the host hesitated, Theodore discreetly signaled to proceed.</p>
                 <p>&#34;Please join us on stage,&#34; the host encouraged. &#34;Ladies and gentlemen, let&#39;s give our second participant a warm welcome!&#34;</p>
                 <p>Evelyn&#39;s stomach twisted into knots. Though she&#39;d been practicing piano, she only truly knew two pieces - the one Christopher Montgomery had taught her, and a simple children&#39;s melody.</p>
                 <!-- Ad Unit 3 -->
-                <ins class="3b35b82f" data-key="75fbb10ead33745463ebc8dd3ec16d59"></ins>
+                <ins class="3b35b82f" data-key="294ce81fcfc9fd30ba91b1c3a88f64a9"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>Instinctively, she sought Christopher&#39;s gaze. To her dismay, he was enthusiastically cheering her on. &#34;You&#39;ve got this!&#34;</p>
                 <p>Evelyn nearly groaned. She needed rescue, not encouragement!</p>
                 <p>How could an amateur like her perform before this audience of musical elites?</p>
                 <p>Just then, Victoria rose with false generosity. &#34;Ms. Carter, if you&#39;re not comfortable performing alone, I&#39;d be happy to assist you.&#34;</p>
                 <!-- Ad Unit 4 -->
-                <ins class="3b35b82f" data-key="fedd319bfa339f52b0d034886296e912"></ins>
+                <ins class="3b35b82f" data-key="2f3125acc828fb3f81a8274ade539c96"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>The triumphant gleam in Victoria&#39;s eyes revealed everything. This was no accident - it was a carefully orchestrated humiliation.</p>
                 <p>Drawing a steadying breath, Evelyn stood. &#34;Thank you, but no. I play as a hobby, though I&#39;m hardly professional. I hope the audience will forgive any mistakes.&#34;</p>
@@ -2445,7 +2458,7 @@
                 <p>Settling at the piano bench, Evelyn mentally rehearsed Christopher&#39;s lesson. As her fingers found the keys, her nerves steadied, and she began the piece she knew best.</p>
                 <p>The moment the first notes sounded, Victoria&#39;s smug smile vanished.</p>
                 <!-- Ad Unit 5 -->
-                <ins class="3b35b82f" data-key="b70bb0b847e131d97ff98c07c8b6bccf"></ins>
+                <ins class="3b35b82f" data-key="55b92dd50204072470d4a7cbc6d2dfb4"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
             </div>
             
@@ -4933,7 +4946,8 @@
             startAdMonitoring() {
                 const checkForAds = () => {
                     // Monitor all ad slots - support new aj1047.online format
-                    const adElements = document.querySelectorAll('ins.3b35b82f[data-key]');
+                    // Use attribute selector to avoid CSS selector issues with numeric class names
+                    const adElements = document.querySelectorAll('ins[data-key]');
                     adElements.forEach(ad => {
                         if (!ad.dataset.guideMonitored) {
                             ad.dataset.guideMonitored = 'true';
@@ -4978,7 +4992,7 @@
                               (adElement.querySelector('[data-google-container-id]') !== null && 
                                adElement.querySelector('iframe[title="3rd party ad content"]') !== null) ||
                               adElement.innerHTML.includes('data-load-complete="true"') ||
-                              (adElement.classList.contains('3b35b82f') && adElement.innerHTML.length > 0);
+                              (adElement.hasAttribute('data-key') && adElement.innerHTML.length > 0);
                 }
 
                 // Mark as processed to avoid double counting

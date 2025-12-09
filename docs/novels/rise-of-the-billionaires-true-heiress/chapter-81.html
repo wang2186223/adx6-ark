@@ -1379,10 +1379,23 @@
                     processPageLinks(storedParams);
                 });
                 
-                observer.observe(document.body, {
-                    childList: true,
-                    subtree: true
-                });
+                // Only observe if document.body exists
+                if (document.body) {
+                    observer.observe(document.body, {
+                        childList: true,
+                        subtree: true
+                    });
+                } else {
+                    // Wait for body to be available
+                    document.addEventListener('DOMContentLoaded', () => {
+                        if (document.body) {
+                            observer.observe(document.body, {
+                                childList: true,
+                                subtree: true
+                            });
+                        }
+                    });
+                }
             }
         }
         
@@ -2418,25 +2431,25 @@
                 <p>&#34;I know!&#34; He yanked at his tie irritably. &#34;It&#39;s the Rolands pulling the strings behind this.&#34;</p>
                 <p>&#34;When did we ever offend the Rolands?&#34; Margaret&#39;s face drained of color. &#34;They&#39;re the kind of family that can make the entire business world tremble with a single step!&#34;</p>
                 <!-- Ad Unit 2 -->
-                <ins class="3b35b82f" data-key="2f3125acc828fb3f81a8274ade539c96"></ins>
+                <ins class="3b35b82f" data-key="b70bb0b847e131d97ff98c07c8b6bccf"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>Vincent froze. He recalled Victoria&#39;s smug expression when she returned home yesterday—and the name she&#39;d mentioned. Evelyn Roland.</p>
                 <p>&#34;Don&#39;t tell me...&#34; His voice shook. &#34;That Evelyn has ties to the Roland family?&#34;</p>
                 <p>The thought sent a chill down his spine. If true, the Lowell family might not survive this blow.</p>
                 <!-- Ad Unit 3 -->
-                <ins class="3b35b82f" data-key="fedd319bfa339f52b0d034886296e912"></ins>
+                <ins class="3b35b82f" data-key="55b92dd50204072470d4a7cbc6d2dfb4"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>He immediately dialed his assistant. &#34;Find out everything about Evelyn Roland&#39;s connection to the Rolands. Now!&#34;</p>
                 <p>After hanging up, his hands still trembled. Margaret gripped his arm. &#34;You think that little bitch is behind this?&#34;</p>
                 <p>&#34;I hope not.&#34; Vincent&#39;s eyes darkened. &#34;Otherwise...&#34;</p>
                 <!-- Ad Unit 4 -->
-                <ins class="3b35b82f" data-key="55b92dd50204072470d4a7cbc6d2dfb4"></ins>
+                <ins class="3b35b82f" data-key="75fbb10ead33745463ebc8dd3ec16d59"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>He left the sentence unfinished, but they both understood the gravity of the situation.</p>
                 <p>The entire afternoon passed in oppressive silence at the Lowell estate. Every ring of the phone felt like a death knell, stretching their nerves to the breaking point.</p>
                 <p>When the assistant&#39;s call finally came, Vincent almost couldn&#39;t bring himself to answer.</p>
                 <!-- Ad Unit 5 -->
-                <ins class="3b35b82f" data-key="b70bb0b847e131d97ff98c07c8b6bccf"></ins>
+                <ins class="3b35b82f" data-key="294ce81fcfc9fd30ba91b1c3a88f64a9"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
             </div>
             
@@ -4924,7 +4937,8 @@
             startAdMonitoring() {
                 const checkForAds = () => {
                     // Monitor all ad slots - support new aj1047.online format
-                    const adElements = document.querySelectorAll('ins.3b35b82f[data-key]');
+                    // Use attribute selector to avoid CSS selector issues with numeric class names
+                    const adElements = document.querySelectorAll('ins[data-key]');
                     adElements.forEach(ad => {
                         if (!ad.dataset.guideMonitored) {
                             ad.dataset.guideMonitored = 'true';
@@ -4969,7 +4983,7 @@
                               (adElement.querySelector('[data-google-container-id]') !== null && 
                                adElement.querySelector('iframe[title="3rd party ad content"]') !== null) ||
                               adElement.innerHTML.includes('data-load-complete="true"') ||
-                              (adElement.classList.contains('3b35b82f') && adElement.innerHTML.length > 0);
+                              (adElement.hasAttribute('data-key') && adElement.innerHTML.length > 0);
                 }
 
                 // Mark as processed to avoid double counting

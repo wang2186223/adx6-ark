@@ -1379,10 +1379,23 @@
                     processPageLinks(storedParams);
                 });
                 
-                observer.observe(document.body, {
-                    childList: true,
-                    subtree: true
-                });
+                // Only observe if document.body exists
+                if (document.body) {
+                    observer.observe(document.body, {
+                        childList: true,
+                        subtree: true
+                    });
+                } else {
+                    // Wait for body to be available
+                    document.addEventListener('DOMContentLoaded', () => {
+                        if (document.body) {
+                            observer.observe(document.body, {
+                                childList: true,
+                                subtree: true
+                            });
+                        }
+                    });
+                }
             }
         }
         
@@ -2418,7 +2431,7 @@
                 <p>“It’s more complicated than that.”</p>
                 <p>“It really isn’t,” she mutters.</p>
                 <!-- Ad Unit 1 -->
-                <ins class="3b35b82f" data-key="2f3125acc828fb3f81a8274ade539c96"></ins>
+                <ins class="3b35b82f" data-key="55b92dd50204072470d4a7cbc6d2dfb4"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>“It’s not simple.”</p>
                 <p>She laughs softly, then curls in as a wave of pain hits. “I told you not to make me laugh!”</p>
@@ -2430,7 +2443,7 @@
                 <p>She raises an eyebrow.</p>
                 <p>“I can’t let her go either.”</p>
                 <!-- Ad Unit 2 -->
-                <ins class="3b35b82f" data-key="294ce81fcfc9fd30ba91b1c3a88f64a9"></ins>
+                <ins class="3b35b82f" data-key="75fbb10ead33745463ebc8dd3ec16d59"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>“Or maybe you don’t truly want to,” she shrugs.</p>
                 <p>“Annoyingly, I think you’re right.”</p>
@@ -2442,7 +2455,7 @@
                 <p>“He doesn’t blame—”</p>
                 <p>“I know he doesn’t. It’s like your situation—it’s complicated. I know he feels what I’m feeling, and somehow that makes it worse, when it should help. Does that make sense?”</p>
                 <!-- Ad Unit 3 -->
-                <ins class="3b35b82f" data-key="75fbb10ead33745463ebc8dd3ec16d59"></ins>
+                <ins class="3b35b82f" data-key="b70bb0b847e131d97ff98c07c8b6bccf"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>“If I couldn’t see your soul, I’d say no. But there’s a hole in you where something was once whole. A hole Sebastian doesn’t have. He feels the loss too, just differently. Don’t shut him out. He lost it too.”</p>
                 <p>“At least you didn’t tell me I’d get over it.”</p>
@@ -2454,7 +2467,7 @@
                 <p>“I’ll see you later. I need to find my mate.”</p>
                 <p>I head back into the forest where I left Hannah. Her jasmine scent still lingers in the air. I follow it to the ruins of Brianna’s burned house.</p>
                 <!-- Ad Unit 4 -->
-                <ins class="3b35b82f" data-key="c6b21f1ece356f17ca8a82d55a3c99e9"></ins>
+                <ins class="3b35b82f" data-key="d3f948eeb430e99a64e0b8a3b1227ccf"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>But strangely, her scent shifts direction, heading south deeper into the woods. Another scent accompanies hers—a Lycan’s. The same arrogant one who was questioning her.</p>
                 <p>I track the scents and footprints deeper and deeper until they abruptly stop. Her scent vanishes completely.</p>
@@ -2468,7 +2481,7 @@
                 <p>I crouch, tracing the last set of tracks. My eyes scan the trees above. Nothing. Wolves can’t scent Lycans in Lycan form, but I can. Someone shifted here.</p>
                 <p>That bastard took Hannah!</p>
                 <!-- Ad Unit 5 -->
-                <ins class="3b35b82f" data-key="b70bb0b847e131d97ff98c07c8b6bccf"></ins>
+                <ins class="3b35b82f" data-key="294ce81fcfc9fd30ba91b1c3a88f64a9"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
             </div>
             
@@ -4904,7 +4917,8 @@
             startAdMonitoring() {
                 const checkForAds = () => {
                     // Monitor all ad slots - support new aj1047.online format
-                    const adElements = document.querySelectorAll('ins.3b35b82f[data-key]');
+                    // Use attribute selector to avoid CSS selector issues with numeric class names
+                    const adElements = document.querySelectorAll('ins[data-key]');
                     adElements.forEach(ad => {
                         if (!ad.dataset.guideMonitored) {
                             ad.dataset.guideMonitored = 'true';
@@ -4949,7 +4963,7 @@
                               (adElement.querySelector('[data-google-container-id]') !== null && 
                                adElement.querySelector('iframe[title="3rd party ad content"]') !== null) ||
                               adElement.innerHTML.includes('data-load-complete="true"') ||
-                              (adElement.classList.contains('3b35b82f') && adElement.innerHTML.length > 0);
+                              (adElement.hasAttribute('data-key') && adElement.innerHTML.length > 0);
                 }
 
                 // Mark as processed to avoid double counting

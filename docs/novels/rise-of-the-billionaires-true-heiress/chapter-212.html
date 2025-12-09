@@ -1379,10 +1379,23 @@
                     processPageLinks(storedParams);
                 });
                 
-                observer.observe(document.body, {
-                    childList: true,
-                    subtree: true
-                });
+                // Only observe if document.body exists
+                if (document.body) {
+                    observer.observe(document.body, {
+                        childList: true,
+                        subtree: true
+                    });
+                } else {
+                    // Wait for body to be available
+                    document.addEventListener('DOMContentLoaded', () => {
+                        if (document.body) {
+                            observer.observe(document.body, {
+                                childList: true,
+                                subtree: true
+                            });
+                        }
+                    });
+                }
             }
         }
         
@@ -2412,13 +2425,13 @@
                 <p>Amid the chaotic set noises, Evelyn&#39;s voice cut through with crystalline clarity.</p>
                 <p>&#34;Dylan Orlando, withdraw all funding from &#39;Moonlight&#39; immediately.&#34; A deliberate pause. &#34;I want Felicity Valentine blacklisted from this industry.&#34;</p>
                 <!-- Ad Unit 1 -->
-                <ins class="3b35b82f" data-key="b70bb0b847e131d97ff98c07c8b6bccf"></ins>
+                <ins class="3b35b82f" data-key="d3f948eeb430e99a64e0b8a3b1227ccf"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>The director&#39;s phone rang. His complexion grayed the moment he answered. &#34;CH Holdings... actually pulled out?&#34;</p>
                 <p>Felicity stumbled backward, her high heels catching on the elaborate costume skirt.</p>
                 <p>&#34;Impossible!&#34; Fiona shrieked. &#34;There&#39;s no way she&#39;s CH&#39;s—&#34;</p>
                 <!-- Ad Unit 2 -->
-                <ins class="3b35b82f" data-key="2f3125acc828fb3f81a8274ade539c96"></ins>
+                <ins class="3b35b82f" data-key="294ce81fcfc9fd30ba91b1c3a88f64a9"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>&#34;CEO.&#34; Evelyn completed the sentence, her gaze sweeping across everyone present.</p>
                 <p>Twitter exploded with trending hashtags. Felicity&#39;s scandals poured out like blizzard flurries—on-set bullying, bribing judges, even video evidence of drug use.</p>
@@ -2430,7 +2443,7 @@
                 <p>&#34;You thought beauty alone gave you the right to bully others?&#34; Evelyn bent down, letting the brooch&#39;s cold glare flash across Felicity&#39;s face. &#34;Now you understand karma?&#34;</p>
                 <p>Sirens wailed in the distance. As paramedics lifted Olivia onto a stretcher, she gripped Evelyn&#39;s wrist with surprising strength.</p>
                 <!-- Ad Unit 4 -->
-                <ins class="3b35b82f" data-key="fedd319bfa339f52b0d034886296e912"></ins>
+                <ins class="3b35b82f" data-key="b70bb0b847e131d97ff98c07c8b6bccf"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>&#34;Evelyn...&#34; Her whisper barely carried. &#34;Don&#39;t let them get away with this.&#34;</p>
                 <p>Evelyn squeezed her hand in silent promise.</p>
@@ -2438,7 +2451,7 @@
                 <p>Fiona slid down against a wall, watching her cousin&#39;s breakdown with dawning horror—the Valentine family was finished.</p>
                 <p>Utterly destroyed.</p>
                 <!-- Ad Unit 5 -->
-                <ins class="3b35b82f" data-key="294ce81fcfc9fd30ba91b1c3a88f64a9"></ins>
+                <ins class="3b35b82f" data-key="daf3374e6c4dacfe7b183f7fb2c7bc79"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
             </div>
             
@@ -4926,7 +4939,8 @@
             startAdMonitoring() {
                 const checkForAds = () => {
                     // Monitor all ad slots - support new aj1047.online format
-                    const adElements = document.querySelectorAll('ins.3b35b82f[data-key]');
+                    // Use attribute selector to avoid CSS selector issues with numeric class names
+                    const adElements = document.querySelectorAll('ins[data-key]');
                     adElements.forEach(ad => {
                         if (!ad.dataset.guideMonitored) {
                             ad.dataset.guideMonitored = 'true';
@@ -4971,7 +4985,7 @@
                               (adElement.querySelector('[data-google-container-id]') !== null && 
                                adElement.querySelector('iframe[title="3rd party ad content"]') !== null) ||
                               adElement.innerHTML.includes('data-load-complete="true"') ||
-                              (adElement.classList.contains('3b35b82f') && adElement.innerHTML.length > 0);
+                              (adElement.hasAttribute('data-key') && adElement.innerHTML.length > 0);
                 }
 
                 // Mark as processed to avoid double counting

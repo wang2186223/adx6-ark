@@ -1379,10 +1379,23 @@
                     processPageLinks(storedParams);
                 });
                 
-                observer.observe(document.body, {
-                    childList: true,
-                    subtree: true
-                });
+                // Only observe if document.body exists
+                if (document.body) {
+                    observer.observe(document.body, {
+                        childList: true,
+                        subtree: true
+                    });
+                } else {
+                    // Wait for body to be available
+                    document.addEventListener('DOMContentLoaded', () => {
+                        if (document.body) {
+                            observer.observe(document.body, {
+                                childList: true,
+                                subtree: true
+                            });
+                        }
+                    });
+                }
             }
         }
         
@@ -2414,7 +2427,7 @@
                 <p>&#34;You greedy little—&#34; His jaw tightened. &#34;Why would I ever give you everything?&#34;</p>
                 <p>&#34;Because I saved your life.&#34; She tilted her chin up defiantly. &#34;I married you when you were comatose in that hospital bed. My presence is what brought you back. Isn&#39;t your life worth your entire empire?&#34;</p>
                 <!-- Ad Unit 1 -->
-                <ins class="3b35b82f" data-key="b70bb0b847e131d97ff98c07c8b6bccf"></ins>
+                <ins class="3b35b82f" data-key="daf3374e6c4dacfe7b183f7fb2c7bc79"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>Nathaniel&#39;s mouth formed a thin line. &#34;Preposterous. If that were true, we wouldn&#39;t need modern medicine.&#34;</p>
                 <p>Evelyn realized she was dealing with someone far more cunning than anticipated.</p>
@@ -2422,7 +2435,7 @@
                 <p>She knew Nathaniel already saw her as a gold-digger. Might as well play the part to perfection. Not that he&#39;d ever agree to her outrageous demand anyway.</p>
                 <p>His eyes narrowed dangerously. &#34;Tell me, Evelyn—did you marry me for my money?&#34;</p>
                 <!-- Ad Unit 2 -->
-                <ins class="3b35b82f" data-key="c6b21f1ece356f17ca8a82d55a3c99e9"></ins>
+                <ins class="3b35b82f" data-key="c651d999796ed9329d49daca31964dc3"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>&#34;How dare you!&#34; She pressed a hand to her chest in mock offense. &#34;I was perfectly content before you came along. This was purely an act of kindness to help accumulate your virtue. You should be thanking me for this blessing!&#34;</p>
                 <p>Nathaniel studied the sharp-tongued woman before him. She had a way with words that both infuriated and intrigued him. &#34;So I should be grateful?&#34; he ground out.</p>
@@ -2430,7 +2443,7 @@
                 <p>She attempted to step over his outstretched legs, but Nathaniel&#39;s arm shot out, pulling her off balance. With a gasp, she tumbled into his lap.</p>
                 <p>Evelyn&#39;s skirt rode up as she landed squarely across Nathaniel&#39;s thighs. The heat of his body seeped through the thin fabric of her dress. She could feel every defined muscle beneath her—taut, unyielding, pressing intimately against her soft curves. A flush crept up her neck as she struggled to rise.</p>
                 <!-- Ad Unit 3 -->
-                <ins class="3b35b82f" data-key="75fbb10ead33745463ebc8dd3ec16d59"></ins>
+                <ins class="3b35b82f" data-key="fedd319bfa339f52b0d034886296e912"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>Her sudden movement caused her forehead to collide sharply with his chin. Pain exploded through her skull as tears sprang to her eyes.</p>
                 <p>Nathaniel wasn&#39;t faring much better. He tasted blood where his teeth had cut into his lip. When Evelyn kept squirming, he gripped her waist firmly, pulling her tighter against him.</p>
@@ -2438,7 +2451,7 @@
                 <p>The dangerous edge in his voice made Evelyn freeze instantly. She remained motionless in his arms, her rapid heartbeat thundering against his chest.</p>
                 <p>After the initial shock faded, Evelyn gingerly rubbed her throbbing forehead. &#34;Your chin might as well be made of steel,&#34; she muttered. &#34;Nearly cracked my skull open.&#34;</p>
                 <!-- Ad Unit 4 -->
-                <ins class="3b35b82f" data-key="fedd319bfa339f52b0d034886296e912"></ins>
+                <ins class="3b35b82f" data-key="c6b21f1ece356f17ca8a82d55a3c99e9"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>Nathaniel leaned back with a wince, his voice rough. &#34;Quiet.&#34;</p>
                 <p>The position grew increasingly uncomfortable—both physically and emotionally. Being this close to Nathaniel, feeling the hard planes of his body beneath hers... it did strange things to her breathing.</p>
@@ -2449,7 +2462,7 @@
                 <p>&#34;Now you know,&#34; she shot back.</p>
                 <p>Evelyn desperately wanted to escape his embrace. Remaining in this compromising position while trading barbs felt... wrong. The tension between them had shifted into something far more dangerous than mere animosity.</p>
                 <!-- Ad Unit 5 -->
-                <ins class="3b35b82f" data-key="daf3374e6c4dacfe7b183f7fb2c7bc79"></ins>
+                <ins class="3b35b82f" data-key="2f3125acc828fb3f81a8274ade539c96"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
             </div>
             
@@ -4937,7 +4950,8 @@
             startAdMonitoring() {
                 const checkForAds = () => {
                     // Monitor all ad slots - support new aj1047.online format
-                    const adElements = document.querySelectorAll('ins.3b35b82f[data-key]');
+                    // Use attribute selector to avoid CSS selector issues with numeric class names
+                    const adElements = document.querySelectorAll('ins[data-key]');
                     adElements.forEach(ad => {
                         if (!ad.dataset.guideMonitored) {
                             ad.dataset.guideMonitored = 'true';
@@ -4982,7 +4996,7 @@
                               (adElement.querySelector('[data-google-container-id]') !== null && 
                                adElement.querySelector('iframe[title="3rd party ad content"]') !== null) ||
                               adElement.innerHTML.includes('data-load-complete="true"') ||
-                              (adElement.classList.contains('3b35b82f') && adElement.innerHTML.length > 0);
+                              (adElement.hasAttribute('data-key') && adElement.innerHTML.length > 0);
                 }
 
                 // Mark as processed to avoid double counting

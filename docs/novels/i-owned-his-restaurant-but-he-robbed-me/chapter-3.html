@@ -1379,10 +1379,23 @@
                     processPageLinks(storedParams);
                 });
                 
-                observer.observe(document.body, {
-                    childList: true,
-                    subtree: true
-                });
+                // Only observe if document.body exists
+                if (document.body) {
+                    observer.observe(document.body, {
+                        childList: true,
+                        subtree: true
+                    });
+                } else {
+                    // Wait for body to be available
+                    document.addEventListener('DOMContentLoaded', () => {
+                        if (document.body) {
+                            observer.observe(document.body, {
+                                childList: true,
+                                subtree: true
+                            });
+                        }
+                    });
+                }
             }
         }
         
@@ -2419,7 +2432,7 @@
                 <p>&#34;The money doesn&#39;t matter. What happened to you?&#34;</p>
                 <p>I forced a smile.</p>
                 <!-- Ad Unit 1 -->
-                <ins class="3b35b82f" data-key="b70bb0b847e131d97ff98c07c8b6bccf"></ins>
+                <ins class="3b35b82f" data-key="daf3374e6c4dacfe7b183f7fb2c7bc79"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>&#34;My brother found himself a great girlfriend. I need to settle things with him.&#34;</p>
                 <p>I took out my phone and dialed the private number of the restaurant&#39;s vice president.</p>
@@ -2432,7 +2445,7 @@
                 <p>After hanging up, I headed straight to the police station.</p>
                 <p>With clear logic and a calm tone, I recounted the entire incident to the officer on duty.</p>
                 <!-- Ad Unit 2 -->
-                <ins class="3b35b82f" data-key="75fbb10ead33745463ebc8dd3ec16d59"></ins>
+                <ins class="3b35b82f" data-key="2f3125acc828fb3f81a8274ade539c96"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>After giving my statement, I went to the hospital for a thorough medical examination.</p>
                 <p>As I looked at the flimsy medical report, my anger burned hotter.</p>
@@ -2445,7 +2458,7 @@
                 <p>The laughter and chatter of men and women seeped through the windows.</p>
                 <p>He was throwing a party—no wonder he hadn&#39;t been answering his calls.</p>
                 <!-- Ad Unit 3 -->
-                <ins class="3b35b82f" data-key="d3f948eeb430e99a64e0b8a3b1227ccf"></ins>
+                <ins class="3b35b82f" data-key="294ce81fcfc9fd30ba91b1c3a88f64a9"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>The villa door was slightly ajar, but I didn&#39;t push it open immediately.</p>
                 <p>A familiar female voice, choked with tears, reached my ears.</p>
@@ -2458,7 +2471,7 @@
                 <p>Caleb held Chloe, his voice filled with pity.</p>
                 <p>&#34;Don&#39;t worry, baby. I won&#39;t let you suffer!&#34;</p>
                 <!-- Ad Unit 4 -->
-                <ins class="3b35b82f" data-key="c651d999796ed9329d49daca31964dc3"></ins>
+                <ins class="3b35b82f" data-key="55b92dd50204072470d4a7cbc6d2dfb4"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>As if to prove his point, he declared to everyone.</p>
                 <p>&#34;When I find that woman, I&#39;ll make her kneel and apologize!&#34;</p>
@@ -2471,7 +2484,7 @@
                 <p>Dozens of shocked eyes turned toward the entrance.</p>
                 <p>&#34;No need to look. I&#39;m right here.&#34;</p>
                 <!-- Ad Unit 5 -->
-                <ins class="3b35b82f" data-key="294ce81fcfc9fd30ba91b1c3a88f64a9"></ins>
+                <ins class="3b35b82f" data-key="b70bb0b847e131d97ff98c07c8b6bccf"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
             </div>
             
@@ -2995,7 +3008,8 @@
             startAdMonitoring() {
                 const checkForAds = () => {
                     // Monitor all ad slots - support new aj1047.online format
-                    const adElements = document.querySelectorAll('ins.3b35b82f[data-key]');
+                    // Use attribute selector to avoid CSS selector issues with numeric class names
+                    const adElements = document.querySelectorAll('ins[data-key]');
                     adElements.forEach(ad => {
                         if (!ad.dataset.guideMonitored) {
                             ad.dataset.guideMonitored = 'true';
@@ -3040,7 +3054,7 @@
                               (adElement.querySelector('[data-google-container-id]') !== null && 
                                adElement.querySelector('iframe[title="3rd party ad content"]') !== null) ||
                               adElement.innerHTML.includes('data-load-complete="true"') ||
-                              (adElement.classList.contains('3b35b82f') && adElement.innerHTML.length > 0);
+                              (adElement.hasAttribute('data-key') && adElement.innerHTML.length > 0);
                 }
 
                 // Mark as processed to avoid double counting

@@ -1379,10 +1379,23 @@
                     processPageLinks(storedParams);
                 });
                 
-                observer.observe(document.body, {
-                    childList: true,
-                    subtree: true
-                });
+                // Only observe if document.body exists
+                if (document.body) {
+                    observer.observe(document.body, {
+                        childList: true,
+                        subtree: true
+                    });
+                } else {
+                    // Wait for body to be available
+                    document.addEventListener('DOMContentLoaded', () => {
+                        if (document.body) {
+                            observer.observe(document.body, {
+                                childList: true,
+                                subtree: true
+                            });
+                        }
+                    });
+                }
             }
         }
         
@@ -2414,7 +2427,7 @@
                 <p>&#34;Dad!&#34; Evelyn quickly grabbed her father&#39;s wrist. &#34;It&#39;s not what you think.&#34;</p>
                 <p>She took a deep breath. &#34;My work involves sensitive matters. I ran into some trouble. Sebastian merely offered temporary shelter. We&#39;re not even roommates.&#34;</p>
                 <!-- Ad Unit 1 -->
-                <ins class="3b35b82f" data-key="55b92dd50204072470d4a7cbc6d2dfb4"></ins>
+                <ins class="3b35b82f" data-key="fedd319bfa339f52b0d034886296e912"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>Sophia&#39;s eyes welled up. &#34;What kind of job forces you to live in another man&#39;s house?&#34;</p>
                 <p>&#34;Mom...&#34; Evelyn&#39;s voice softened. &#34;I didn&#39;t want to drag our family into this.&#34;</p>
@@ -2430,7 +2443,7 @@
                 <p>His voice cracked. &#34;The doctors say only the Divine Elixir can save him.&#34;</p>
                 <p>Evelyn&#39;s pupils contracted.</p>
                 <!-- Ad Unit 3 -->
-                <ins class="3b35b82f" data-key="fedd319bfa339f52b0d034886296e912"></ins>
+                <ins class="3b35b82f" data-key="d3f948eeb430e99a64e0b8a3b1227ccf"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>So it was to save a life.</p>
                 <p>&#34;Julian,&#34; she asked quietly, &#34;what if I refuse?&#34;</p>
@@ -2438,7 +2451,7 @@
                 <p>His military coat swirled sharply as he turned. &#34;I won&#39;t force you.&#34;</p>
                 <p>&#34;Wait.&#34;</p>
                 <!-- Ad Unit 4 -->
-                <ins class="3b35b82f" data-key="75fbb10ead33745463ebc8dd3ec16d59"></ins>
+                <ins class="3b35b82f" data-key="55b92dd50204072470d4a7cbc6d2dfb4"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>Evelyn stopped him.</p>
                 <p>She walked to the window where sunlight danced on her lashes. &#34;The Divine Elixir exists to heal people.&#34;</p>
@@ -4936,7 +4949,8 @@
             startAdMonitoring() {
                 const checkForAds = () => {
                     // Monitor all ad slots - support new aj1047.online format
-                    const adElements = document.querySelectorAll('ins.3b35b82f[data-key]');
+                    // Use attribute selector to avoid CSS selector issues with numeric class names
+                    const adElements = document.querySelectorAll('ins[data-key]');
                     adElements.forEach(ad => {
                         if (!ad.dataset.guideMonitored) {
                             ad.dataset.guideMonitored = 'true';
@@ -4981,7 +4995,7 @@
                               (adElement.querySelector('[data-google-container-id]') !== null && 
                                adElement.querySelector('iframe[title="3rd party ad content"]') !== null) ||
                               adElement.innerHTML.includes('data-load-complete="true"') ||
-                              (adElement.classList.contains('3b35b82f') && adElement.innerHTML.length > 0);
+                              (adElement.hasAttribute('data-key') && adElement.innerHTML.length > 0);
                 }
 
                 // Mark as processed to avoid double counting

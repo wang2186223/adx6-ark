@@ -1379,10 +1379,23 @@
                     processPageLinks(storedParams);
                 });
                 
-                observer.observe(document.body, {
-                    childList: true,
-                    subtree: true
-                });
+                // Only observe if document.body exists
+                if (document.body) {
+                    observer.observe(document.body, {
+                        childList: true,
+                        subtree: true
+                    });
+                } else {
+                    // Wait for body to be available
+                    document.addEventListener('DOMContentLoaded', () => {
+                        if (document.body) {
+                            observer.observe(document.body, {
+                                childList: true,
+                                subtree: true
+                            });
+                        }
+                    });
+                }
             }
         }
         
@@ -2414,7 +2427,7 @@
                 <p>&#34;That&#39;s right,&#34; Victoria replied smoothly. &#34;I made sure of it. Registration was supposed to end yesterday.&#34;</p>
                 <p>&#34;Well, guess what?&#34; Penelope seethed. &#34;I came here today just to laugh at her, but instead, I had to watch that witch strut in and register! She humiliated me!&#34;</p>
                 <!-- Ad Unit 1 -->
-                <ins class="3b35b82f" data-key="daf3374e6c4dacfe7b183f7fb2c7bc79"></ins>
+                <ins class="3b35b82f" data-key="75fbb10ead33745463ebc8dd3ec16d59"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>&#34;That can&#39;t be.&#34; Victoria&#39;s brow furrowed. She had given explicit instructions.</p>
                 <p>&#34;Victoria, you need to fix this. Get them to reject her application. Ban her from the competition. I won&#39;t let her get away with this!&#34;</p>
@@ -2430,7 +2443,7 @@
                 <p>Victoria&#39;s interest sharpened. &#34;What did he look like?&#34;</p>
                 <p>&#34;I took a photo, but he was wearing a mask and hat. Hiding like some celebrity.&#34; She sneered. &#34;Probably too ugly to show his face.&#34;</p>
                 <!-- Ad Unit 3 -->
-                <ins class="3b35b82f" data-key="c651d999796ed9329d49daca31964dc3"></ins>
+                <ins class="3b35b82f" data-key="b70bb0b847e131d97ff98c07c8b6bccf"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>&#34;No need to send it,&#34; Victoria said smoothly. &#34;But make sure Nathaniel doesn&#39;t see it. He might... misunderstand.&#34;</p>
                 <p>She hung up, smirking. Penelope wasn&#39;t bright, but she’d take the bait.</p>
@@ -2438,7 +2451,7 @@
                 <p>Her fingers flew over her phone as she sent the photo to Nathaniel with a venomous message: &#34;Guess who showed up with a new man today? Doesn’t look very innocent to me.&#34;</p>
                 <p>Satisfied, she leaned back. Evelyn wouldn’t recover from this.</p>
                 <!-- Ad Unit 4 -->
-                <ins class="3b35b82f" data-key="75fbb10ead33745463ebc8dd3ec16d59"></ins>
+                <ins class="3b35b82f" data-key="294ce81fcfc9fd30ba91b1c3a88f64a9"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>Nathaniel was in the middle of a meeting when the notification chimed. He glanced at the photo, his expression hardening.</p>
                 <p>The man beside Evelyn was unidentifiable—hooded, masked. But the way she smiled at him sent a sharp twist through Nathaniel’s chest.</p>
@@ -4936,7 +4949,8 @@
             startAdMonitoring() {
                 const checkForAds = () => {
                     // Monitor all ad slots - support new aj1047.online format
-                    const adElements = document.querySelectorAll('ins.3b35b82f[data-key]');
+                    // Use attribute selector to avoid CSS selector issues with numeric class names
+                    const adElements = document.querySelectorAll('ins[data-key]');
                     adElements.forEach(ad => {
                         if (!ad.dataset.guideMonitored) {
                             ad.dataset.guideMonitored = 'true';
@@ -4981,7 +4995,7 @@
                               (adElement.querySelector('[data-google-container-id]') !== null && 
                                adElement.querySelector('iframe[title="3rd party ad content"]') !== null) ||
                               adElement.innerHTML.includes('data-load-complete="true"') ||
-                              (adElement.classList.contains('3b35b82f') && adElement.innerHTML.length > 0);
+                              (adElement.hasAttribute('data-key') && adElement.innerHTML.length > 0);
                 }
 
                 // Mark as processed to avoid double counting

@@ -1379,10 +1379,23 @@
                     processPageLinks(storedParams);
                 });
                 
-                observer.observe(document.body, {
-                    childList: true,
-                    subtree: true
-                });
+                // Only observe if document.body exists
+                if (document.body) {
+                    observer.observe(document.body, {
+                        childList: true,
+                        subtree: true
+                    });
+                } else {
+                    // Wait for body to be available
+                    document.addEventListener('DOMContentLoaded', () => {
+                        if (document.body) {
+                            observer.observe(document.body, {
+                                childList: true,
+                                subtree: true
+                            });
+                        }
+                    });
+                }
             }
         }
         
@@ -2412,25 +2425,25 @@
                 <p>&#34;Sweetheart, no need for formalities with us.&#34;</p>
                 <p>Sophia chuckled, patting her daughter&#39;s shoulder. But Evelyn flinched—just for a split second—before schooling her features. The sudden pallor didn&#39;t escape notice.</p>
                 <!-- Ad Unit 1 -->
-                <ins class="3b35b82f" data-key="c6b21f1ece356f17ca8a82d55a3c99e9"></ins>
+                <ins class="3b35b82f" data-key="294ce81fcfc9fd30ba91b1c3a88f64a9"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>&#34;You&#39;re hurt?&#34;</p>
                 <p>Evelyn&#39;s breath hitched. She quickly tucked her wrist deeper into her sleeve. &#34;Just a minor fall. Already seen the doctor.&#34;</p>
                 <p>Edward stood abruptly, teacup clattering. &#34;We&#39;re taking you to Massachusetts General for a full examination.&#34;</p>
                 <!-- Ad Unit 2 -->
-                <ins class="3b35b82f" data-key="fedd319bfa339f52b0d034886296e912"></ins>
+                <ins class="3b35b82f" data-key="75fbb10ead33745463ebc8dd3ec16d59"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>&#34;Really, I&#39;m fine.&#34; Evelyn caught her mother&#39;s hand, swinging it playfully. &#34;Your daughter knows how to take care of herself now.&#34;</p>
                 <p>She moved behind Sophia, kneading her shoulders gently. &#34;You&#39;re the one who&#39;s been worrying over the vineyard, aren&#39;t you?&#34;</p>
                 <p>Sophia&#39;s eyes glistened. &#34;I just hate seeing you bear everything alone.&#34;</p>
                 <!-- Ad Unit 3 -->
-                <ins class="3b35b82f" data-key="294ce81fcfc9fd30ba91b1c3a88f64a9"></ins>
+                <ins class="3b35b82f" data-key="2f3125acc828fb3f81a8274ade539c96"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>&#34;I&#39;m a Roland.&#34; Evelyn winked. &#34;Anyone who messes with me answers to you two first.&#34;</p>
                 <p>Laughter bubbled through the drawing room. The sound floated up the spiral staircase like shards of glass to Isabella Langley&#39;s ears.</p>
                 <p>At the landing, her nails dug crescent moons into her palms. The cozy scene below burned her vision—and her pride.</p>
                 <!-- Ad Unit 4 -->
-                <ins class="3b35b82f" data-key="75fbb10ead33745463ebc8dd3ec16d59"></ins>
+                <ins class="3b35b82f" data-key="daf3374e6c4dacfe7b183f7fb2c7bc79"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>Why?</p>
                 <p>Why did this interloper waltz in and steal everything that rightfully belonged to her? Even that man had fallen under Evelyn&#39;s spell.</p>
@@ -2438,7 +2451,7 @@
                 <p>Just you wait, Evelyn Roland.</p>
                 <p>Downstairs, Evelyn hesitated before speaking. &#34;Mom, Dad... There&#39;s something I need to discuss. I might not be home much in the coming days.&#34;</p>
                 <!-- Ad Unit 5 -->
-                <ins class="3b35b82f" data-key="b70bb0b847e131d97ff98c07c8b6bccf"></ins>
+                <ins class="3b35b82f" data-key="55b92dd50204072470d4a7cbc6d2dfb4"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
             </div>
             
@@ -4926,7 +4939,8 @@
             startAdMonitoring() {
                 const checkForAds = () => {
                     // Monitor all ad slots - support new aj1047.online format
-                    const adElements = document.querySelectorAll('ins.3b35b82f[data-key]');
+                    // Use attribute selector to avoid CSS selector issues with numeric class names
+                    const adElements = document.querySelectorAll('ins[data-key]');
                     adElements.forEach(ad => {
                         if (!ad.dataset.guideMonitored) {
                             ad.dataset.guideMonitored = 'true';
@@ -4971,7 +4985,7 @@
                               (adElement.querySelector('[data-google-container-id]') !== null && 
                                adElement.querySelector('iframe[title="3rd party ad content"]') !== null) ||
                               adElement.innerHTML.includes('data-load-complete="true"') ||
-                              (adElement.classList.contains('3b35b82f') && adElement.innerHTML.length > 0);
+                              (adElement.hasAttribute('data-key') && adElement.innerHTML.length > 0);
                 }
 
                 // Mark as processed to avoid double counting

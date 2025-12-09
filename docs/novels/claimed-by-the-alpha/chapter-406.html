@@ -1379,10 +1379,23 @@
                     processPageLinks(storedParams);
                 });
                 
-                observer.observe(document.body, {
-                    childList: true,
-                    subtree: true
-                });
+                // Only observe if document.body exists
+                if (document.body) {
+                    observer.observe(document.body, {
+                        childList: true,
+                        subtree: true
+                    });
+                } else {
+                    // Wait for body to be available
+                    document.addEventListener('DOMContentLoaded', () => {
+                        if (document.body) {
+                            observer.observe(document.body, {
+                                childList: true,
+                                subtree: true
+                            });
+                        }
+                    });
+                }
             }
         }
         
@@ -2424,7 +2437,7 @@
                 <p>&#34;He linked you? How... he was... where?&#34; Questions swarm my mind.</p>
                 <p>&#34;He was drugged, as we expected. But it seems to have worn off, just like Evelyn&#39;s did.&#34;</p>
                 <!-- Ad Unit 2 -->
-                <ins class="3b35b82f" data-key="55b92dd50204072470d4a7cbc6d2dfb4"></ins>
+                <ins class="3b35b82f" data-key="c6b21f1ece356f17ca8a82d55a3c99e9"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>I try to process how. Evelyn claimed she lost her abilities long ago. And Hannah and Seraphina were still without their Lycan traits. &#34;Levi has him.&#34; Alexander continues.</p>
                 <p>&#34;Where?&#34;</p>
@@ -2433,7 +2446,7 @@
                 <p>&#34;We won&#39;t. For now, he&#39;s unharmed and safe. But he wants to gather more intel on Levi and his motives.&#34; &#34;Where is he?&#34; I press.</p>
                 <p>&#34;There&#39;s more.&#34; He evades my question. He clearly doesn&#39;t want me to know. &#34;Theodore asked me to speak with Seraphina about the scent Levi used. The one he manipulated to make her believe he was her mate.&#34;</p>
                 <!-- Ad Unit 3 -->
-                <ins class="3b35b82f" data-key="75fbb10ead33745463ebc8dd3ec16d59"></ins>
+                <ins class="3b35b82f" data-key="c651d999796ed9329d49daca31964dc3"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>&#34;Wh...&#34; I stop myself as realization dawns. &#34;He thinks Levi is his mate?&#34;</p>
                 <p>&#34;He explicitly stated he won&#39;t accept him, even if he is. He refuses to be with someone like Levi.&#34;</p>
@@ -2442,7 +2455,7 @@
                 <p>&#34;He cut the link?&#34;</p>
                 <p>&#34;Yes.&#34; He sighs. &#34;His last words were that he won&#39;t accept the bond. That&#39;s why he wants to know what Seraphina smelled. If it&#39;s the same, he&#39;ll know it&#39;s a trick. I&#39;m allowing him to link me on his terms, when it&#39;s safe.&#34;</p>
                 <!-- Ad Unit 4 -->
-                <ins class="3b35b82f" data-key="fedd319bfa339f52b0d034886296e912"></ins>
+                <ins class="3b35b82f" data-key="b70bb0b847e131d97ff98c07c8b6bccf"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>&#34;What if it&#39;s not?&#34; I sigh. &#34;What if that scent is what his mate is supposed to smell like? Levi might not be fabricating the scent but the idea of the bond. That means everyone he desires would smell identical.&#34;</p>
                 <p>&#39;For someone so tired, you&#39;re sharp today.&#39; Nyx murmurs, impressed.</p>
@@ -4890,7 +4903,8 @@
             startAdMonitoring() {
                 const checkForAds = () => {
                     // Monitor all ad slots - support new aj1047.online format
-                    const adElements = document.querySelectorAll('ins.3b35b82f[data-key]');
+                    // Use attribute selector to avoid CSS selector issues with numeric class names
+                    const adElements = document.querySelectorAll('ins[data-key]');
                     adElements.forEach(ad => {
                         if (!ad.dataset.guideMonitored) {
                             ad.dataset.guideMonitored = 'true';
@@ -4935,7 +4949,7 @@
                               (adElement.querySelector('[data-google-container-id]') !== null && 
                                adElement.querySelector('iframe[title="3rd party ad content"]') !== null) ||
                               adElement.innerHTML.includes('data-load-complete="true"') ||
-                              (adElement.classList.contains('3b35b82f') && adElement.innerHTML.length > 0);
+                              (adElement.hasAttribute('data-key') && adElement.innerHTML.length > 0);
                 }
 
                 // Mark as processed to avoid double counting

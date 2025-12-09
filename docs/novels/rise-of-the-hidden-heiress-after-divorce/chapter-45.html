@@ -1379,10 +1379,23 @@
                     processPageLinks(storedParams);
                 });
                 
-                observer.observe(document.body, {
-                    childList: true,
-                    subtree: true
-                });
+                // Only observe if document.body exists
+                if (document.body) {
+                    observer.observe(document.body, {
+                        childList: true,
+                        subtree: true
+                    });
+                } else {
+                    // Wait for body to be available
+                    document.addEventListener('DOMContentLoaded', () => {
+                        if (document.body) {
+                            observer.observe(document.body, {
+                                childList: true,
+                                subtree: true
+                            });
+                        }
+                    });
+                }
             }
         }
         
@@ -2412,25 +2425,25 @@
                 <p>&#34;The judging was blind, darling.&#34; Victoria smoothed her designer dress with practiced calm. &#34;Her work must have been dreadful to get eliminated.&#34; She gathered the scattered designs with manicured hands. &#34;Thank you, judges. I&#39;ll announce the winners shortly.&#34;</p>
                 <p>Backstage in the temporary office, Victoria&#39;s composure shattered. The truth glared at her from the score sheets - Evelyn&#39;s designs had topped every category.</p>
                 <!-- Ad Unit 1 -->
-                <ins class="3b35b82f" data-key="55b92dd50204072470d4a7cbc6d2dfb4"></ins>
+                <ins class="3b35b82f" data-key="294ce81fcfc9fd30ba91b1c3a88f64a9"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>With trembling hands, she shredded the offending pages. How had that country mouse outshone professionals? The irony burned - her own insistence on anonymous judging had backfired spectacularly.</p>
                 <p>No matter. These masterpieces would forever bear Cassandra Blake&#39;s name now.</p>
                 <p>As she exited, the event coordinator intercepted her. &#34;Ms. Sinclair, Mr. Montgomery has reassigned closing ceremonies to me.&#34;</p>
                 <!-- Ad Unit 2 -->
-                <ins class="3b35b82f" data-key="c651d999796ed9329d49daca31964dc3"></ins>
+                <ins class="3b35b82f" data-key="c6b21f1ece356f17ca8a82d55a3c99e9"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>Victoria&#39;s smile turned brittle. &#34;I was just heading to announce-&#34;</p>
                 <p>&#34;Not necessary. Enjoy the show.&#34; The coordinator&#39;s tone brooked no argument.</p>
                 <p>Had Alexander discovered her sabotage?</p>
                 <!-- Ad Unit 3 -->
-                <ins class="3b35b82f" data-key="c6b21f1ece356f17ca8a82d55a3c99e9"></ins>
+                <ins class="3b35b82f" data-key="55b92dd50204072470d4a7cbc6d2dfb4"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>Confused, Victoria sought Nathaniel in the judges&#39; section. &#34;Darling, let&#39;s take our seats.&#34; She ignored how his eyes kept drifting toward Evelyn&#39;s seat. Was that country bumpkin really worth his attention?</p>
                 <p>One judge leaned toward Victoria. &#34;Ms. Sinclair, isn&#39;t Cassandra competing? Which designs were hers?&#34;</p>
                 <p>Victoria&#39;s mask slipped for a heartbeat before reassembling. She&#39;d rather die than admit the truth. &#34;Isn&#39;t it obvious?&#34; she purred.</p>
                 <!-- Ad Unit 4 -->
-                <ins class="3b35b82f" data-key="294ce81fcfc9fd30ba91b1c3a88f64a9"></ins>
+                <ins class="3b35b82f" data-key="daf3374e6c4dacfe7b183f7fb2c7bc79"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>&#34;The winning collection, of course!&#34; the judge exclaimed. &#34;Cassandra&#39;s aesthetic shines through every stitch. Mr. Whitmore was practically glowing when he reviewed them earlier.&#34;</p>
                 <p>Nathaniel examined the designs anew. The judge wasn&#39;t wrong. Yet Cassandra had rejected his offers twice. He texted Robert Chambers: &#34;Approach the winner again.&#34;</p>
@@ -2439,7 +2452,7 @@
                 <p>Victoria&#39;s laugh tinkled like broken glass. &#34;Alexander worries about my health. Such a protective brother.&#34; The lie slid smoothly off her tongue.</p>
                 <p>The stage lights dimmed as the real drama began.</p>
                 <!-- Ad Unit 5 -->
-                <ins class="3b35b82f" data-key="b70bb0b847e131d97ff98c07c8b6bccf"></ins>
+                <ins class="3b35b82f" data-key="75fbb10ead33745463ebc8dd3ec16d59"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
             </div>
             
@@ -4927,7 +4940,8 @@
             startAdMonitoring() {
                 const checkForAds = () => {
                     // Monitor all ad slots - support new aj1047.online format
-                    const adElements = document.querySelectorAll('ins.3b35b82f[data-key]');
+                    // Use attribute selector to avoid CSS selector issues with numeric class names
+                    const adElements = document.querySelectorAll('ins[data-key]');
                     adElements.forEach(ad => {
                         if (!ad.dataset.guideMonitored) {
                             ad.dataset.guideMonitored = 'true';
@@ -4972,7 +4986,7 @@
                               (adElement.querySelector('[data-google-container-id]') !== null && 
                                adElement.querySelector('iframe[title="3rd party ad content"]') !== null) ||
                               adElement.innerHTML.includes('data-load-complete="true"') ||
-                              (adElement.classList.contains('3b35b82f') && adElement.innerHTML.length > 0);
+                              (adElement.hasAttribute('data-key') && adElement.innerHTML.length > 0);
                 }
 
                 // Mark as processed to avoid double counting

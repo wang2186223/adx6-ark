@@ -1379,10 +1379,23 @@
                     processPageLinks(storedParams);
                 });
                 
-                observer.observe(document.body, {
-                    childList: true,
-                    subtree: true
-                });
+                // Only observe if document.body exists
+                if (document.body) {
+                    observer.observe(document.body, {
+                        childList: true,
+                        subtree: true
+                    });
+                } else {
+                    // Wait for body to be available
+                    document.addEventListener('DOMContentLoaded', () => {
+                        if (document.body) {
+                            observer.observe(document.body, {
+                                childList: true,
+                                subtree: true
+                            });
+                        }
+                    });
+                }
             }
         }
         
@@ -2413,28 +2426,28 @@
                 <p>Shutting off her phone with trembling fingers, Evelyn buried herself in pregnancy literature. With no afternoon classes scheduled, she retreated to her studio - financial independence had become crucial now that Nathaniel&#39;s support was gone.</p>
                 <p>Days passed without Nathaniel returning to their shared home. Evelyn refused to dwell on his absence, maintaining strict routines: balanced meals, prenatal vitamins, and intensive research on newborn care.</p>
                 <!-- Ad Unit 1 -->
-                <ins class="3b35b82f" data-key="daf3374e6c4dacfe7b183f7fb2c7bc79"></ins>
+                <ins class="3b35b82f" data-key="b70bb0b847e131d97ff98c07c8b6bccf"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>When doctors moved Eleanor from ICU to a regular ward, Evelyn prepared her signature chicken soup and headed to the hospital.</p>
                 <p>The scene in the ward froze her in the doorway. Victoria and Beatrice flanked Eleanor&#39;s bed, with Nathaniel standing sentinel beside them. &#34;I&#39;ll come back later,&#34; Evelyn murmured, already retreating.</p>
                 <p>&#34;Don&#39;t be ridiculous, dear,&#34; Eleanor chided warmly. &#34;Come in.&#34;</p>
                 <p>Victoria&#39;s smile didn&#39;t reach her cold eyes as she gestured to a chair. &#34;Mrs. Whitmore, please sit.&#34;</p>
                 <!-- Ad Unit 2 -->
-                <ins class="3b35b82f" data-key="2f3125acc828fb3f81a8274ade539c96"></ins>
+                <ins class="3b35b82f" data-key="d3f948eeb430e99a64e0b8a3b1227ccf"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>Evelyn ignored the offered seat, placing her thermos on the bedside table instead. &#34;Grandmother, I made your favorite soup. Please have some when you&#39;re hungry.&#34;</p>
                 <p>&#34;How thoughtful,&#34; Eleanor beamed. &#34;And how&#39;s my great-grandchild treating you? Any morning sickness?&#34;</p>
                 <p>The question hung heavily in the sterilized air.</p>
                 <p>&#34;The baby&#39;s been surprisingly gentle with me,&#34; Evelyn admitted, fingers unconsciously tracing her barely-showing bump.</p>
                 <!-- Ad Unit 3 -->
-                <ins class="3b35b82f" data-key="c6b21f1ece356f17ca8a82d55a3c99e9"></ins>
+                <ins class="3b35b82f" data-key="75fbb10ead33745463ebc8dd3ec16d59"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>Eleanor chuckled. &#34;Just like Nathaniel&#39;s mother! Beatrice sailed through her pregnancy without a single complaint.&#34;</p>
                 <p>Beatrice preened momentarily before her gaze dropped to Evelyn&#39;s stomach. Her smile vanished as if remembering this child would carry Bowen blood, not Harrington.</p>
                 <p>Evelyn wondered if her baby&#39;s calm demeanor was genetic - a quiet rebellion against the storm of its parents&#39; failed marriage.</p>
                 <p>&#34;We should let Grandmother rest,&#34; Nathaniel&#39;s baritone cut through the tension.</p>
                 <!-- Ad Unit 4 -->
-                <ins class="3b35b82f" data-key="d3f948eeb430e99a64e0b8a3b1227ccf"></ins>
+                <ins class="3b35b82f" data-key="2f3125acc828fb3f81a8274ade539c96"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>Evelyn squeezed Eleanor&#39;s papery hand. &#34;I&#39;ll visit again soon.&#34;</p>
                 <p>&#34;Take care of each other,&#34; Eleanor insisted, deliberately pressing Evelyn&#39;s hand into Nathaniel&#39;s.</p>
@@ -2442,7 +2455,7 @@
                 <p>&#34;Enough of this charade!&#34; Beatrice snapped, wrenching them apart.</p>
                 <p>Evelyn stumbled back, only to find Victoria suddenly at her side, linking arms with false sweetness. &#34;Mrs. Whitmore, might we have a word in private?&#34;</p>
                 <!-- Ad Unit 5 -->
-                <ins class="3b35b82f" data-key="c651d999796ed9329d49daca31964dc3"></ins>
+                <ins class="3b35b82f" data-key="55b92dd50204072470d4a7cbc6d2dfb4"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
             </div>
             
@@ -4930,7 +4943,8 @@
             startAdMonitoring() {
                 const checkForAds = () => {
                     // Monitor all ad slots - support new aj1047.online format
-                    const adElements = document.querySelectorAll('ins.3b35b82f[data-key]');
+                    // Use attribute selector to avoid CSS selector issues with numeric class names
+                    const adElements = document.querySelectorAll('ins[data-key]');
                     adElements.forEach(ad => {
                         if (!ad.dataset.guideMonitored) {
                             ad.dataset.guideMonitored = 'true';
@@ -4975,7 +4989,7 @@
                               (adElement.querySelector('[data-google-container-id]') !== null && 
                                adElement.querySelector('iframe[title="3rd party ad content"]') !== null) ||
                               adElement.innerHTML.includes('data-load-complete="true"') ||
-                              (adElement.classList.contains('3b35b82f') && adElement.innerHTML.length > 0);
+                              (adElement.hasAttribute('data-key') && adElement.innerHTML.length > 0);
                 }
 
                 // Mark as processed to avoid double counting

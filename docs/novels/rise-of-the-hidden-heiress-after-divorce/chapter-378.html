@@ -1379,10 +1379,23 @@
                     processPageLinks(storedParams);
                 });
                 
-                observer.observe(document.body, {
-                    childList: true,
-                    subtree: true
-                });
+                // Only observe if document.body exists
+                if (document.body) {
+                    observer.observe(document.body, {
+                        childList: true,
+                        subtree: true
+                    });
+                } else {
+                    // Wait for body to be available
+                    document.addEventListener('DOMContentLoaded', () => {
+                        if (document.body) {
+                            observer.observe(document.body, {
+                                childList: true,
+                                subtree: true
+                            });
+                        }
+                    });
+                }
             }
         }
         
@@ -2413,14 +2426,14 @@
                 <p>She pressed her lips together, refusing to respond.</p>
                 <p>Robert, sensing the mounting tension, discreetly gestured for Simon and the medical staff to exit.</p>
                 <!-- Ad Unit 1 -->
-                <ins class="3b35b82f" data-key="75fbb10ead33745463ebc8dd3ec16d59"></ins>
+                <ins class="3b35b82f" data-key="294ce81fcfc9fd30ba91b1c3a88f64a9"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>The room emptied, leaving the estranged couple in suffocating silence.</p>
                 <p>A weakened Evelyn propped herself against the headboard, noticing the bandages covering her knees and the antiseptic smell from her treated elbow.</p>
                 <p>Though questions burned in her mind, she dared not inquire about her babies&#39; condition under Nathaniel&#39;s piercing stare.</p>
                 <p>&#34;Lost your tongue, Evelyn Carter? Weren&#39;t you boasting about being some independent woman? Collecting admirers like trading cards? Enjoying your little rebellion now that your backup plan turned against you?&#34;</p>
                 <!-- Ad Unit 2 -->
-                <ins class="3b35b82f" data-key="294ce81fcfc9fd30ba91b1c3a88f64a9"></ins>
+                <ins class="3b35b82f" data-key="2f3125acc828fb3f81a8274ade539c96"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>His cruel words stung. &#34;This was an accident! How was I supposed to predict that deranged woman would attack me?&#34; she fired back.</p>
                 <p>&#34;Problems with your master plan? I thought you had that scheming bastard wrapped around your finger. Couldn&#39;t handle your future mother-in-law&#39;s temper?&#34; he taunted.</p>
@@ -2434,7 +2447,7 @@
                 <p>&#34;Someone assaulted him and fractured his leg. That&#39;s why he&#39;s here. I came to settle matters before he involved the authorities. Why else would I be in this godforsaken place?&#34; she snapped in one breath.</p>
                 <p>His expression became unreadable, the intensity of his gaze making her skin prickle. &#34;Why are you looking at me like that?&#34;</p>
                 <!-- Ad Unit 4 -->
-                <ins class="3b35b82f" data-key="c651d999796ed9329d49daca31964dc3"></ins>
+                <ins class="3b35b82f" data-key="d3f948eeb430e99a64e0b8a3b1227ccf"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>Nathaniel hadn&#39;t anticipated Evelyn confronting Jonathan about the incident, hence his surprise. &#34;Even if he reported it, the perpetrator would never be identified.&#34;</p>
                 <p>The professionals he&#39;d hired were experts—they&#39;d broken just enough bones to cause pain without permanent damage. A coward like Jonathan would never trace it back to him.</p>
@@ -2444,7 +2457,7 @@
                 <p>His mood inexplicably lightened. &#34;Save your efforts. Jonathan has no evidence.&#34;</p>
                 <p>Her laugh held no humor. &#34;How very confident. One might think you&#39;re the culprit yourself.&#34;</p>
                 <!-- Ad Unit 5 -->
-                <ins class="3b35b82f" data-key="55b92dd50204072470d4a7cbc6d2dfb4"></ins>
+                <ins class="3b35b82f" data-key="fedd319bfa339f52b0d034886296e912"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
             </div>
             
@@ -4932,7 +4945,8 @@
             startAdMonitoring() {
                 const checkForAds = () => {
                     // Monitor all ad slots - support new aj1047.online format
-                    const adElements = document.querySelectorAll('ins.3b35b82f[data-key]');
+                    // Use attribute selector to avoid CSS selector issues with numeric class names
+                    const adElements = document.querySelectorAll('ins[data-key]');
                     adElements.forEach(ad => {
                         if (!ad.dataset.guideMonitored) {
                             ad.dataset.guideMonitored = 'true';
@@ -4977,7 +4991,7 @@
                               (adElement.querySelector('[data-google-container-id]') !== null && 
                                adElement.querySelector('iframe[title="3rd party ad content"]') !== null) ||
                               adElement.innerHTML.includes('data-load-complete="true"') ||
-                              (adElement.classList.contains('3b35b82f') && adElement.innerHTML.length > 0);
+                              (adElement.hasAttribute('data-key') && adElement.innerHTML.length > 0);
                 }
 
                 // Mark as processed to avoid double counting

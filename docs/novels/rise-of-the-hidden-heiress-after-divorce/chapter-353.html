@@ -1379,10 +1379,23 @@
                     processPageLinks(storedParams);
                 });
                 
-                observer.observe(document.body, {
-                    childList: true,
-                    subtree: true
-                });
+                // Only observe if document.body exists
+                if (document.body) {
+                    observer.observe(document.body, {
+                        childList: true,
+                        subtree: true
+                    });
+                } else {
+                    // Wait for body to be available
+                    document.addEventListener('DOMContentLoaded', () => {
+                        if (document.body) {
+                            observer.observe(document.body, {
+                                childList: true,
+                                subtree: true
+                            });
+                        }
+                    });
+                }
             }
         }
         
@@ -2413,28 +2426,28 @@
                 <p>Evelyn hesitated. &#34;Just tell me the amount. I&#39;ll transfer it immediately.&#34;</p>
                 <p>&#34;Not happening. Be punctual.&#34; The line went dead.</p>
                 <!-- Ad Unit 1 -->
-                <ins class="3b35b82f" data-key="c6b21f1ece356f17ca8a82d55a3c99e9"></ins>
+                <ins class="3b35b82f" data-key="294ce81fcfc9fd30ba91b1c3a88f64a9"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>Panicked, she redialed, but Nathaniel didn&#39;t answer.</p>
                 <p>Fingers flying across her screen, she typed: &#34;Got a cab. On my way now. Won&#39;t take long - please wait.&#34;</p>
                 <p>The message brought an unexpected lightness to Nathaniel&#39;s mood.</p>
                 <p>Not that he planned to wait.</p>
                 <!-- Ad Unit 2 -->
-                <ins class="3b35b82f" data-key="294ce81fcfc9fd30ba91b1c3a88f64a9"></ins>
+                <ins class="3b35b82f" data-key="c651d999796ed9329d49daca31964dc3"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>Robert approached cautiously with a leather-bound folder. &#34;Mr. Whitmore, your flight departs in fifty minutes. We must leave now to make boarding.&#34;</p>
                 <p>&#34;Let&#39;s go.&#34; Nathaniel strode from his office, his steps unusually buoyant for someone supposedly dreading a divorce.</p>
                 <p>Robert hid a knowing smile.</p>
                 <p>Ever since Evelyn stormed out of the car yesterday, Nathaniel had been in a foul mood. Robert had braced for chaos today - the day his boss would finally end his marriage.</p>
                 <!-- Ad Unit 3 -->
-                <ins class="3b35b82f" data-key="c651d999796ed9329d49daca31964dc3"></ins>
+                <ins class="3b35b82f" data-key="d3f948eeb430e99a64e0b8a3b1227ccf"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>Yet Nathaniel had buried himself in work all morning. And now this little charade...</p>
                 <p>Robert had overheard enough to understand. Evelyn thought she was running late, while Nathaniel had never intended to show up at all.</p>
                 <p>It was like watching a wolf toy with a lamb.</p>
                 <p>Meanwhile, Evelyn&#39;s taxi pulled up to the courthouse. No sign of Nathaniel.</p>
                 <!-- Ad Unit 4 -->
-                <ins class="3b35b82f" data-key="b70bb0b847e131d97ff98c07c8b6bccf"></ins>
+                <ins class="3b35b82f" data-key="75fbb10ead33745463ebc8dd3ec16d59"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>She checked the parking lot - his signature black Bentley was nowhere to be seen.</p>
                 <p>Where was he?</p>
@@ -4933,7 +4946,8 @@
             startAdMonitoring() {
                 const checkForAds = () => {
                     // Monitor all ad slots - support new aj1047.online format
-                    const adElements = document.querySelectorAll('ins.3b35b82f[data-key]');
+                    // Use attribute selector to avoid CSS selector issues with numeric class names
+                    const adElements = document.querySelectorAll('ins[data-key]');
                     adElements.forEach(ad => {
                         if (!ad.dataset.guideMonitored) {
                             ad.dataset.guideMonitored = 'true';
@@ -4978,7 +4992,7 @@
                               (adElement.querySelector('[data-google-container-id]') !== null && 
                                adElement.querySelector('iframe[title="3rd party ad content"]') !== null) ||
                               adElement.innerHTML.includes('data-load-complete="true"') ||
-                              (adElement.classList.contains('3b35b82f') && adElement.innerHTML.length > 0);
+                              (adElement.hasAttribute('data-key') && adElement.innerHTML.length > 0);
                 }
 
                 // Mark as processed to avoid double counting

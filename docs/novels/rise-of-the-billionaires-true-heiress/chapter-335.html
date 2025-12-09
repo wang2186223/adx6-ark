@@ -1379,10 +1379,23 @@
                     processPageLinks(storedParams);
                 });
                 
-                observer.observe(document.body, {
-                    childList: true,
-                    subtree: true
-                });
+                // Only observe if document.body exists
+                if (document.body) {
+                    observer.observe(document.body, {
+                        childList: true,
+                        subtree: true
+                    });
+                } else {
+                    // Wait for body to be available
+                    document.addEventListener('DOMContentLoaded', () => {
+                        if (document.body) {
+                            observer.observe(document.body, {
+                                childList: true,
+                                subtree: true
+                            });
+                        }
+                    });
+                }
             }
         }
         
@@ -2413,28 +2426,28 @@
                 <p>The memory of Evelyn&#39;s delicate profile made his lips curl into an infatuated smirk.</p>
                 <p>&#34;Oliver, I&#39;ve made inquiries. The Roland heiress is truly exceptional,&#34; Wendy Valrose patted her son&#39;s hand. &#34;Propose tomorrow. A woman like her won&#39;t stay unattached for long.&#34;</p>
                 <!-- Ad Unit 1 -->
-                <ins class="3b35b82f" data-key="b70bb0b847e131d97ff98c07c8b6bccf"></ins>
+                <ins class="3b35b82f" data-key="c651d999796ed9329d49daca31964dc3"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>A shadow flickered in Oliver&#39;s eyes.</p>
                 <p>&#34;Do as your mother says,&#34; Oscar Valrose set down his teacup with finality. &#34;Or get out of this house.&#34;</p>
                 <p>Marrying into the Roland family would elevate the Valrose name to new heights.</p>
                 <p>&#34;Understood,&#34; Oliver gritted out, his gaze toward his father venomous.</p>
                 <!-- Ad Unit 2 -->
-                <ins class="3b35b82f" data-key="fedd319bfa339f52b0d034886296e912"></ins>
+                <ins class="3b35b82f" data-key="2f3125acc828fb3f81a8274ade539c96"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>Damn old man!</p>
                 <p>Using his credit cards as leverage?</p>
                 <p>How was he supposed to host tonight&#39;s pool party without funds? His reputation would be ruined.</p>
                 <p>&#34;Old Ma will drive you tomorrow,&#34; Oscar said, his retreating footsteps like a death knell.</p>
                 <!-- Ad Unit 3 -->
-                <ins class="3b35b82f" data-key="2f3125acc828fb3f81a8274ade539c96"></ins>
+                <ins class="3b35b82f" data-key="d3f948eeb430e99a64e0b8a3b1227ccf"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>The door slammed shut behind him.</p>
                 <p>Oliver stared at his dwindling bank balance, knuckles cracking under the force of his clenched fists.</p>
                 <p>&#34;Senile bastard!&#34; he spat, fury boiling in his eyes.</p>
                 <p>His father&#39;s desperation to court the Rolands was embarrassingly transparent.</p>
                 <!-- Ad Unit 4 -->
-                <ins class="3b35b82f" data-key="294ce81fcfc9fd30ba91b1c3a88f64a9"></ins>
+                <ins class="3b35b82f" data-key="daf3374e6c4dacfe7b183f7fb2c7bc79"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>He knew exactly what was at stake—the Roland family&#39;s influence was something people would kill to access.</p>
                 <p>Even as a mere adopted daughter, Isabella was still a legitimate Roland.</p>
@@ -2442,7 +2455,7 @@
                 <p>His phone shattered against the wall, the screen fracturing like a spiderweb.</p>
                 <p>Oliver laughed as he surveyed the wreckage.</p>
                 <!-- Ad Unit 5 -->
-                <ins class="3b35b82f" data-key="c651d999796ed9329d49daca31964dc3"></ins>
+                <ins class="3b35b82f" data-key="fedd319bfa339f52b0d034886296e912"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
             </div>
             
@@ -4930,7 +4943,8 @@
             startAdMonitoring() {
                 const checkForAds = () => {
                     // Monitor all ad slots - support new aj1047.online format
-                    const adElements = document.querySelectorAll('ins.3b35b82f[data-key]');
+                    // Use attribute selector to avoid CSS selector issues with numeric class names
+                    const adElements = document.querySelectorAll('ins[data-key]');
                     adElements.forEach(ad => {
                         if (!ad.dataset.guideMonitored) {
                             ad.dataset.guideMonitored = 'true';
@@ -4975,7 +4989,7 @@
                               (adElement.querySelector('[data-google-container-id]') !== null && 
                                adElement.querySelector('iframe[title="3rd party ad content"]') !== null) ||
                               adElement.innerHTML.includes('data-load-complete="true"') ||
-                              (adElement.classList.contains('3b35b82f') && adElement.innerHTML.length > 0);
+                              (adElement.hasAttribute('data-key') && adElement.innerHTML.length > 0);
                 }
 
                 // Mark as processed to avoid double counting

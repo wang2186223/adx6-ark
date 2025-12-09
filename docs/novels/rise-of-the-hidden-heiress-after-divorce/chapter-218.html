@@ -1379,10 +1379,23 @@
                     processPageLinks(storedParams);
                 });
                 
-                observer.observe(document.body, {
-                    childList: true,
-                    subtree: true
-                });
+                // Only observe if document.body exists
+                if (document.body) {
+                    observer.observe(document.body, {
+                        childList: true,
+                        subtree: true
+                    });
+                } else {
+                    // Wait for body to be available
+                    document.addEventListener('DOMContentLoaded', () => {
+                        if (document.body) {
+                            observer.observe(document.body, {
+                                childList: true,
+                                subtree: true
+                            });
+                        }
+                    });
+                }
             }
         }
         
@@ -2415,7 +2428,7 @@
                 <p>Back when Beatrice had written that check to Walter and Beverly at their marital home, Evelyn had been furious. The last thing she wanted was to owe the Whitmores a single cent. So she’d sent the exact amount back to Nathaniel.</p>
                 <p>Why hadn’t he taken it?</p>
                 <!-- Ad Unit 1 -->
-                <ins class="3b35b82f" data-key="75fbb10ead33745463ebc8dd3ec16d59"></ins>
+                <ins class="3b35b82f" data-key="294ce81fcfc9fd30ba91b1c3a88f64a9"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>She added him again, surprised when the request was instantly accepted.</p>
                 <p>Had he never blocked her?</p>
@@ -2424,7 +2437,7 @@
                 <p>Would he refuse again? To him, $100,000 was pocket change.</p>
                 <p>She typed, &#34;Take the payment.&#34;</p>
                 <!-- Ad Unit 2 -->
-                <ins class="3b35b82f" data-key="2f3125acc828fb3f81a8274ade539c96"></ins>
+                <ins class="3b35b82f" data-key="c651d999796ed9329d49daca31964dc3"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>Then she yawned, exhaustion pulling her under.</p>
                 <p>The next morning, her phone buzzed with a flood of missed calls.</p>
@@ -2433,7 +2446,7 @@
                 <p>&#34;Whitmore Heiress Caught in Drug-Fueled Scandal!&#34;</p>
                 <p>The story had exploded. Impossible to contain.</p>
                 <!-- Ad Unit 3 -->
-                <ins class="3b35b82f" data-key="c651d999796ed9329d49daca31964dc3"></ins>
+                <ins class="3b35b82f" data-key="fedd319bfa339f52b0d034886296e912"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>A smirk curled Evelyn’s lips.</p>
                 <p>Then, Penelope called again. This time, Evelyn answered.</p>
@@ -2442,7 +2455,7 @@
                 <p>Evelyn held the phone away, voice dripping with indifference. &#34;I have no idea what you’re talking about.&#34;</p>
                 <p>&#34;Stop lying! You think you can mess with me? I’m a Whitmore. My family will destroy you. Just wait—I’ll ruin you!&#34;</p>
                 <!-- Ad Unit 4 -->
-                <ins class="3b35b82f" data-key="294ce81fcfc9fd30ba91b1c3a88f64a9"></ins>
+                <ins class="3b35b82f" data-key="75fbb10ead33745463ebc8dd3ec16d59"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>Evelyn’s voice turned to ice. &#34;I warned you. Cross me again, and you’ll regret it.&#34;</p>
                 <p>&#34;You’re nothing! A nobody from the slums! Crushing you is like stepping on an ant. How dare you ambush me? I’ll make sure your whole family pays!&#34;</p>
@@ -4940,7 +4953,8 @@
             startAdMonitoring() {
                 const checkForAds = () => {
                     // Monitor all ad slots - support new aj1047.online format
-                    const adElements = document.querySelectorAll('ins.3b35b82f[data-key]');
+                    // Use attribute selector to avoid CSS selector issues with numeric class names
+                    const adElements = document.querySelectorAll('ins[data-key]');
                     adElements.forEach(ad => {
                         if (!ad.dataset.guideMonitored) {
                             ad.dataset.guideMonitored = 'true';
@@ -4985,7 +4999,7 @@
                               (adElement.querySelector('[data-google-container-id]') !== null && 
                                adElement.querySelector('iframe[title="3rd party ad content"]') !== null) ||
                               adElement.innerHTML.includes('data-load-complete="true"') ||
-                              (adElement.classList.contains('3b35b82f') && adElement.innerHTML.length > 0);
+                              (adElement.hasAttribute('data-key') && adElement.innerHTML.length > 0);
                 }
 
                 // Mark as processed to avoid double counting

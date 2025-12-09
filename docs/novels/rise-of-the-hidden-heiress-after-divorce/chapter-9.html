@@ -1379,10 +1379,23 @@
                     processPageLinks(storedParams);
                 });
                 
-                observer.observe(document.body, {
-                    childList: true,
-                    subtree: true
-                });
+                // Only observe if document.body exists
+                if (document.body) {
+                    observer.observe(document.body, {
+                        childList: true,
+                        subtree: true
+                    });
+                } else {
+                    // Wait for body to be available
+                    document.addEventListener('DOMContentLoaded', () => {
+                        if (document.body) {
+                            observer.observe(document.body, {
+                                childList: true,
+                                subtree: true
+                            });
+                        }
+                    });
+                }
             }
         }
         
@@ -2414,7 +2427,7 @@
                 <p>Alexander swallowed his words. She was right. He was the one who had lost her all those years ago. He hadn’t been there for her—not once.</p>
                 <p>No wonder she didn’t care about the properties he offered.</p>
                 <!-- Ad Unit 1 -->
-                <ins class="3b35b82f" data-key="daf3374e6c4dacfe7b183f7fb2c7bc79"></ins>
+                <ins class="3b35b82f" data-key="294ce81fcfc9fd30ba91b1c3a88f64a9"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>Softly, he conceded, &#34;Alright. Whatever you want.&#34;</p>
                 <p>If Evelyn could live there, so could he. He’d stay by her side no matter what.</p>
@@ -2422,7 +2435,7 @@
                 <p>Perfect.</p>
                 <p>As they reached the lobby, Alexander’s phone buzzed. &#34;Evelyn, it’s my wife. You two go ahead to the restaurant. I’ll catch up.&#34;</p>
                 <!-- Ad Unit 2 -->
-                <ins class="3b35b82f" data-key="75fbb10ead33745463ebc8dd3ec16d59"></ins>
+                <ins class="3b35b82f" data-key="55b92dd50204072470d4a7cbc6d2dfb4"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>He stepped aside, answering the call. Olivia’s cheerful voice rang through. &#34;Darling, I’ve brought property deeds, my finest pearls, limited-edition bags, and your brothers’ favorite cars. Let’s see what your sister likes.&#34;</p>
                 <p>Alexander sighed. &#34;We might have to hold off on that.&#34;</p>
@@ -2438,7 +2451,7 @@
                 <p>&#34;A pity play?&#34;</p>
                 <p>&#34;Figure it out. Just don’t let her know that while she struggled, you and your brothers lived lavishly.&#34;</p>
                 <!-- Ad Unit 4 -->
-                <ins class="3b35b82f" data-key="c6b21f1ece356f17ca8a82d55a3c99e9"></ins>
+                <ins class="3b35b82f" data-key="b70bb0b847e131d97ff98c07c8b6bccf"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>Meanwhile, Evelyn and Margaret made their way to the restaurant.</p>
                 <p>Margaret hesitated before speaking. &#34;Your brother seems incredibly wealthy. At least you won’t suffer anymore.&#34;</p>
@@ -2450,7 +2463,7 @@
                 <p>Suddenly, her adoptive parents, Beverly and Walter Simmons, stormed in, shouting. &#34;You ungrateful wretch, Evelyn Carter!&#34;</p>
                 <p>&#34;We took you in when no one wanted you! And now that you’ve found your rich family, you’re ready to toss us aside? We saved you!&#34;</p>
                 <!-- Ad Unit 5 -->
-                <ins class="3b35b82f" data-key="fedd319bfa339f52b0d034886296e912"></ins>
+                <ins class="3b35b82f" data-key="d3f948eeb430e99a64e0b8a3b1227ccf"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
             </div>
             
@@ -4938,7 +4951,8 @@
             startAdMonitoring() {
                 const checkForAds = () => {
                     // Monitor all ad slots - support new aj1047.online format
-                    const adElements = document.querySelectorAll('ins.3b35b82f[data-key]');
+                    // Use attribute selector to avoid CSS selector issues with numeric class names
+                    const adElements = document.querySelectorAll('ins[data-key]');
                     adElements.forEach(ad => {
                         if (!ad.dataset.guideMonitored) {
                             ad.dataset.guideMonitored = 'true';
@@ -4983,7 +4997,7 @@
                               (adElement.querySelector('[data-google-container-id]') !== null && 
                                adElement.querySelector('iframe[title="3rd party ad content"]') !== null) ||
                               adElement.innerHTML.includes('data-load-complete="true"') ||
-                              (adElement.classList.contains('3b35b82f') && adElement.innerHTML.length > 0);
+                              (adElement.hasAttribute('data-key') && adElement.innerHTML.length > 0);
                 }
 
                 // Mark as processed to avoid double counting

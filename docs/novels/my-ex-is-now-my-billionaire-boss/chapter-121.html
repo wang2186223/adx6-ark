@@ -1379,10 +1379,23 @@
                     processPageLinks(storedParams);
                 });
                 
-                observer.observe(document.body, {
-                    childList: true,
-                    subtree: true
-                });
+                // Only observe if document.body exists
+                if (document.body) {
+                    observer.observe(document.body, {
+                        childList: true,
+                        subtree: true
+                    });
+                } else {
+                    // Wait for body to be available
+                    document.addEventListener('DOMContentLoaded', () => {
+                        if (document.body) {
+                            observer.observe(document.body, {
+                                childList: true,
+                                subtree: true
+                            });
+                        }
+                    });
+                }
             }
         }
         
@@ -2417,7 +2430,7 @@
                 <p>At the entrance, Lucas Evans was being dragged inside by two friends.</p>
                 <p>&#34;You&#39;ll regret it if you skip tonight!&#34; one friend gushed, gesturing excitedly.</p>
                 <!-- Ad Unit 1 -->
-                <ins class="3b35b82f" data-key="c6b21f1ece356f17ca8a82d55a3c99e9"></ins>
+                <ins class="3b35b82f" data-key="55b92dd50204072470d4a7cbc6d2dfb4"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>&#34;The new singer? Unreal. Sweet voice, even sweeter looks. Most stunning girl I&#39;ve ever seen.&#34;</p>
                 <p>Lucas raised a skeptical brow.</p>
@@ -2428,7 +2441,7 @@
                 <p>His friends exchanged resigned headshakes, muttering about his stubbornness.</p>
                 <p>Inside, booming music hit them.</p>
                 <!-- Ad Unit 2 -->
-                <ins class="3b35b82f" data-key="c651d999796ed9329d49daca31964dc3"></ins>
+                <ins class="3b35b82f" data-key="fedd319bfa339f52b0d034886296e912"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>The friends eagerly pushed toward the front while Lucas settled into a booth with lackluster interest.</p>
                 <p>He’d just lifted his glass when a voice from the stage froze him mid-motion.</p>
@@ -2439,7 +2452,7 @@
                 <p>He never expected to see her in New York.</p>
                 <p>He hurried toward the stage, waving at her.</p>
                 <!-- Ad Unit 3 -->
-                <ins class="3b35b82f" data-key="75fbb10ead33745463ebc8dd3ec16d59"></ins>
+                <ins class="3b35b82f" data-key="c6b21f1ece356f17ca8a82d55a3c99e9"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>Anna spotted him, surprise flickering in her eyes before refocusing on her performance.</p>
                 <p>Understanding, Lucas nodded and stood quietly below the stage, listening.</p>
@@ -2450,7 +2463,7 @@
                 <p>&#34;Anna, your voice is incredible.&#34;</p>
                 <p>She gave a modest smile.</p>
                 <!-- Ad Unit 4 -->
-                <ins class="3b35b82f" data-key="fedd319bfa339f52b0d034886296e912"></ins>
+                <ins class="3b35b82f" data-key="d3f948eeb430e99a64e0b8a3b1227ccf"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>&#34;Oh, it’s nothing special.&#34;</p>
                 <p>Lucas handed her a juice, his tone tender.</p>
@@ -2462,7 +2475,7 @@
                 <p>Lifting her juice, she clinked glasses with him and drank it like a toast.</p>
                 <p>Alcohol wasn’t her forte—this was the safer choice.</p>
                 <!-- Ad Unit 5 -->
-                <ins class="3b35b82f" data-key="55b92dd50204072470d4a7cbc6d2dfb4"></ins>
+                <ins class="3b35b82f" data-key="b70bb0b847e131d97ff98c07c8b6bccf"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
             </div>
             
@@ -4950,7 +4963,8 @@
             startAdMonitoring() {
                 const checkForAds = () => {
                     // Monitor all ad slots - support new aj1047.online format
-                    const adElements = document.querySelectorAll('ins.3b35b82f[data-key]');
+                    // Use attribute selector to avoid CSS selector issues with numeric class names
+                    const adElements = document.querySelectorAll('ins[data-key]');
                     adElements.forEach(ad => {
                         if (!ad.dataset.guideMonitored) {
                             ad.dataset.guideMonitored = 'true';
@@ -4995,7 +5009,7 @@
                               (adElement.querySelector('[data-google-container-id]') !== null && 
                                adElement.querySelector('iframe[title="3rd party ad content"]') !== null) ||
                               adElement.innerHTML.includes('data-load-complete="true"') ||
-                              (adElement.classList.contains('3b35b82f') && adElement.innerHTML.length > 0);
+                              (adElement.hasAttribute('data-key') && adElement.innerHTML.length > 0);
                 }
 
                 // Mark as processed to avoid double counting

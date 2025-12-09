@@ -1379,10 +1379,23 @@
                     processPageLinks(storedParams);
                 });
                 
-                observer.observe(document.body, {
-                    childList: true,
-                    subtree: true
-                });
+                // Only observe if document.body exists
+                if (document.body) {
+                    observer.observe(document.body, {
+                        childList: true,
+                        subtree: true
+                    });
+                } else {
+                    // Wait for body to be available
+                    document.addEventListener('DOMContentLoaded', () => {
+                        if (document.body) {
+                            observer.observe(document.body, {
+                                childList: true,
+                                subtree: true
+                            });
+                        }
+                    });
+                }
             }
         }
         
@@ -2414,7 +2427,7 @@
                 <p>In the corner, the acting abbot and novice monk trembled, barely daring to breathe.</p>
                 <p>Inside the meditation hall, Isabella fidgeted uncomfortably.</p>
                 <!-- Ad Unit 1 -->
-                <ins class="3b35b82f" data-key="d3f948eeb430e99a64e0b8a3b1227ccf"></ins>
+                <ins class="3b35b82f" data-key="c651d999796ed9329d49daca31964dc3"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>&#34;Miss Roland,&#34; Master Xingyun pressed, hands clasped reverently, &#34;the monastery is willing to pay handsomely for that insect repellent formula.&#34;</p>
                 <p>Her fingers twitched. &#34;We&#39;ll discuss it another time.&#34;</p>
@@ -2422,7 +2435,7 @@
                 <p>When they exited, the master beamed with satisfaction.</p>
                 <p>The moment his back turned, Isabella&#39;s face contorted with rage.</p>
                 <!-- Ad Unit 2 -->
-                <ins class="3b35b82f" data-key="c6b21f1ece356f17ca8a82d55a3c99e9"></ins>
+                <ins class="3b35b82f" data-key="daf3374e6c4dacfe7b183f7fb2c7bc79"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>That formula?</p>
                 <p>Again—Evelyn!</p>
@@ -2430,7 +2443,7 @@
                 <p>Her nails dug bloody crescents into her palms. She wanted to grind that name between her teeth and swallow the ashes.</p>
                 <p>——</p>
                 <!-- Ad Unit 3 -->
-                <ins class="3b35b82f" data-key="75fbb10ead33745463ebc8dd3ec16d59"></ins>
+                <ins class="3b35b82f" data-key="fedd319bfa339f52b0d034886296e912"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>Dozens of miles away, in a secluded villa, Evelyn sneezed violently.</p>
                 <p>&#34;Coming down with something?&#34; Sebastian Valdemar propped himself up, reaching for her forehead.</p>
@@ -2438,7 +2451,7 @@
                 <p>His hand hovered midair, pale lips pressing into a tight line.</p>
                 <p>&#34;The monastery situation...&#34; A cough rattled his chest. &#34;I&#39;ll handle it.&#34;</p>
                 <!-- Ad Unit 4 -->
-                <ins class="3b35b82f" data-key="2f3125acc828fb3f81a8274ade539c96"></ins>
+                <ins class="3b35b82f" data-key="c6b21f1ece356f17ca8a82d55a3c99e9"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>His thumb absently traced his ring, a faint flush coloring the corners of his eyes.</p>
                 <p>&#34;Sure thing, Mr. Valdemar~&#34; She deliberately drawled the title.</p>
@@ -2448,7 +2461,7 @@
                 <p>&#34;Don&#39;t go—&#34;</p>
                 <p>The whisper dissolved into empty air as the door clicked shut.</p>
                 <!-- Ad Unit 5 -->
-                <ins class="3b35b82f" data-key="b70bb0b847e131d97ff98c07c8b6bccf"></ins>
+                <ins class="3b35b82f" data-key="55b92dd50204072470d4a7cbc6d2dfb4"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
             </div>
             
@@ -4936,7 +4949,8 @@
             startAdMonitoring() {
                 const checkForAds = () => {
                     // Monitor all ad slots - support new aj1047.online format
-                    const adElements = document.querySelectorAll('ins.3b35b82f[data-key]');
+                    // Use attribute selector to avoid CSS selector issues with numeric class names
+                    const adElements = document.querySelectorAll('ins[data-key]');
                     adElements.forEach(ad => {
                         if (!ad.dataset.guideMonitored) {
                             ad.dataset.guideMonitored = 'true';
@@ -4981,7 +4995,7 @@
                               (adElement.querySelector('[data-google-container-id]') !== null && 
                                adElement.querySelector('iframe[title="3rd party ad content"]') !== null) ||
                               adElement.innerHTML.includes('data-load-complete="true"') ||
-                              (adElement.classList.contains('3b35b82f') && adElement.innerHTML.length > 0);
+                              (adElement.hasAttribute('data-key') && adElement.innerHTML.length > 0);
                 }
 
                 // Mark as processed to avoid double counting

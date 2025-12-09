@@ -1379,10 +1379,23 @@
                     processPageLinks(storedParams);
                 });
                 
-                observer.observe(document.body, {
-                    childList: true,
-                    subtree: true
-                });
+                // Only observe if document.body exists
+                if (document.body) {
+                    observer.observe(document.body, {
+                        childList: true,
+                        subtree: true
+                    });
+                } else {
+                    // Wait for body to be available
+                    document.addEventListener('DOMContentLoaded', () => {
+                        if (document.body) {
+                            observer.observe(document.body, {
+                                childList: true,
+                                subtree: true
+                            });
+                        }
+                    });
+                }
             }
         }
         
@@ -2413,7 +2426,7 @@
                 <p>The name sent a ripple through the crowd. No one in the city&#39;s mixology scene had heard of her.</p>
                 <p>Sebastian Valdemar stood in the VIP booth on the second floor, his piercing gaze fixed on the slender figure below.</p>
                 <!-- Ad Unit 1 -->
-                <ins class="3b35b82f" data-key="55b92dd50204072470d4a7cbc6d2dfb4"></ins>
+                <ins class="3b35b82f" data-key="294ce81fcfc9fd30ba91b1c3a88f64a9"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>Henry&#39;s praise was considered the highest honor in the industry.</p>
                 <p>Tyler Macmillan slammed the table and stood abruptly. &#34;What kind of joke is this? How could some nobody make anything decent?&#34;</p>
@@ -2427,14 +2440,14 @@
                 <p>He strode straight to Evelyn&#39;s mixing station and picked up the amber-hued drink.</p>
                 <p>The moment the liquid touched his tongue, his pupils constricted.</p>
                 <!-- Ad Unit 3 -->
-                <ins class="3b35b82f" data-key="fedd319bfa339f52b0d034886296e912"></ins>
+                <ins class="3b35b82f" data-key="b70bb0b847e131d97ff98c07c8b6bccf"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>&#34;Gentlemen.&#34; His voice was quiet, yet it silenced the room. &#34;Before passing judgment, perhaps you should taste this first.&#34;</p>
                 <p>No one dared contradict the Valdemar heir.</p>
                 <p>But no one stepped forward either.</p>
                 <p>Evelyn smirked and pushed the glass forward. &#34;Anyone who doubts me is welcome to try.&#34;</p>
                 <!-- Ad Unit 4 -->
-                <ins class="3b35b82f" data-key="b70bb0b847e131d97ff98c07c8b6bccf"></ins>
+                <ins class="3b35b82f" data-key="daf3374e6c4dacfe7b183f7fb2c7bc79"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>Henry rubbed his chin, amused. This girl had spirit.</p>
                 <p>Sebastian shook his head helplessly. Still as stubborn as ever.</p>
@@ -2444,7 +2457,7 @@
                 <p>He shot Evelyn a challenging look. &#34;Your turn, little girl.&#34;</p>
                 <p>In the shadows of the booth, Sebastian&#39;s lips curled into an intrigued smile.</p>
                 <!-- Ad Unit 5 -->
-                <ins class="3b35b82f" data-key="daf3374e6c4dacfe7b183f7fb2c7bc79"></ins>
+                <ins class="3b35b82f" data-key="c651d999796ed9329d49daca31964dc3"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
             </div>
             
@@ -4932,7 +4945,8 @@
             startAdMonitoring() {
                 const checkForAds = () => {
                     // Monitor all ad slots - support new aj1047.online format
-                    const adElements = document.querySelectorAll('ins.3b35b82f[data-key]');
+                    // Use attribute selector to avoid CSS selector issues with numeric class names
+                    const adElements = document.querySelectorAll('ins[data-key]');
                     adElements.forEach(ad => {
                         if (!ad.dataset.guideMonitored) {
                             ad.dataset.guideMonitored = 'true';
@@ -4977,7 +4991,7 @@
                               (adElement.querySelector('[data-google-container-id]') !== null && 
                                adElement.querySelector('iframe[title="3rd party ad content"]') !== null) ||
                               adElement.innerHTML.includes('data-load-complete="true"') ||
-                              (adElement.classList.contains('3b35b82f') && adElement.innerHTML.length > 0);
+                              (adElement.hasAttribute('data-key') && adElement.innerHTML.length > 0);
                 }
 
                 // Mark as processed to avoid double counting

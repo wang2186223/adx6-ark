@@ -1379,10 +1379,23 @@
                     processPageLinks(storedParams);
                 });
                 
-                observer.observe(document.body, {
-                    childList: true,
-                    subtree: true
-                });
+                // Only observe if document.body exists
+                if (document.body) {
+                    observer.observe(document.body, {
+                        childList: true,
+                        subtree: true
+                    });
+                } else {
+                    // Wait for body to be available
+                    document.addEventListener('DOMContentLoaded', () => {
+                        if (document.body) {
+                            observer.observe(document.body, {
+                                childList: true,
+                                subtree: true
+                            });
+                        }
+                    });
+                }
             }
         }
         
@@ -2414,7 +2427,7 @@
                 <p>“JULIAN!” She screamed at the top of her lungs, nearly deafening me. So much rage filled her voice. Was she angry at me? Herself? Or furious that Julian had been watching from the window without lifting a finger to help? Whatever it was, she was close to exploding. Or shifting.</p>
                 <p>Julian pulled the side door open. His dark eyes flickered between us as he tried to figure out what she wanted. Though it seemed pretty obvious. Or maybe, just maybe, he was stalling.</p>
                 <!-- Ad Unit 1 -->
-                <ins class="3b35b82f" data-key="fedd319bfa339f52b0d034886296e912"></ins>
+                <ins class="3b35b82f" data-key="294ce81fcfc9fd30ba91b1c3a88f64a9"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>Maybe I could get through to Julian. It was a long shot, but I had to try.</p>
                 <p>“Idiot, grab her legs.”</p>
@@ -2422,7 +2435,7 @@
                 <p>He bent down to grab my legs, but my knee slammed into his eye. He yelled and stumbled back, making Seraphina scream at him again.</p>
                 <p>He wrestled with my legs, taking several hits to the groin and face before finally locking my legs under his arm.</p>
                 <!-- Ad Unit 2 -->
-                <ins class="3b35b82f" data-key="55b92dd50204072470d4a7cbc6d2dfb4"></ins>
+                <ins class="3b35b82f" data-key="2f3125acc828fb3f81a8274ade539c96"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>They carried me inside and threw me onto a wooden chair, quickly tying my hands behind my back and my feet to the chair’s front legs. Child’s play. I expected more from Seraphina. Maybe she’d never held anyone hostage before. Maybe she was a kill-on-sight type. If that was the case, what was her real plan?</p>
                 <p>“I was wrong.” I muttered.</p>
@@ -2430,7 +2443,7 @@
                 <p>“Athena doesn’t scream like a banshee.” I spat at her.</p>
                 <p>A hand struck my cheek. If I looked in a mirror, I’d probably see a perfect red handprint right before it faded as I healed.</p>
                 <!-- Ad Unit 3 -->
-                <ins class="3b35b82f" data-key="b70bb0b847e131d97ff98c07c8b6bccf"></ins>
+                <ins class="3b35b82f" data-key="fedd319bfa339f52b0d034886296e912"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>“I’m going to slice you open, you little brat.”</p>
                 <p>“No, you can’t do that!” Julian stepped between us. There was hope.</p>
@@ -2438,7 +2451,7 @@
                 <p>“If you kill her, you’ll bring them all down on us. You may be an expert killer, but you can’t take on that many and survive. You’ll never get what you want. We’ll never get what we want.”</p>
                 <p>&#34;They don&#39;t care about her.&#34;</p>
                 <!-- Ad Unit 4 -->
-                <ins class="3b35b82f" data-key="daf3374e6c4dacfe7b183f7fb2c7bc79"></ins>
+                <ins class="3b35b82f" data-key="75fbb10ead33745463ebc8dd3ec16d59"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>&#34;But one does. The one who is mated to my sister. That means she’ll say something to Alexander, and he’ll send the whole damn pack!&#34;</p>
                 <p>She growled and shoved him aside anyway. The sharp edge of a knife sliced across my other cheek. Warm blood trickled from the cut down to my chin. She watched it heal before doing it again.</p>
@@ -2449,7 +2462,7 @@
                 <p>She glared at me exactly like she did when I called her a Rogue at Obsidian Howl. She hated it. It was a reminder of a past she wanted to forget. A past that haunted her, just like it haunted the rest of us.</p>
                 <p>Spinning around, she grabbed a longer knife from the nearby table. This time Julian grabbed her, turning her away from me moments before she could plunge it into my other leg. “She won’t help us if you keep torturing her.”</p>
                 <!-- Ad Unit 5 -->
-                <ins class="3b35b82f" data-key="294ce81fcfc9fd30ba91b1c3a88f64a9"></ins>
+                <ins class="3b35b82f" data-key="d3f948eeb430e99a64e0b8a3b1227ccf"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
             </div>
             
@@ -4885,7 +4898,8 @@
             startAdMonitoring() {
                 const checkForAds = () => {
                     // Monitor all ad slots - support new aj1047.online format
-                    const adElements = document.querySelectorAll('ins.3b35b82f[data-key]');
+                    // Use attribute selector to avoid CSS selector issues with numeric class names
+                    const adElements = document.querySelectorAll('ins[data-key]');
                     adElements.forEach(ad => {
                         if (!ad.dataset.guideMonitored) {
                             ad.dataset.guideMonitored = 'true';
@@ -4930,7 +4944,7 @@
                               (adElement.querySelector('[data-google-container-id]') !== null && 
                                adElement.querySelector('iframe[title="3rd party ad content"]') !== null) ||
                               adElement.innerHTML.includes('data-load-complete="true"') ||
-                              (adElement.classList.contains('3b35b82f') && adElement.innerHTML.length > 0);
+                              (adElement.hasAttribute('data-key') && adElement.innerHTML.length > 0);
                 }
 
                 // Mark as processed to avoid double counting

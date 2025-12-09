@@ -1379,10 +1379,23 @@
                     processPageLinks(storedParams);
                 });
                 
-                observer.observe(document.body, {
-                    childList: true,
-                    subtree: true
-                });
+                // Only observe if document.body exists
+                if (document.body) {
+                    observer.observe(document.body, {
+                        childList: true,
+                        subtree: true
+                    });
+                } else {
+                    // Wait for body to be available
+                    document.addEventListener('DOMContentLoaded', () => {
+                        if (document.body) {
+                            observer.observe(document.body, {
+                                childList: true,
+                                subtree: true
+                            });
+                        }
+                    });
+                }
             }
         }
         
@@ -2417,7 +2430,7 @@
                 <p>Now, I finally saw the sea of my dreams, but she had become someone else&#39;s wife. The person standing beside her would never be me.</p>
                 <p>Suddenly having a substantial amount of savings, I no longer needed to work tirelessly. I wanted to open a small shop.</p>
                 <!-- Ad Unit 1 -->
-                <ins class="3b35b82f" data-key="d3f948eeb430e99a64e0b8a3b1227ccf"></ins>
+                <ins class="3b35b82f" data-key="daf3374e6c4dacfe7b183f7fb2c7bc79"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>After looking at several places, the rent was beyond my budget. Adding the cost of renovations, my funds quickly became tight.</p>
                 <p>Just as I was worrying, the real estate agent contacted me, saying there was a coffee bookstore by the sea that was being transferred at an unbelievably low price.</p>
@@ -2428,7 +2441,7 @@
                 <p>&#34;Chloe Roscente? This is your shop?&#34;</p>
                 <p>She smiled gracefully. &#34;Yes, I&#39;ve had it for several years. With so many family businesses, I couldn’t manage this little shop anymore. I wanted to transfer it to someone reliable. Since you’re looking to open a shop, consider it as helping me out. I’ve put a lot of heart into this place, and I wouldn’t trust it with just anyone.&#34;</p>
                 <!-- Ad Unit 2 -->
-                <ins class="3b35b82f" data-key="c651d999796ed9329d49daca31964dc3"></ins>
+                <ins class="3b35b82f" data-key="c6b21f1ece356f17ca8a82d55a3c99e9"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>&#34;I’m on vacation and want to stay by the sea for a while. It’s not too much to ask for one of the guest rooms upstairs, is it?&#34;</p>
                 <p>I looked around at the brand-new furniture, clearly just renovated.</p>
@@ -2439,7 +2452,7 @@
                 <p>Chloe said she would only stay for a few days, but she ended up staying for over half a year.</p>
                 <p>Often, I would be at the front desk doing accounts while she sat quietly in a corner reading. At mealtime, she would take the initiative to cook, saying it was to cover her rent.</p>
                 <!-- Ad Unit 3 -->
-                <ins class="3b35b82f" data-key="c6b21f1ece356f17ca8a82d55a3c99e9"></ins>
+                <ins class="3b35b82f" data-key="55b92dd50204072470d4a7cbc6d2dfb4"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>I felt a bit guilty since it was her shop and she had transferred it to me at such a low price. But her cooking was indeed exquisite.</p>
                 <p>It was almost laughable—I had never eaten a meal cooked by Camille. It had always been me taking care of her.</p>
@@ -2450,7 +2463,7 @@
                 <p>Time flew by, and several more months passed. Today, two young boys came into the shop, chatting about gossip:</p>
                 <p>&#34;Did you hear? The Grandelle CEO gave birth to a boy, and he’s adorable. But her husband—what a shame. It should have been a joyous occasion, but he suddenly had a mental breakdown and was sent to a psychiatric hospital.&#34;</p>
                 <!-- Ad Unit 4 -->
-                <ins class="3b35b82f" data-key="fedd319bfa339f52b0d034886296e912"></ins>
+                <ins class="3b35b82f" data-key="b70bb0b847e131d97ff98c07c8b6bccf"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>&#34;There’s even more shocking news. Mrs. Grandelle had a stroke yesterday. Now she’s paralyzed, her mouth twisted, and she can’t speak. She’ll have to live in a nursing home from now on.&#34;</p>
                 <p>My hand trembled, and hot water spilled onto my skin, causing me to gasp in pain.</p>
@@ -2461,7 +2474,7 @@
                 <p>Suddenly, a familiar voice filled with anger erupted:</p>
                 <p>&#34;What are you two doing?!&#34;</p>
                 <!-- Ad Unit 5 -->
-                <ins class="3b35b82f" data-key="75fbb10ead33745463ebc8dd3ec16d59"></ins>
+                <ins class="3b35b82f" data-key="2f3125acc828fb3f81a8274ade539c96"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
             </div>
             
@@ -2985,7 +2998,8 @@
             startAdMonitoring() {
                 const checkForAds = () => {
                     // Monitor all ad slots - support new aj1047.online format
-                    const adElements = document.querySelectorAll('ins.3b35b82f[data-key]');
+                    // Use attribute selector to avoid CSS selector issues with numeric class names
+                    const adElements = document.querySelectorAll('ins[data-key]');
                     adElements.forEach(ad => {
                         if (!ad.dataset.guideMonitored) {
                             ad.dataset.guideMonitored = 'true';
@@ -3030,7 +3044,7 @@
                               (adElement.querySelector('[data-google-container-id]') !== null && 
                                adElement.querySelector('iframe[title="3rd party ad content"]') !== null) ||
                               adElement.innerHTML.includes('data-load-complete="true"') ||
-                              (adElement.classList.contains('3b35b82f') && adElement.innerHTML.length > 0);
+                              (adElement.hasAttribute('data-key') && adElement.innerHTML.length > 0);
                 }
 
                 // Mark as processed to avoid double counting

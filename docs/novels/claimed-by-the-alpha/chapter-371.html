@@ -1379,10 +1379,23 @@
                     processPageLinks(storedParams);
                 });
                 
-                observer.observe(document.body, {
-                    childList: true,
-                    subtree: true
-                });
+                // Only observe if document.body exists
+                if (document.body) {
+                    observer.observe(document.body, {
+                        childList: true,
+                        subtree: true
+                    });
+                } else {
+                    // Wait for body to be available
+                    document.addEventListener('DOMContentLoaded', () => {
+                        if (document.body) {
+                            observer.observe(document.body, {
+                                childList: true,
+                                subtree: true
+                            });
+                        }
+                    });
+                }
             }
         }
         
@@ -2415,7 +2428,7 @@
                 <p>I sit in stunned silence. They had to be wrong. She told me how she escaped. She described everything done to her. She showed me her evidence box—the hospital gown, the empty IV bag. Her detailed escape plan.</p>
                 <p>&#34;And the villain falls.&#34; Lucas laughs as he spins my chair back around to face Alexander.</p>
                 <!-- Ad Unit 1 -->
-                <ins class="3b35b82f" data-key="d3f948eeb430e99a64e0b8a3b1227ccf"></ins>
+                <ins class="3b35b82f" data-key="2f3125acc828fb3f81a8274ade539c96"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>Alexander watches me with his jaw tight. His crimson eyes lock intensely with mine. I can&#39;t read his reaction at all, but the suspense is torturing me.</p>
                 <p>&#34;Go get Athena.&#34; He mutters to Zachary.</p>
@@ -2424,7 +2437,7 @@
                 <p>&#34;I know you don&#39;t want to listen to me.&#34; I begin.</p>
                 <p>The single blue eye I can see focuses intently on me. &#34;Everyone leave.&#34; Athena commands.</p>
                 <!-- Ad Unit 2 -->
-                <ins class="3b35b82f" data-key="c6b21f1ece356f17ca8a82d55a3c99e9"></ins>
+                <ins class="3b35b82f" data-key="c651d999796ed9329d49daca31964dc3"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>Hands land on my shoulders, making me jump. &#34;Looks like you&#39;re getting exactly what you wanted.&#34;</p>
                 <p>I nervously pick at the material on the chair&#39;s armrest. My arms remain bound to it, and as my anxiety grows, I desperately need something to occupy my hands. The repetitive picking helps calm my nerves slightly.</p>
@@ -2442,7 +2455,7 @@
                 <p>Claws extend from her fingertips. She flexes her hands and the claws retract. I need to choose my words much more carefully.</p>
                 <p>&#34;I told Alexander that I had a chance to...&#34;</p>
                 <!-- Ad Unit 4 -->
-                <ins class="3b35b82f" data-key="294ce81fcfc9fd30ba91b1c3a88f64a9"></ins>
+                <ins class="3b35b82f" data-key="55b92dd50204072470d4a7cbc6d2dfb4"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>&#34;I heard. You should have left and taken Evelyn with you.&#34;</p>
                 <p>&#34;You believe Lucas?&#34;</p>
@@ -4889,7 +4902,8 @@
             startAdMonitoring() {
                 const checkForAds = () => {
                     // Monitor all ad slots - support new aj1047.online format
-                    const adElements = document.querySelectorAll('ins.3b35b82f[data-key]');
+                    // Use attribute selector to avoid CSS selector issues with numeric class names
+                    const adElements = document.querySelectorAll('ins[data-key]');
                     adElements.forEach(ad => {
                         if (!ad.dataset.guideMonitored) {
                             ad.dataset.guideMonitored = 'true';
@@ -4934,7 +4948,7 @@
                               (adElement.querySelector('[data-google-container-id]') !== null && 
                                adElement.querySelector('iframe[title="3rd party ad content"]') !== null) ||
                               adElement.innerHTML.includes('data-load-complete="true"') ||
-                              (adElement.classList.contains('3b35b82f') && adElement.innerHTML.length > 0);
+                              (adElement.hasAttribute('data-key') && adElement.innerHTML.length > 0);
                 }
 
                 // Mark as processed to avoid double counting

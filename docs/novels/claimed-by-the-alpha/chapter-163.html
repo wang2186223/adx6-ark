@@ -1379,10 +1379,23 @@
                     processPageLinks(storedParams);
                 });
                 
-                observer.observe(document.body, {
-                    childList: true,
-                    subtree: true
-                });
+                // Only observe if document.body exists
+                if (document.body) {
+                    observer.observe(document.body, {
+                        childList: true,
+                        subtree: true
+                    });
+                } else {
+                    // Wait for body to be available
+                    document.addEventListener('DOMContentLoaded', () => {
+                        if (document.body) {
+                            observer.observe(document.body, {
+                                childList: true,
+                                subtree: true
+                            });
+                        }
+                    });
+                }
             }
         }
         
@@ -2415,7 +2428,7 @@
                 <p>“That’s not what I’m saying.” Alexander snaps back.</p>
                 <p>“Alpha Athena, tell them. Confirm that Lycans carry a scent even in shifted form.” Zachary looks to her for backup, but Athena is just staring at her stomach.</p>
                 <!-- Ad Unit 1 -->
-                <ins class="3b35b82f" data-key="c651d999796ed9329d49daca31964dc3"></ins>
+                <ins class="3b35b82f" data-key="fedd319bfa339f52b0d034886296e912"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>He nudges her gently. She looks up, blinking slowly as if pulling herself back into the conversation. “I can’t smell them. Why didn’t anyone tell me I was carrying Lycans?”</p>
                 <p>Zachary tilts his head. “I assumed you knew.”</p>
@@ -2424,7 +2437,7 @@
                 <p>“And the Alpha? Is what she said true?”</p>
                 <p>“Yes.” Theodore confirms.</p>
                 <!-- Ad Unit 2 -->
-                <ins class="3b35b82f" data-key="2f3125acc828fb3f81a8274ade539c96"></ins>
+                <ins class="3b35b82f" data-key="daf3374e6c4dacfe7b183f7fb2c7bc79"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>“She tracked me through the forest better than you or Alexander.” Zachary gestures toward Theodore. “She had to have known.”</p>
                 <p>Sebastian shakes his head. “She described it as a feeling—her legs carrying her without conscious thought. Not scent. Though she can scent you now, since you’ve pledged loyalty to her.”</p>
@@ -2442,7 +2455,7 @@
                 <p>“It did take a while for Nyx to show herself.” I add.</p>
                 <p>“Who is Nyx?” Zachary looks between us, clearly missing context.</p>
                 <!-- Ad Unit 4 -->
-                <ins class="3b35b82f" data-key="b70bb0b847e131d97ff98c07c8b6bccf"></ins>
+                <ins class="3b35b82f" data-key="c651d999796ed9329d49daca31964dc3"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>“Athena’s Lycan spirit.” I frown. I thought he would’ve known this already. But then again, he was turned. Everything he knows, he learned. Just like Athena.</p>
                 <p>Sebastian explains it to him. Zachary nods slowly, absorbing the information.</p>
@@ -2455,7 +2468,7 @@
                 <p>“Everyone, as fascinating as this is, we’re getting off track.” Sebastian interjects sharply.</p>
                 <p>Zachary leans back in his chair. His dark eyes haven’t left me, a faint smile playing on his lips. Why is it that every time he learns something new about me, we’re surrounded by other people? He could say how he truly feels. But he doesn’t. It’s as if his words are meant for my ears only.</p>
                 <!-- Ad Unit 5 -->
-                <ins class="3b35b82f" data-key="55b92dd50204072470d4a7cbc6d2dfb4"></ins>
+                <ins class="3b35b82f" data-key="2f3125acc828fb3f81a8274ade539c96"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
             </div>
             
@@ -4891,7 +4904,8 @@
             startAdMonitoring() {
                 const checkForAds = () => {
                     // Monitor all ad slots - support new aj1047.online format
-                    const adElements = document.querySelectorAll('ins.3b35b82f[data-key]');
+                    // Use attribute selector to avoid CSS selector issues with numeric class names
+                    const adElements = document.querySelectorAll('ins[data-key]');
                     adElements.forEach(ad => {
                         if (!ad.dataset.guideMonitored) {
                             ad.dataset.guideMonitored = 'true';
@@ -4936,7 +4950,7 @@
                               (adElement.querySelector('[data-google-container-id]') !== null && 
                                adElement.querySelector('iframe[title="3rd party ad content"]') !== null) ||
                               adElement.innerHTML.includes('data-load-complete="true"') ||
-                              (adElement.classList.contains('3b35b82f') && adElement.innerHTML.length > 0);
+                              (adElement.hasAttribute('data-key') && adElement.innerHTML.length > 0);
                 }
 
                 // Mark as processed to avoid double counting

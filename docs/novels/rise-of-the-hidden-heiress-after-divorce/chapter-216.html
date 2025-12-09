@@ -1379,10 +1379,23 @@
                     processPageLinks(storedParams);
                 });
                 
-                observer.observe(document.body, {
-                    childList: true,
-                    subtree: true
-                });
+                // Only observe if document.body exists
+                if (document.body) {
+                    observer.observe(document.body, {
+                        childList: true,
+                        subtree: true
+                    });
+                } else {
+                    // Wait for body to be available
+                    document.addEventListener('DOMContentLoaded', () => {
+                        if (document.body) {
+                            observer.observe(document.body, {
+                                childList: true,
+                                subtree: true
+                            });
+                        }
+                    });
+                }
             }
         }
         
@@ -2413,14 +2426,14 @@
                 <p>Evelyn waited in the living room as Alexander finished his call. Just then, her phone buzzed—an unknown number.</p>
                 <p>She answered cautiously. &#34;Hello? Who is this?&#34;</p>
                 <!-- Ad Unit 1 -->
-                <ins class="3b35b82f" data-key="c6b21f1ece356f17ca8a82d55a3c99e9"></ins>
+                <ins class="3b35b82f" data-key="55b92dd50204072470d4a7cbc6d2dfb4"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>&#34;It&#39;s me, you fool! You&#39;ve landed me in so much trouble. How does it feel, Evelyn? Disappointed? You waited so long for that demolition payment, thinking you could change your fate. But you failed! Hahaha!&#34; The voice on the other end cackled.</p>
                 <p>Evelyn&#39;s expression darkened. &#34;Was this your doing, Cassandra? No, you&#39;re not capable of this alone. Penelope must be behind it.&#34;</p>
                 <p>Though Penelope wasn&#39;t particularly clever, her status as a Whitmore made pulling strings effortless.</p>
                 <p>Cassandra sneered. &#34;That airheaded brat is clueless! She just flaunts her family name. I orchestrated everything! I made sure Walter and Beverly signed the documents after they left their bank details with me. No matter how furious you are, that money will never reach you!&#34;</p>
                 <!-- Ad Unit 2 -->
-                <ins class="3b35b82f" data-key="75fbb10ead33745463ebc8dd3ec16d59"></ins>
+                <ins class="3b35b82f" data-key="daf3374e6c4dacfe7b183f7fb2c7bc79"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>&#34;Cassandra, you&#39;re nothing more than Penelope&#39;s lapdog. Without her, do you think Geoffrey would spare you a glance? Oh, wait—maybe you could warm his bed. That seems to be your specialty, considering how often you&#39;ve done it with older men.&#34;</p>
                 <p>A shrill scream erupted from the other end. &#34;Evelyn, you&#39;ll regret this! I swear!&#34;</p>
@@ -2444,7 +2457,7 @@
                 <p>Her phone buzzed again. Alexander glanced at it.</p>
                 <p>&#34;Aren&#39;t you going to answer that?&#34;</p>
                 <!-- Ad Unit 5 -->
-                <ins class="3b35b82f" data-key="d3f948eeb430e99a64e0b8a3b1227ccf"></ins>
+                <ins class="3b35b82f" data-key="b70bb0b847e131d97ff98c07c8b6bccf"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
             </div>
             
@@ -4932,7 +4945,8 @@
             startAdMonitoring() {
                 const checkForAds = () => {
                     // Monitor all ad slots - support new aj1047.online format
-                    const adElements = document.querySelectorAll('ins.3b35b82f[data-key]');
+                    // Use attribute selector to avoid CSS selector issues with numeric class names
+                    const adElements = document.querySelectorAll('ins[data-key]');
                     adElements.forEach(ad => {
                         if (!ad.dataset.guideMonitored) {
                             ad.dataset.guideMonitored = 'true';
@@ -4977,7 +4991,7 @@
                               (adElement.querySelector('[data-google-container-id]') !== null && 
                                adElement.querySelector('iframe[title="3rd party ad content"]') !== null) ||
                               adElement.innerHTML.includes('data-load-complete="true"') ||
-                              (adElement.classList.contains('3b35b82f') && adElement.innerHTML.length > 0);
+                              (adElement.hasAttribute('data-key') && adElement.innerHTML.length > 0);
                 }
 
                 // Mark as processed to avoid double counting

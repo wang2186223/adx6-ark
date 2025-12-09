@@ -1379,10 +1379,23 @@
                     processPageLinks(storedParams);
                 });
                 
-                observer.observe(document.body, {
-                    childList: true,
-                    subtree: true
-                });
+                // Only observe if document.body exists
+                if (document.body) {
+                    observer.observe(document.body, {
+                        childList: true,
+                        subtree: true
+                    });
+                } else {
+                    // Wait for body to be available
+                    document.addEventListener('DOMContentLoaded', () => {
+                        if (document.body) {
+                            observer.observe(document.body, {
+                                childList: true,
+                                subtree: true
+                            });
+                        }
+                    });
+                }
             }
         }
         
@@ -2416,7 +2429,7 @@
                 <p>Stillborn. Theodore told me. I probably shouldn’t discuss it before speaking to Alexander, but Zachary was right—I needed a distraction. Nyx was no help at all.</p>
                 <p>“And you’re worried?” he asks.</p>
                 <!-- Ad Unit 1 -->
-                <ins class="3b35b82f" data-key="2f3125acc828fb3f81a8274ade539c96"></ins>
+                <ins class="3b35b82f" data-key="294ce81fcfc9fd30ba91b1c3a88f64a9"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>Everyone keeps saying I’m automatically carrying more than one. What if it’s true and something goes wrong?</p>
                 <p>The boys are healthy, he tells me through a yawn.</p>
@@ -2426,7 +2439,7 @@
                 <p>Since when?</p>
                 <p>“He told me he’s leaving after we kill Levi. He wants to find his place. I don’t want him to go, but I understand,” I sigh.</p>
                 <!-- Ad Unit 2 -->
-                <ins class="3b35b82f" data-key="75fbb10ead33745463ebc8dd3ec16d59"></ins>
+                <ins class="3b35b82f" data-key="c651d999796ed9329d49daca31964dc3"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>“We all want to find our place in the world, Athena. It’s not the same for everyone.”</p>
                 <p>We stand in silence, hidden by the trees as the sun rises. “We should go after them,” I mutter.</p>
@@ -2436,7 +2449,7 @@
                 <p>“She’s not from this pack,” I mutter.</p>
                 <p>“No, she isn’t,” he confirms, his dark eyes fixed on the road as they approach.</p>
                 <!-- Ad Unit 3 -->
-                <ins class="3b35b82f" data-key="c651d999796ed9329d49daca31964dc3"></ins>
+                <ins class="3b35b82f" data-key="c6b21f1ece356f17ca8a82d55a3c99e9"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>Three times, Theodore has to pull Levi up from the ground. Levi is clearly falling on purpose, looking for an escape.</p>
                 <p>Zachary steps slightly in front of me. It’s his instinct when he senses a threat.</p>
@@ -2457,7 +2470,7 @@
                 <p>Theodore doesn’t answer.</p>
                 <p>“It’s fine,” Jasmine tells us. “I understand.” Her gaze shifts to Theodore, who is holding Levi steady. “I told you this was a mistake. I’m better off alone. I can figure it out.”</p>
                 <!-- Ad Unit 5 -->
-                <ins class="3b35b82f" data-key="294ce81fcfc9fd30ba91b1c3a88f64a9"></ins>
+                <ins class="3b35b82f" data-key="75fbb10ead33745463ebc8dd3ec16d59"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
             </div>
             
@@ -4893,7 +4906,8 @@
             startAdMonitoring() {
                 const checkForAds = () => {
                     // Monitor all ad slots - support new aj1047.online format
-                    const adElements = document.querySelectorAll('ins.3b35b82f[data-key]');
+                    // Use attribute selector to avoid CSS selector issues with numeric class names
+                    const adElements = document.querySelectorAll('ins[data-key]');
                     adElements.forEach(ad => {
                         if (!ad.dataset.guideMonitored) {
                             ad.dataset.guideMonitored = 'true';
@@ -4938,7 +4952,7 @@
                               (adElement.querySelector('[data-google-container-id]') !== null && 
                                adElement.querySelector('iframe[title="3rd party ad content"]') !== null) ||
                               adElement.innerHTML.includes('data-load-complete="true"') ||
-                              (adElement.classList.contains('3b35b82f') && adElement.innerHTML.length > 0);
+                              (adElement.hasAttribute('data-key') && adElement.innerHTML.length > 0);
                 }
 
                 // Mark as processed to avoid double counting

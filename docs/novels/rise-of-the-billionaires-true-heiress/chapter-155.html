@@ -1379,10 +1379,23 @@
                     processPageLinks(storedParams);
                 });
                 
-                observer.observe(document.body, {
-                    childList: true,
-                    subtree: true
-                });
+                // Only observe if document.body exists
+                if (document.body) {
+                    observer.observe(document.body, {
+                        childList: true,
+                        subtree: true
+                    });
+                } else {
+                    // Wait for body to be available
+                    document.addEventListener('DOMContentLoaded', () => {
+                        if (document.body) {
+                            observer.observe(document.body, {
+                                childList: true,
+                                subtree: true
+                            });
+                        }
+                    });
+                }
             }
         }
         
@@ -2413,7 +2426,7 @@
                 <p>She adjusted her wristwatch, her tone icy. &#34;Sebastian won&#39;t be coming to see you again.&#34;</p>
                 <p>&#34;What do you mean?&#34; Isabella&#39;s eyes welled up as she bit her lip hard. &#34;Our families still have a marriage arrangement—&#34;</p>
                 <!-- Ad Unit 1 -->
-                <ins class="3b35b82f" data-key="fedd319bfa339f52b0d034886296e912"></ins>
+                <ins class="3b35b82f" data-key="75fbb10ead33745463ebc8dd3ec16d59"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>Olivia raised a hand to cut her off. &#34;He came to break it off last time, but it wasn&#39;t formally dissolved.&#34;</p>
                 <p>Her attention suddenly shifted to the dining table. &#34;I heard the Rolands recently welcomed a long-lost daughter?&#34;</p>
@@ -2427,14 +2440,14 @@
                 <p>Alexander Roland held his daughter back. &#34;Enough.&#34;</p>
                 <p>Olivia nodded in approval. &#34;Perfect.&#34;</p>
                 <!-- Ad Unit 3 -->
-                <ins class="3b35b82f" data-key="d3f948eeb430e99a64e0b8a3b1227ccf"></ins>
+                <ins class="3b35b82f" data-key="2f3125acc828fb3f81a8274ade539c96"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>As she stood, her eyes locked onto Evelyn with disbelief. &#34;You— Are you the one they—&#34;</p>
                 <p>&#34;Good evening, Ms. Valdemar.&#34; Evelyn spoke first. &#34;I&#39;m here to examine Mrs. Roland.&#34;</p>
                 <p>She added smoothly, &#34;We share the same surname, so she kindly invited me to stay for dinner.&#34;</p>
                 <p>Olivia studied her. &#34;I see.&#34;</p>
                 <!-- Ad Unit 4 -->
-                <ins class="3b35b82f" data-key="c651d999796ed9329d49daca31964dc3"></ins>
+                <ins class="3b35b82f" data-key="55b92dd50204072470d4a7cbc6d2dfb4"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>A sudden spark lit her eyes. &#34;Since Mrs. Roland trusts your medical skills, perhaps you could examine Sebastian in a few days?&#34;</p>
                 <p>Evelyn&#39;s heartbeat stuttered.</p>
@@ -2444,7 +2457,7 @@
                 <p>This bastard was trying to steal Sebastian again! She&#39;d sensed something off that day in the office. No way would she let this stray snatch what rightfully belonged to her.</p>
                 <p>The title of Mrs. Valdemar was hers alone!</p>
                 <!-- Ad Unit 5 -->
-                <ins class="3b35b82f" data-key="75fbb10ead33745463ebc8dd3ec16d59"></ins>
+                <ins class="3b35b82f" data-key="b70bb0b847e131d97ff98c07c8b6bccf"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
             </div>
             
@@ -4932,7 +4945,8 @@
             startAdMonitoring() {
                 const checkForAds = () => {
                     // Monitor all ad slots - support new aj1047.online format
-                    const adElements = document.querySelectorAll('ins.3b35b82f[data-key]');
+                    // Use attribute selector to avoid CSS selector issues with numeric class names
+                    const adElements = document.querySelectorAll('ins[data-key]');
                     adElements.forEach(ad => {
                         if (!ad.dataset.guideMonitored) {
                             ad.dataset.guideMonitored = 'true';
@@ -4977,7 +4991,7 @@
                               (adElement.querySelector('[data-google-container-id]') !== null && 
                                adElement.querySelector('iframe[title="3rd party ad content"]') !== null) ||
                               adElement.innerHTML.includes('data-load-complete="true"') ||
-                              (adElement.classList.contains('3b35b82f') && adElement.innerHTML.length > 0);
+                              (adElement.hasAttribute('data-key') && adElement.innerHTML.length > 0);
                 }
 
                 // Mark as processed to avoid double counting

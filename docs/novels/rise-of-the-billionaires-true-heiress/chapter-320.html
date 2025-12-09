@@ -1379,10 +1379,23 @@
                     processPageLinks(storedParams);
                 });
                 
-                observer.observe(document.body, {
-                    childList: true,
-                    subtree: true
-                });
+                // Only observe if document.body exists
+                if (document.body) {
+                    observer.observe(document.body, {
+                        childList: true,
+                        subtree: true
+                    });
+                } else {
+                    // Wait for body to be available
+                    document.addEventListener('DOMContentLoaded', () => {
+                        if (document.body) {
+                            observer.observe(document.body, {
+                                childList: true,
+                                subtree: true
+                            });
+                        }
+                    });
+                }
             }
         }
         
@@ -2413,21 +2426,21 @@
                 <p>She jogged after Evelyn, eyes sparkling. &#34;Master, we won!&#34;</p>
                 <p>The pieces finally clicked for Bianca. From the lab reports to the live demonstration, even Dominic Laurent&#39;s sudden appearance—every move had been perfectly calculated.</p>
                 <!-- Ad Unit 1 -->
-                <ins class="3b35b82f" data-key="b70bb0b847e131d97ff98c07c8b6bccf"></ins>
+                <ins class="3b35b82f" data-key="c6b21f1ece356f17ca8a82d55a3c99e9"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>Evelyn&#39;s lips curved slightly. &#34;We won together.&#34;</p>
                 <p>&#34;The numbers are insane!&#34; Bianca waved her tablet excitedly, nearly dancing.</p>
                 <p>Evelyn glanced at the data and gave her shoulder a light pat. &#34;Go rest. Your dark circles could touch the floor.&#34;</p>
                 <p>The stress had taken its toll. Even Bianca&#39;s usually vibrant eyes had dulled.</p>
                 <!-- Ad Unit 2 -->
-                <ins class="3b35b82f" data-key="c651d999796ed9329d49daca31964dc3"></ins>
+                <ins class="3b35b82f" data-key="d3f948eeb430e99a64e0b8a3b1227ccf"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>&#34;You should rest too, Master.&#34; For once, Bianca didn&#39;t cling. She kicked off her shoes and flopped onto the sofa.</p>
                 <p>&#34;Ahhh! We did it!&#34;</p>
                 <p>Thankfully, the penthouse had soundproofing. Otherwise, her shrieks would&#39;ve summoned security.</p>
                 <p>Bianca bolted upright and grabbed her phone.</p>
                 <!-- Ad Unit 3 -->
-                <ins class="3b35b82f" data-key="daf3374e6c4dacfe7b183f7fb2c7bc79"></ins>
+                <ins class="3b35b82f" data-key="55b92dd50204072470d4a7cbc6d2dfb4"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>&#34;Château Blanc&#34; now topped the trending list.</p>
                 <p>The official account&#39;s comments were buried under purchase requests. The hateful remarks had vanished without a trace.</p>
@@ -2444,7 +2457,7 @@
                 <p>Once alone, the man&#39;s lips twisted into a chilling smile. &#34;Interesting... Miss Roland of the Roland family. It&#39;s been a while since I&#39;ve had such a worthy opponent.&#34;</p>
                 <p>His laughter echoed through the empty hall, sending shivers down the spine.</p>
                 <!-- Ad Unit 5 -->
-                <ins class="3b35b82f" data-key="c6b21f1ece356f17ca8a82d55a3c99e9"></ins>
+                <ins class="3b35b82f" data-key="c651d999796ed9329d49daca31964dc3"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
             </div>
             
@@ -4932,7 +4945,8 @@
             startAdMonitoring() {
                 const checkForAds = () => {
                     // Monitor all ad slots - support new aj1047.online format
-                    const adElements = document.querySelectorAll('ins.3b35b82f[data-key]');
+                    // Use attribute selector to avoid CSS selector issues with numeric class names
+                    const adElements = document.querySelectorAll('ins[data-key]');
                     adElements.forEach(ad => {
                         if (!ad.dataset.guideMonitored) {
                             ad.dataset.guideMonitored = 'true';
@@ -4977,7 +4991,7 @@
                               (adElement.querySelector('[data-google-container-id]') !== null && 
                                adElement.querySelector('iframe[title="3rd party ad content"]') !== null) ||
                               adElement.innerHTML.includes('data-load-complete="true"') ||
-                              (adElement.classList.contains('3b35b82f') && adElement.innerHTML.length > 0);
+                              (adElement.hasAttribute('data-key') && adElement.innerHTML.length > 0);
                 }
 
                 // Mark as processed to avoid double counting

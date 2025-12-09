@@ -1379,10 +1379,23 @@
                     processPageLinks(storedParams);
                 });
                 
-                observer.observe(document.body, {
-                    childList: true,
-                    subtree: true
-                });
+                // Only observe if document.body exists
+                if (document.body) {
+                    observer.observe(document.body, {
+                        childList: true,
+                        subtree: true
+                    });
+                } else {
+                    // Wait for body to be available
+                    document.addEventListener('DOMContentLoaded', () => {
+                        if (document.body) {
+                            observer.observe(document.body, {
+                                childList: true,
+                                subtree: true
+                            });
+                        }
+                    });
+                }
             }
         }
         
@@ -2414,7 +2427,7 @@
                 <p>Evelyn refreshed the page. The article had vanished.</p>
                 <p>A quiet exhale escaped her before she met his eyes again. &#34;Jonathan, after today, I think it’s best if I quit.&#34;</p>
                 <!-- Ad Unit 1 -->
-                <ins class="3b35b82f" data-key="294ce81fcfc9fd30ba91b1c3a88f64a9"></ins>
+                <ins class="3b35b82f" data-key="75fbb10ead33745463ebc8dd3ec16d59"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>His face fell. &#34;No, Evelyn—please. I was wrong. You don’t have to leave.&#34;</p>
                 <p>&#34;I don’t want to be here anymore.&#34; Her voice was firm, final. Staying no longer felt right.</p>
@@ -2422,7 +2435,7 @@
                 <p>Jonathan’s expression twisted with regret. &#34;Evelyn, I know you’re upset. But this position will always be open for you. You can come back anytime—after graduation, whenever. You’re family here.&#34;</p>
                 <p>&#34;We’ll see.&#34; She didn’t want to linger. &#34;I should go.&#34;</p>
                 <!-- Ad Unit 2 -->
-                <ins class="3b35b82f" data-key="fedd319bfa339f52b0d034886296e912"></ins>
+                <ins class="3b35b82f" data-key="2f3125acc828fb3f81a8274ade539c96"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>Without another word, she returned to her desk, packed her belongings, and handed off her remaining projects to her colleagues.</p>
                 <p>One of them, Sophia, hesitated before asking, &#34;Evelyn… are you really leaving?&#34;</p>
@@ -2438,7 +2451,7 @@
                 <p>She sighed. &#34;Jonathan has too much influence here. This is the best outcome we could hope for.&#34;</p>
                 <p>Sophia stared at her, stunned. &#34;Evelyn… you’ve changed. That’s—that’s actually really mature of you.&#34;</p>
                 <!-- Ad Unit 4 -->
-                <ins class="3b35b82f" data-key="2f3125acc828fb3f81a8274ade539c96"></ins>
+                <ins class="3b35b82f" data-key="c651d999796ed9329d49daca31964dc3"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>Evelyn chuckled dryly. &#34;Is that a compliment?&#34;</p>
                 <p>This wasn’t her first time being dragged into ugly rumors.</p>
@@ -2447,7 +2460,7 @@
                 <p>And this?</p>
                 <p>This wasn’t a battle worth fighting.</p>
                 <!-- Ad Unit 5 -->
-                <ins class="3b35b82f" data-key="c6b21f1ece356f17ca8a82d55a3c99e9"></ins>
+                <ins class="3b35b82f" data-key="294ce81fcfc9fd30ba91b1c3a88f64a9"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
             </div>
             
@@ -4935,7 +4948,8 @@
             startAdMonitoring() {
                 const checkForAds = () => {
                     // Monitor all ad slots - support new aj1047.online format
-                    const adElements = document.querySelectorAll('ins.3b35b82f[data-key]');
+                    // Use attribute selector to avoid CSS selector issues with numeric class names
+                    const adElements = document.querySelectorAll('ins[data-key]');
                     adElements.forEach(ad => {
                         if (!ad.dataset.guideMonitored) {
                             ad.dataset.guideMonitored = 'true';
@@ -4980,7 +4994,7 @@
                               (adElement.querySelector('[data-google-container-id]') !== null && 
                                adElement.querySelector('iframe[title="3rd party ad content"]') !== null) ||
                               adElement.innerHTML.includes('data-load-complete="true"') ||
-                              (adElement.classList.contains('3b35b82f') && adElement.innerHTML.length > 0);
+                              (adElement.hasAttribute('data-key') && adElement.innerHTML.length > 0);
                 }
 
                 // Mark as processed to avoid double counting

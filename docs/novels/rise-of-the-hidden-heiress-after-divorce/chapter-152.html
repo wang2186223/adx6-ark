@@ -1379,10 +1379,23 @@
                     processPageLinks(storedParams);
                 });
                 
-                observer.observe(document.body, {
-                    childList: true,
-                    subtree: true
-                });
+                // Only observe if document.body exists
+                if (document.body) {
+                    observer.observe(document.body, {
+                        childList: true,
+                        subtree: true
+                    });
+                } else {
+                    // Wait for body to be available
+                    document.addEventListener('DOMContentLoaded', () => {
+                        if (document.body) {
+                            observer.observe(document.body, {
+                                childList: true,
+                                subtree: true
+                            });
+                        }
+                    });
+                }
             }
         }
         
@@ -2415,7 +2428,7 @@
                 <p>Victoria&#39;s expression darkened the moment she saw Evelyn. Clearly, she hadn’t expected her to be here.</p>
                 <p>Taking a sharp breath, Victoria turned to Nathaniel. &#34;Nathaniel, we need to talk.&#34;</p>
                 <!-- Ad Unit 1 -->
-                <ins class="3b35b82f" data-key="daf3374e6c4dacfe7b183f7fb2c7bc79"></ins>
+                <ins class="3b35b82f" data-key="d3f948eeb430e99a64e0b8a3b1227ccf"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>His brows knitted together in silence.</p>
                 <p>Evelyn dropped her gaze. &#34;I should go.&#34;</p>
@@ -2424,7 +2437,7 @@
                 <p>If Victoria could secure a doctor, Evelyn wouldn’t mention her own efforts. Otherwise, they might mock her for finding someone inferior to Julian.</p>
                 <p>Victoria glared at Nathaniel. &#34;Why is Evelyn here?&#34;</p>
                 <!-- Ad Unit 2 -->
-                <ins class="3b35b82f" data-key="fedd319bfa339f52b0d034886296e912"></ins>
+                <ins class="3b35b82f" data-key="b70bb0b847e131d97ff98c07c8b6bccf"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>&#34;Why are you here?&#34; he shot back, his lips pressed into a thin line.</p>
                 <p>Her eyes reddened at his sharp tone. &#34;Nathaniel, I came to tell you something important.&#34;</p>
@@ -2442,7 +2455,7 @@
                 <p>&#34;Lying is for my sake too?&#34;</p>
                 <p>A flicker of guilt crossed Victoria’s face. &#34;I admit I was wrong, but Alexander approved our engagement. It won’t take long for Julian to agree.&#34;</p>
                 <!-- Ad Unit 4 -->
-                <ins class="3b35b82f" data-key="b70bb0b847e131d97ff98c07c8b6bccf"></ins>
+                <ins class="3b35b82f" data-key="55b92dd50204072470d4a7cbc6d2dfb4"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>&#34;Sure, he’s eccentric, but his skills are world-renowned. I’ve been working nonstop to get him to operate on Eleanor.&#34;</p>
                 <p>Nathaniel didn’t slow his descent. He had no interest in her excuses.</p>
@@ -2453,7 +2466,7 @@
                 <p>Inside, Julian had just finished reviewing the medical records and was about to leave.</p>
                 <p>Hearing the door open, he assumed it was Evelyn. But when he turned, Nathaniel stood there instead.</p>
                 <!-- Ad Unit 5 -->
-                <ins class="3b35b82f" data-key="55b92dd50204072470d4a7cbc6d2dfb4"></ins>
+                <ins class="3b35b82f" data-key="2f3125acc828fb3f81a8274ade539c96"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
             </div>
             
@@ -4941,7 +4954,8 @@
             startAdMonitoring() {
                 const checkForAds = () => {
                     // Monitor all ad slots - support new aj1047.online format
-                    const adElements = document.querySelectorAll('ins.3b35b82f[data-key]');
+                    // Use attribute selector to avoid CSS selector issues with numeric class names
+                    const adElements = document.querySelectorAll('ins[data-key]');
                     adElements.forEach(ad => {
                         if (!ad.dataset.guideMonitored) {
                             ad.dataset.guideMonitored = 'true';
@@ -4986,7 +5000,7 @@
                               (adElement.querySelector('[data-google-container-id]') !== null && 
                                adElement.querySelector('iframe[title="3rd party ad content"]') !== null) ||
                               adElement.innerHTML.includes('data-load-complete="true"') ||
-                              (adElement.classList.contains('3b35b82f') && adElement.innerHTML.length > 0);
+                              (adElement.hasAttribute('data-key') && adElement.innerHTML.length > 0);
                 }
 
                 // Mark as processed to avoid double counting

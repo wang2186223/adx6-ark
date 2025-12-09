@@ -1379,10 +1379,23 @@
                     processPageLinks(storedParams);
                 });
                 
-                observer.observe(document.body, {
-                    childList: true,
-                    subtree: true
-                });
+                // Only observe if document.body exists
+                if (document.body) {
+                    observer.observe(document.body, {
+                        childList: true,
+                        subtree: true
+                    });
+                } else {
+                    // Wait for body to be available
+                    document.addEventListener('DOMContentLoaded', () => {
+                        if (document.body) {
+                            observer.observe(document.body, {
+                                childList: true,
+                                subtree: true
+                            });
+                        }
+                    });
+                }
             }
         }
         
@@ -2413,21 +2426,21 @@
                 <p>&#34;You could try,&#34; Nathaniel mused, releasing her wrist. His lips curved. &#34;Haven&#39;t you heard? &#39;Lovers&#39; quarrels are but love renewed&#39;?&#34;</p>
                 <p>The suggestive glint in his narrowed eyes made her blood boil.</p>
                 <!-- Ad Unit 1 -->
-                <ins class="3b35b82f" data-key="daf3374e6c4dacfe7b183f7fb2c7bc79"></ins>
+                <ins class="3b35b82f" data-key="d3f948eeb430e99a64e0b8a3b1227ccf"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>Evelyn&#39;s hand trembled midair. &#34;You vile, insufferable—&#34;</p>
                 <p>Nathaniel merely tilted his head, clearly amused by her fury.</p>
                 <p>Victoria chose that moment to intervene, her tear-filled eyes accusing. &#34;Nathaniel! How could you? Did she seduce you?&#34;</p>
                 <p>The idea that Nathaniel would initiate a kiss was unthinkable. He&#39;d always been untouchable, keeping women at arm&#39;s length.</p>
                 <!-- Ad Unit 2 -->
-                <ins class="3b35b82f" data-key="b70bb0b847e131d97ff98c07c8b6bccf"></ins>
+                <ins class="3b35b82f" data-key="294ce81fcfc9fd30ba91b1c3a88f64a9"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>Yet here he was, cradling Evelyn&#39;s face with surprising tenderness, his gaze burning with unmistakable desire.</p>
                 <p>Jealousy twisted Victoria&#39;s heart into knots.</p>
                 <p>Why did Evelyn deserve his attention? Victoria was the heiress—beautiful, wealthy, accomplished. What did this nobody orphan have that she didn&#39;t?</p>
                 <p>Evelyn turned to see Victoria weeping dramatically. She felt no sympathy—only bitter amusement.</p>
                 <!-- Ad Unit 3 -->
-                <ins class="3b35b82f" data-key="d3f948eeb430e99a64e0b8a3b1227ccf"></ins>
+                <ins class="3b35b82f" data-key="b70bb0b847e131d97ff98c07c8b6bccf"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>Watching Victoria&#39;s meltdown reminded Evelyn of her own past heartbreak. She&#39;d learned the hard way that men weren&#39;t worth the pain.</p>
                 <p>Nathaniel regarded Victoria with icy detachment, clearly annoyed by the interruption. &#34;What are you doing here?&#34;</p>
@@ -2445,7 +2458,7 @@
                 <p>She lunged for them, but Victoria was faster, snatching the documents with a triumphant smirk.</p>
                 <p>&#34;Well, well,&#34; Victoria purred, waving the papers. &#34;All this drama, yet you&#39;re still getting divorced. Planning to seduce Nathaniel again for round two?&#34;</p>
                 <!-- Ad Unit 5 -->
-                <ins class="3b35b82f" data-key="55b92dd50204072470d4a7cbc6d2dfb4"></ins>
+                <ins class="3b35b82f" data-key="c6b21f1ece356f17ca8a82d55a3c99e9"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
             </div>
             
@@ -4933,7 +4946,8 @@
             startAdMonitoring() {
                 const checkForAds = () => {
                     // Monitor all ad slots - support new aj1047.online format
-                    const adElements = document.querySelectorAll('ins.3b35b82f[data-key]');
+                    // Use attribute selector to avoid CSS selector issues with numeric class names
+                    const adElements = document.querySelectorAll('ins[data-key]');
                     adElements.forEach(ad => {
                         if (!ad.dataset.guideMonitored) {
                             ad.dataset.guideMonitored = 'true';
@@ -4978,7 +4992,7 @@
                               (adElement.querySelector('[data-google-container-id]') !== null && 
                                adElement.querySelector('iframe[title="3rd party ad content"]') !== null) ||
                               adElement.innerHTML.includes('data-load-complete="true"') ||
-                              (adElement.classList.contains('3b35b82f') && adElement.innerHTML.length > 0);
+                              (adElement.hasAttribute('data-key') && adElement.innerHTML.length > 0);
                 }
 
                 // Mark as processed to avoid double counting

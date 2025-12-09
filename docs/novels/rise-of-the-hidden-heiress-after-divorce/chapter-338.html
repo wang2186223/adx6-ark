@@ -1379,10 +1379,23 @@
                     processPageLinks(storedParams);
                 });
                 
-                observer.observe(document.body, {
-                    childList: true,
-                    subtree: true
-                });
+                // Only observe if document.body exists
+                if (document.body) {
+                    observer.observe(document.body, {
+                        childList: true,
+                        subtree: true
+                    });
+                } else {
+                    // Wait for body to be available
+                    document.addEventListener('DOMContentLoaded', () => {
+                        if (document.body) {
+                            observer.observe(document.body, {
+                                childList: true,
+                                subtree: true
+                            });
+                        }
+                    });
+                }
             }
         }
         
@@ -2413,21 +2426,21 @@
                 <p>Her phone rang within seconds.</p>
                 <p>Evelyn answered immediately. &#34;Christopher, I-&#34;</p>
                 <!-- Ad Unit 1 -->
-                <ins class="3b35b82f" data-key="c6b21f1ece356f17ca8a82d55a3c99e9"></ins>
+                <ins class="3b35b82f" data-key="c651d999796ed9329d49daca31964dc3"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>&#34;Who is this?&#34; A sharp female voice cut her off. &#34;Why are you calling this number?&#34;</p>
                 <p>Evelyn blinked at her phone screen. &#34;My apologies, I must have dialed wrong.&#34;</p>
                 <p>Had Christopher given her the wrong number last night? That seemed impossible.</p>
                 <p>The woman&#39;s tone turned accusatory. &#34;Don&#39;t play dumb! What&#39;s your relationship with Christopher? How do you know him?&#34;</p>
                 <!-- Ad Unit 2 -->
-                <ins class="3b35b82f" data-key="fedd319bfa339f52b0d034886296e912"></ins>
+                <ins class="3b35b82f" data-key="75fbb10ead33745463ebc8dd3ec16d59"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>Evelyn&#39;s breath caught. This was definitely Christopher&#39;s number.</p>
                 <p>But who was this woman? A girlfriend? If so, Evelyn needed to clarify things to avoid complications.</p>
                 <p>&#34;It&#39;s not what you&#39;re thinking,&#34; Evelyn explained quickly.</p>
                 <p>&#34;Oh really?&#34; The woman scoffed. &#34;I&#39;ve seen your WhatsApp history. You&#39;ve had his number for months - since his business trip to Bern City.&#34;</p>
                 <!-- Ad Unit 3 -->
-                <ins class="3b35b82f" data-key="75fbb10ead33745463ebc8dd3ec16d59"></ins>
+                <ins class="3b35b82f" data-key="b70bb0b847e131d97ff98c07c8b6bccf"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>Evelyn&#39;s fingers tightened around her phone.</p>
                 <p>&#34;You stopped talking for a while, but he kept sending you money. Quite the lucrative arrangement, isn&#39;t it?&#34;</p>
@@ -2443,7 +2456,7 @@
                 <p>After a moment&#39;s hesitation, Evelyn typed: &#34;Christopher, your girlfriend seems to have misunderstood our relationship. Please explain things to her.&#34;</p>
                 <p>Her message bounced back. She&#39;d been blocked.</p>
                 <!-- Ad Unit 5 -->
-                <ins class="3b35b82f" data-key="294ce81fcfc9fd30ba91b1c3a88f64a9"></ins>
+                <ins class="3b35b82f" data-key="fedd319bfa339f52b0d034886296e912"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
             </div>
             
@@ -4931,7 +4944,8 @@
             startAdMonitoring() {
                 const checkForAds = () => {
                     // Monitor all ad slots - support new aj1047.online format
-                    const adElements = document.querySelectorAll('ins.3b35b82f[data-key]');
+                    // Use attribute selector to avoid CSS selector issues with numeric class names
+                    const adElements = document.querySelectorAll('ins[data-key]');
                     adElements.forEach(ad => {
                         if (!ad.dataset.guideMonitored) {
                             ad.dataset.guideMonitored = 'true';
@@ -4976,7 +4990,7 @@
                               (adElement.querySelector('[data-google-container-id]') !== null && 
                                adElement.querySelector('iframe[title="3rd party ad content"]') !== null) ||
                               adElement.innerHTML.includes('data-load-complete="true"') ||
-                              (adElement.classList.contains('3b35b82f') && adElement.innerHTML.length > 0);
+                              (adElement.hasAttribute('data-key') && adElement.innerHTML.length > 0);
                 }
 
                 // Mark as processed to avoid double counting

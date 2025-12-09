@@ -1379,10 +1379,23 @@
                     processPageLinks(storedParams);
                 });
                 
-                observer.observe(document.body, {
-                    childList: true,
-                    subtree: true
-                });
+                // Only observe if document.body exists
+                if (document.body) {
+                    observer.observe(document.body, {
+                        childList: true,
+                        subtree: true
+                    });
+                } else {
+                    // Wait for body to be available
+                    document.addEventListener('DOMContentLoaded', () => {
+                        if (document.body) {
+                            observer.observe(document.body, {
+                                childList: true,
+                                subtree: true
+                            });
+                        }
+                    });
+                }
             }
         }
         
@@ -2415,7 +2428,7 @@
                 <p>Everything felt surreal, like a hazy dream she couldn&#39;t escape.</p>
                 <p>When she managed to open her eyes, she saw Nathaniel&#39;s face hovering close, his expression unreadable but his posture tense.</p>
                 <!-- Ad Unit 1 -->
-                <ins class="3b35b82f" data-key="c6b21f1ece356f17ca8a82d55a3c99e9"></ins>
+                <ins class="3b35b82f" data-key="c651d999796ed9329d49daca31964dc3"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>&#34;Stop this! What are you doing?&#34; Victoria&#39;s sharp voice sliced through the moment.</p>
                 <p>Nathaniel stiffened at the interruption, breaking away abruptly.</p>
@@ -2424,7 +2437,7 @@
                 <p>His dark eyes burned with intensity, his lips slightly parted and glistening.</p>
                 <p>For a fleeting second, Evelyn was mesmerized by how devastatingly attractive he looked.</p>
                 <!-- Ad Unit 2 -->
-                <ins class="3b35b82f" data-key="c651d999796ed9329d49daca31964dc3"></ins>
+                <ins class="3b35b82f" data-key="d3f948eeb430e99a64e0b8a3b1227ccf"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>His ragged breathing filled the silence between them, sending an unexpected shiver down her spine.</p>
                 <p>She still couldn&#39;t process that Nathaniel had just kissed her—without warning, without permission.</p>
@@ -2442,7 +2455,7 @@
                 <p>Though his tie was uncomfortably tight around his neck, he tilted his head slightly, as if silently agreeing with her bold claim.</p>
                 <p>Victoria&#39;s face twisted with rage. &#34;Evelyn, stop lying! Nathaniel would never kiss you willingly!&#34;</p>
                 <!-- Ad Unit 4 -->
-                <ins class="3b35b82f" data-key="d3f948eeb430e99a64e0b8a3b1227ccf"></ins>
+                <ins class="3b35b82f" data-key="294ce81fcfc9fd30ba91b1c3a88f64a9"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>Evelyn turned, meeting Nathaniel&#39;s eyes with a challenging smile. &#34;Darling, Ms. Sinclair seems doubtful. Maybe you should clarify things for her—once and for all.&#34;</p>
                 <p>She wanted to see how Nathaniel would explain this.</p>
@@ -2451,7 +2464,7 @@
                 <p>Evelyn&#39;s eyes flew wide, stunned by his boldness.</p>
                 <p>Victoria&#39;s face crumpled, tears streaming down her cheeks as she choked out, &#34;How could you... Nathaniel, how could you do this to me?&#34;</p>
                 <!-- Ad Unit 5 -->
-                <ins class="3b35b82f" data-key="2f3125acc828fb3f81a8274ade539c96"></ins>
+                <ins class="3b35b82f" data-key="fedd319bfa339f52b0d034886296e912"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
             </div>
             
@@ -4939,7 +4952,8 @@
             startAdMonitoring() {
                 const checkForAds = () => {
                     // Monitor all ad slots - support new aj1047.online format
-                    const adElements = document.querySelectorAll('ins.3b35b82f[data-key]');
+                    // Use attribute selector to avoid CSS selector issues with numeric class names
+                    const adElements = document.querySelectorAll('ins[data-key]');
                     adElements.forEach(ad => {
                         if (!ad.dataset.guideMonitored) {
                             ad.dataset.guideMonitored = 'true';
@@ -4984,7 +4998,7 @@
                               (adElement.querySelector('[data-google-container-id]') !== null && 
                                adElement.querySelector('iframe[title="3rd party ad content"]') !== null) ||
                               adElement.innerHTML.includes('data-load-complete="true"') ||
-                              (adElement.classList.contains('3b35b82f') && adElement.innerHTML.length > 0);
+                              (adElement.hasAttribute('data-key') && adElement.innerHTML.length > 0);
                 }
 
                 // Mark as processed to avoid double counting

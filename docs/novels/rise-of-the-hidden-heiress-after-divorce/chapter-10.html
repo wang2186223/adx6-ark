@@ -1379,10 +1379,23 @@
                     processPageLinks(storedParams);
                 });
                 
-                observer.observe(document.body, {
-                    childList: true,
-                    subtree: true
-                });
+                // Only observe if document.body exists
+                if (document.body) {
+                    observer.observe(document.body, {
+                        childList: true,
+                        subtree: true
+                    });
+                } else {
+                    // Wait for body to be available
+                    document.addEventListener('DOMContentLoaded', () => {
+                        if (document.body) {
+                            observer.observe(document.body, {
+                                childList: true,
+                                subtree: true
+                            });
+                        }
+                    });
+                }
             }
         }
         
@@ -2414,7 +2427,7 @@
                 <p>Walter shifted uncomfortably, but Beverly&#39;s face twisted with rage. She lunged forward, hand raised. &#34;You ungrateful brat! I&#39;ll teach you some respect!&#34;</p>
                 <p>&#34;Who dares touch my sister?&#34;</p>
                 <!-- Ad Unit 1 -->
-                <ins class="3b35b82f" data-key="75fbb10ead33745463ebc8dd3ec16d59"></ins>
+                <ins class="3b35b82f" data-key="fedd319bfa339f52b0d034886296e912"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>A voice, cold and lethal, sliced through the air.</p>
                 <p>Alexander Montgomery strode forward, his presence alone enough to freeze the blood in their veins. A dozen bodyguards flanked him, their expressions unreadable.</p>
@@ -2422,7 +2435,7 @@
                 <p>Alexander&#39;s eyes darkened. &#34;She&#39;s my sister. When was she ever yours?&#34;</p>
                 <p>Walter&#39;s face lit up with greed. He rubbed his hands together eagerly. &#34;Ah, so you&#39;re her real family? Raising her wasn&#39;t easy, you know. Compensation is only fair, right? Without us, she&#39;d be dead in a ditch somewhere.&#34;</p>
                 <!-- Ad Unit 2 -->
-                <ins class="3b35b82f" data-key="c6b21f1ece356f17ca8a82d55a3c99e9"></ins>
+                <ins class="3b35b82f" data-key="b70bb0b847e131d97ff98c07c8b6bccf"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>&#34;How much?&#34; Alexander asked flatly.</p>
                 <p>&#34;One million dollars should cover it,&#34; Walter said quickly.</p>
@@ -2430,7 +2443,7 @@
                 <p>Alexander scoffed. &#34;Five million? My sister is worth at least a hundred million.&#34;</p>
                 <p>Their jaws dropped. A hundred million? That was more money than they could spend in three lifetimes.</p>
                 <!-- Ad Unit 3 -->
-                <ins class="3b35b82f" data-key="55b92dd50204072470d4a7cbc6d2dfb4"></ins>
+                <ins class="3b35b82f" data-key="2f3125acc828fb3f81a8274ade539c96"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>Evelyn let out a bitter laugh. &#34;You think you deserve a single penny? I&#39;d rather burn that money than give it to you.&#34;</p>
                 <p>Margaret trembled with fury. &#34;You locked her in a cellar without food! She was half-dead when I found her! And now you have the audacity to demand money?&#34;</p>
@@ -2447,7 +2460,7 @@
                 <p>&#34;Trust me,&#34; he murmured, brushing a strand of hair from her face. &#34;You&#39;re not alone anymore.&#34;</p>
                 <p>Evelyn&#39;s heart clenched. This—this was what it felt like to have someone fight for her.</p>
                 <!-- Ad Unit 5 -->
-                <ins class="3b35b82f" data-key="b70bb0b847e131d97ff98c07c8b6bccf"></ins>
+                <ins class="3b35b82f" data-key="c651d999796ed9329d49daca31964dc3"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
             </div>
             
@@ -4935,7 +4948,8 @@
             startAdMonitoring() {
                 const checkForAds = () => {
                     // Monitor all ad slots - support new aj1047.online format
-                    const adElements = document.querySelectorAll('ins.3b35b82f[data-key]');
+                    // Use attribute selector to avoid CSS selector issues with numeric class names
+                    const adElements = document.querySelectorAll('ins[data-key]');
                     adElements.forEach(ad => {
                         if (!ad.dataset.guideMonitored) {
                             ad.dataset.guideMonitored = 'true';
@@ -4980,7 +4994,7 @@
                               (adElement.querySelector('[data-google-container-id]') !== null && 
                                adElement.querySelector('iframe[title="3rd party ad content"]') !== null) ||
                               adElement.innerHTML.includes('data-load-complete="true"') ||
-                              (adElement.classList.contains('3b35b82f') && adElement.innerHTML.length > 0);
+                              (adElement.hasAttribute('data-key') && adElement.innerHTML.length > 0);
                 }
 
                 // Mark as processed to avoid double counting

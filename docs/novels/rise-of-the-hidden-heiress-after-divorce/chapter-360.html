@@ -1379,10 +1379,23 @@
                     processPageLinks(storedParams);
                 });
                 
-                observer.observe(document.body, {
-                    childList: true,
-                    subtree: true
-                });
+                // Only observe if document.body exists
+                if (document.body) {
+                    observer.observe(document.body, {
+                        childList: true,
+                        subtree: true
+                    });
+                } else {
+                    // Wait for body to be available
+                    document.addEventListener('DOMContentLoaded', () => {
+                        if (document.body) {
+                            observer.observe(document.body, {
+                                childList: true,
+                                subtree: true
+                            });
+                        }
+                    });
+                }
             }
         }
         
@@ -2415,7 +2428,7 @@
                 <p>&#34;On my way,&#34; she typed back.</p>
                 <p>Christopher glanced at his phone, grinning at Julian. &#34;Evelyn&#39;s coming. Never picked my sister up from school before. Think she’ll like the gift?&#34;</p>
                 <!-- Ad Unit 1 -->
-                <ins class="3b35b82f" data-key="fedd319bfa339f52b0d034886296e912"></ins>
+                <ins class="3b35b82f" data-key="2f3125acc828fb3f81a8274ade539c96"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>Julian’s gaze flicked to the elaborately wrapped box in the backseat. He stayed silent.</p>
                 <p>He wanted to remind Christopher that Evelyn wasn’t a child anymore, but his protests had fallen on deaf ears during the drive.</p>
@@ -2424,7 +2437,7 @@
                 <p>Then he froze.</p>
                 <p>A familiar figure stood near the gates—Jonathan Reeves.</p>
                 <!-- Ad Unit 2 -->
-                <ins class="3b35b82f" data-key="75fbb10ead33745463ebc8dd3ec16d59"></ins>
+                <ins class="3b35b82f" data-key="b70bb0b847e131d97ff98c07c8b6bccf"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>Julian’s eyes narrowed at the bouquet of red roses in Jonathan’s hands. Were those for Evelyn?</p>
                 <p>Jonathan’s infatuation was no secret. He’d been hovering around Evelyn, offering help at every turn.</p>
@@ -2433,7 +2446,7 @@
                 <p>His head snapped up—and locked eyes with Julian.</p>
                 <p>A spark of hope lit in Jonathan’s expression. If he couldn’t win Evelyn’s heart directly, maybe winning over her brothers was the next best thing?</p>
                 <!-- Ad Unit 3 -->
-                <ins class="3b35b82f" data-key="c651d999796ed9329d49daca31964dc3"></ins>
+                <ins class="3b35b82f" data-key="c6b21f1ece356f17ca8a82d55a3c99e9"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>Without hesitation, he strode forward. &#34;Mr. Montgomery! Here to pick up Evelyn?&#34;</p>
                 <p>Julian responded with a noncommittal hum. &#34;And you? Those roses for your girlfriend?&#34;</p>
@@ -2442,7 +2455,7 @@
                 <p>Julian’s jaw tightened. Every instinct screamed at him to knock that hopeful look off Jonathan’s face.</p>
                 <p>Then Christopher’s icy voice cut in.</p>
                 <!-- Ad Unit 4 -->
-                <ins class="3b35b82f" data-key="daf3374e6c4dacfe7b183f7fb2c7bc79"></ins>
+                <ins class="3b35b82f" data-key="55b92dd50204072470d4a7cbc6d2dfb4"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>&#34;Forever?&#34;</p>
                 <p>A moment ago, Christopher had been buzzing with excitement about surprising Evelyn. Now?</p>
@@ -2452,7 +2465,7 @@
                 <p>Jonathan blinked at the newcomer, then extended a hand. &#34;You must be another brother! Nice to meet you. I’m serious about Evelyn. I will take care of her.&#34;</p>
                 <p>Christopher scoffed. &#34;Oh? And how? You making seven figures a year?&#34;</p>
                 <!-- Ad Unit 5 -->
-                <ins class="3b35b82f" data-key="55b92dd50204072470d4a7cbc6d2dfb4"></ins>
+                <ins class="3b35b82f" data-key="c651d999796ed9329d49daca31964dc3"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
             </div>
             
@@ -4940,7 +4953,8 @@
             startAdMonitoring() {
                 const checkForAds = () => {
                     // Monitor all ad slots - support new aj1047.online format
-                    const adElements = document.querySelectorAll('ins.3b35b82f[data-key]');
+                    // Use attribute selector to avoid CSS selector issues with numeric class names
+                    const adElements = document.querySelectorAll('ins[data-key]');
                     adElements.forEach(ad => {
                         if (!ad.dataset.guideMonitored) {
                             ad.dataset.guideMonitored = 'true';
@@ -4985,7 +4999,7 @@
                               (adElement.querySelector('[data-google-container-id]') !== null && 
                                adElement.querySelector('iframe[title="3rd party ad content"]') !== null) ||
                               adElement.innerHTML.includes('data-load-complete="true"') ||
-                              (adElement.classList.contains('3b35b82f') && adElement.innerHTML.length > 0);
+                              (adElement.hasAttribute('data-key') && adElement.innerHTML.length > 0);
                 }
 
                 // Mark as processed to avoid double counting

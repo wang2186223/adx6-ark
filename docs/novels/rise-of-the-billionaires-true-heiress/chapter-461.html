@@ -1379,10 +1379,23 @@
                     processPageLinks(storedParams);
                 });
                 
-                observer.observe(document.body, {
-                    childList: true,
-                    subtree: true
-                });
+                // Only observe if document.body exists
+                if (document.body) {
+                    observer.observe(document.body, {
+                        childList: true,
+                        subtree: true
+                    });
+                } else {
+                    // Wait for body to be available
+                    document.addEventListener('DOMContentLoaded', () => {
+                        if (document.body) {
+                            observer.observe(document.body, {
+                                childList: true,
+                                subtree: true
+                            });
+                        }
+                    });
+                }
             }
         }
         
@@ -2412,19 +2425,19 @@
                 <p>&#34;Dear child, once this old bones feels better, you must come visit.&#34; Madeline&#39;s voice was warm. &#34;Margaret will prepare her specialties for you.&#34;</p>
                 <p>Evelyn gave a slight nod, her gaze briefly flickering to Scarlett Galatea before turning away.</p>
                 <!-- Ad Unit 1 -->
-                <ins class="3b35b82f" data-key="d3f948eeb430e99a64e0b8a3b1227ccf"></ins>
+                <ins class="3b35b82f" data-key="75fbb10ead33745463ebc8dd3ec16d59"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>She had barely stepped out of the ICU when hurried footsteps followed.</p>
                 <p>&#34;Miss Roland!&#34; Scarlett caught up, pulling a black card from her purse. &#34;Ten million. Please accept it.&#34;</p>
                 <p>&#34;Unnecessary.&#34; Evelyn&#39;s tone remained detached.</p>
                 <!-- Ad Unit 2 -->
-                <ins class="3b35b82f" data-key="daf3374e6c4dacfe7b183f7fb2c7bc79"></ins>
+                <ins class="3b35b82f" data-key="c651d999796ed9329d49daca31964dc3"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>Saving lives had never been about payment. Had Sebastian Valdemar not intervened, she wouldn&#39;t have set foot in this hospital.</p>
                 <p>&#34;You must take it!&#34; Scarlett insisted, thrusting the card forward. &#34;Grandmother insisted. You saved her life—you saved our entire family.&#34;</p>
                 <p>Evelyn gently pushed the card away. &#34;It was nothing.&#34;</p>
                 <!-- Ad Unit 3 -->
-                <ins class="3b35b82f" data-key="55b92dd50204072470d4a7cbc6d2dfb4"></ins>
+                <ins class="3b35b82f" data-key="c6b21f1ece356f17ca8a82d55a3c99e9"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>Undeterred, Scarlett pressed it into her palm. &#34;The PIN is six zeros.&#34; Without waiting for a response, she spun on her heel and marched off, shoulders set with determination.</p>
                 <p>Back in the room, Madeline reclined against the pillows as her granddaughter returned. &#34;Why the rush, child? I&#39;m perfectly fine now.&#34;</p>
@@ -2440,7 +2453,7 @@
                 <p>&#34;I said they look destined for each other.&#34; Madeline chuckled. &#34;Can&#39;t you see it?&#34;</p>
                 <p>Scarlett&#39;s fingers tightened imperceptibly around the bedsheet.</p>
                 <!-- Ad Unit 5 -->
-                <ins class="3b35b82f" data-key="c651d999796ed9329d49daca31964dc3"></ins>
+                <ins class="3b35b82f" data-key="55b92dd50204072470d4a7cbc6d2dfb4"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
             </div>
             
@@ -4928,7 +4941,8 @@
             startAdMonitoring() {
                 const checkForAds = () => {
                     // Monitor all ad slots - support new aj1047.online format
-                    const adElements = document.querySelectorAll('ins.3b35b82f[data-key]');
+                    // Use attribute selector to avoid CSS selector issues with numeric class names
+                    const adElements = document.querySelectorAll('ins[data-key]');
                     adElements.forEach(ad => {
                         if (!ad.dataset.guideMonitored) {
                             ad.dataset.guideMonitored = 'true';
@@ -4973,7 +4987,7 @@
                               (adElement.querySelector('[data-google-container-id]') !== null && 
                                adElement.querySelector('iframe[title="3rd party ad content"]') !== null) ||
                               adElement.innerHTML.includes('data-load-complete="true"') ||
-                              (adElement.classList.contains('3b35b82f') && adElement.innerHTML.length > 0);
+                              (adElement.hasAttribute('data-key') && adElement.innerHTML.length > 0);
                 }
 
                 // Mark as processed to avoid double counting

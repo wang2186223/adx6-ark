@@ -1379,10 +1379,23 @@
                     processPageLinks(storedParams);
                 });
                 
-                observer.observe(document.body, {
-                    childList: true,
-                    subtree: true
-                });
+                // Only observe if document.body exists
+                if (document.body) {
+                    observer.observe(document.body, {
+                        childList: true,
+                        subtree: true
+                    });
+                } else {
+                    // Wait for body to be available
+                    document.addEventListener('DOMContentLoaded', () => {
+                        if (document.body) {
+                            observer.observe(document.body, {
+                                childList: true,
+                                subtree: true
+                            });
+                        }
+                    });
+                }
             }
         }
         
@@ -2415,7 +2428,7 @@
                 <p>The assistant shrank back. &#34;Nothing so far.&#34;</p>
                 <p>Victoria slapped her. &#34;Useless! Incompetent waste! If your incompetence ruins this, I’ll have you all fired!&#34;</p>
                 <!-- Ad Unit 1 -->
-                <ins class="3b35b82f" data-key="75fbb10ead33745463ebc8dd3ec16d59"></ins>
+                <ins class="3b35b82f" data-key="fedd319bfa339f52b0d034886296e912"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>The outburst eased some of her frustration.</p>
                 <p>Taking a deep breath, she smoothed her expression and stepped into the room. &#34;Let’s start without him.&#34;</p>
@@ -2424,7 +2437,7 @@
                 <p>If not for Julian’s supposed attendance, he wouldn’t have bothered coming at all.</p>
                 <p>&#34;Julian wanted to be here,&#34; Victoria lied smoothly, &#34;but you know how unpredictable hospitals are. An emergency case came up. He couldn’t just abandon a patient, could he?&#34;</p>
                 <!-- Ad Unit 2 -->
-                <ins class="3b35b82f" data-key="daf3374e6c4dacfe7b183f7fb2c7bc79"></ins>
+                <ins class="3b35b82f" data-key="b70bb0b847e131d97ff98c07c8b6bccf"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>Nathaniel’s piercing stare made her skin prickle with unease.</p>
                 <p>Beatrice, ever the peacemaker, interjected, &#34;She’s right. He’s a renowned surgeon. Emergencies are part of the job. We can reschedule.&#34;</p>
@@ -2433,7 +2446,7 @@
                 <p>Victoria lowered her lashes, feigning calm. &#34;He’s agreed. But he still has… reservations about Nathaniel.&#34;</p>
                 <p>Beatrice sighed. &#34;We can’t change the past. But my son has divorced that woman. Things will return to how they should be.&#34;</p>
                 <!-- Ad Unit 3 -->
-                <ins class="3b35b82f" data-key="b70bb0b847e131d97ff98c07c8b6bccf"></ins>
+                <ins class="3b35b82f" data-key="daf3374e6c4dacfe7b183f7fb2c7bc79"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>A sly smile curled Victoria’s lips.</p>
                 <p>Nathaniel abruptly stood. &#34;Since he’s not coming, I’m leaving.&#34;</p>
@@ -2442,7 +2455,7 @@
                 <p>Victoria rushed after him. &#34;Nathaniel!&#34;</p>
                 <p>He didn’t look back.</p>
                 <!-- Ad Unit 4 -->
-                <ins class="3b35b82f" data-key="55b92dd50204072470d4a7cbc6d2dfb4"></ins>
+                <ins class="3b35b82f" data-key="75fbb10ead33745463ebc8dd3ec16d59"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>Her eyes darkened with malice as she watched him go.</p>
                 <p>She wasn’t giving up. Not yet.</p>
@@ -2451,7 +2464,7 @@
                 <p>Evelyn eyed them skeptically. &#34;Aren’t those just for the obscenely wealthy?&#34;</p>
                 <p>&#34;These were meant for a certain A-list actor, but he bailed. So now I’m stuck going.&#34; He winked. &#34;Want to join? We’ll just buy a few things and call it a night.&#34;</p>
                 <!-- Ad Unit 5 -->
-                <ins class="3b35b82f" data-key="fedd319bfa339f52b0d034886296e912"></ins>
+                <ins class="3b35b82f" data-key="d3f948eeb430e99a64e0b8a3b1227ccf"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
             </div>
             
@@ -4939,7 +4952,8 @@
             startAdMonitoring() {
                 const checkForAds = () => {
                     // Monitor all ad slots - support new aj1047.online format
-                    const adElements = document.querySelectorAll('ins.3b35b82f[data-key]');
+                    // Use attribute selector to avoid CSS selector issues with numeric class names
+                    const adElements = document.querySelectorAll('ins[data-key]');
                     adElements.forEach(ad => {
                         if (!ad.dataset.guideMonitored) {
                             ad.dataset.guideMonitored = 'true';
@@ -4984,7 +4998,7 @@
                               (adElement.querySelector('[data-google-container-id]') !== null && 
                                adElement.querySelector('iframe[title="3rd party ad content"]') !== null) ||
                               adElement.innerHTML.includes('data-load-complete="true"') ||
-                              (adElement.classList.contains('3b35b82f') && adElement.innerHTML.length > 0);
+                              (adElement.hasAttribute('data-key') && adElement.innerHTML.length > 0);
                 }
 
                 // Mark as processed to avoid double counting

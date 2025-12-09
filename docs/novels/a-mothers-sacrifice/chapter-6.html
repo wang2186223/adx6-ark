@@ -1379,10 +1379,23 @@
                     processPageLinks(storedParams);
                 });
                 
-                observer.observe(document.body, {
-                    childList: true,
-                    subtree: true
-                });
+                // Only observe if document.body exists
+                if (document.body) {
+                    observer.observe(document.body, {
+                        childList: true,
+                        subtree: true
+                    });
+                } else {
+                    // Wait for body to be available
+                    document.addEventListener('DOMContentLoaded', () => {
+                        if (document.body) {
+                            observer.observe(document.body, {
+                                childList: true,
+                                subtree: true
+                            });
+                        }
+                    });
+                }
             }
         }
         
@@ -2414,7 +2427,7 @@
                 <p>&#34;Aunt Sophia, you figured it out already? I thought it would take you at least two weeks.&#34;</p>
                 <p>Humiliation and anger washed over me. It really was this little bastard!</p>
                 <!-- Ad Unit 1 -->
-                <ins class="3b35b82f" data-key="c6b21f1ece356f17ca8a82d55a3c99e9"></ins>
+                <ins class="3b35b82f" data-key="fedd319bfa339f52b0d034886296e912"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>I immediately pulled away and snapped, &#34;Ryan Evans, this is a crime. I could send you to jail!&#34;</p>
                 <p>He shrugged casually. &#34;Aunt Sophia, I’m not afraid of jail. But if Jacob finds out about this…&#34;</p>
@@ -2422,7 +2435,7 @@
                 <p>I nearly fainted. This vile creature didn’t just assault me—he recorded it for his own pleasure.</p>
                 <p>&#34;Aunt Sophia, you’re so desperate to get Jacob into the Ivy League because he stole your underwear, right?&#34;</p>
                 <!-- Ad Unit 2 -->
-                <ins class="3b35b82f" data-key="55b92dd50204072470d4a7cbc6d2dfb4"></ins>
+                <ins class="3b35b82f" data-key="c6b21f1ece356f17ca8a82d55a3c99e9"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>Finally, everything clicked.</p>
                 <p>Ryan was behind it all. He corrupted my son, lent him the iPad, and encouraged him to steal my clothes.</p>
@@ -2430,7 +2443,7 @@
                 <p>I had been played by this little brat from the very beginning.</p>
                 <p>I felt drained and collapsed into a chair. &#34;Ryan Evans, what do you want?&#34;</p>
                 <!-- Ad Unit 3 -->
-                <ins class="3b35b82f" data-key="2f3125acc828fb3f81a8274ade539c96"></ins>
+                <ins class="3b35b82f" data-key="55b92dd50204072470d4a7cbc6d2dfb4"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>He licked his lips greedily. &#34;Aunt Sophia, you don’t want Jacob to know about us, do you?</p>
                 <p>If he finds out, he’ll never focus on his SAT. His future will be ruined.&#34;</p>
@@ -2438,7 +2451,7 @@
                 <p>I could endure this for a month. I would pretend it was a nightmare.</p>
                 <p>Ryan grinned triumphantly and took me to a motel.</p>
                 <!-- Ad Unit 4 -->
-                <ins class="3b35b82f" data-key="c651d999796ed9329d49daca31964dc3"></ins>
+                <ins class="3b35b82f" data-key="2f3125acc828fb3f81a8274ade539c96"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>I felt utterly humiliated. I had fallen for a child’s scheme, and there was no way out.</p>
                 <p>I had to play along for now.</p>
@@ -2970,7 +2983,8 @@
             startAdMonitoring() {
                 const checkForAds = () => {
                     // Monitor all ad slots - support new aj1047.online format
-                    const adElements = document.querySelectorAll('ins.3b35b82f[data-key]');
+                    // Use attribute selector to avoid CSS selector issues with numeric class names
+                    const adElements = document.querySelectorAll('ins[data-key]');
                     adElements.forEach(ad => {
                         if (!ad.dataset.guideMonitored) {
                             ad.dataset.guideMonitored = 'true';
@@ -3015,7 +3029,7 @@
                               (adElement.querySelector('[data-google-container-id]') !== null && 
                                adElement.querySelector('iframe[title="3rd party ad content"]') !== null) ||
                               adElement.innerHTML.includes('data-load-complete="true"') ||
-                              (adElement.classList.contains('3b35b82f') && adElement.innerHTML.length > 0);
+                              (adElement.hasAttribute('data-key') && adElement.innerHTML.length > 0);
                 }
 
                 // Mark as processed to avoid double counting

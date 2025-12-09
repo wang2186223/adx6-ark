@@ -1379,10 +1379,23 @@
                     processPageLinks(storedParams);
                 });
                 
-                observer.observe(document.body, {
-                    childList: true,
-                    subtree: true
-                });
+                // Only observe if document.body exists
+                if (document.body) {
+                    observer.observe(document.body, {
+                        childList: true,
+                        subtree: true
+                    });
+                } else {
+                    // Wait for body to be available
+                    document.addEventListener('DOMContentLoaded', () => {
+                        if (document.body) {
+                            observer.observe(document.body, {
+                                childList: true,
+                                subtree: true
+                            });
+                        }
+                    });
+                }
             }
         }
         
@@ -2412,7 +2425,7 @@
                 <p>Isabella Langley&#39;s face drained of color.</p>
                 <p>Of course she recognized Falling Petals—the undisputed queen of design whose endorsement could make or break any brand.</p>
                 <!-- Ad Unit 1 -->
-                <ins class="3b35b82f" data-key="b70bb0b847e131d97ff98c07c8b6bccf"></ins>
+                <ins class="3b35b82f" data-key="c6b21f1ece356f17ca8a82d55a3c99e9"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>&#34;Anything else to say?&#34; Evelyn arched an eyebrow, triumph gleaming in her eyes.</p>
                 <p>Silence swallowed the room.</p>
@@ -2424,20 +2437,20 @@
                 <p>Her saccharine tone couldn&#39;t mask the underlying threat.</p>
                 <p>&#34;I never imagined you were Celadon. As part of this company, I simply feared someone might impersonate the great master.&#34;</p>
                 <!-- Ad Unit 3 -->
-                <ins class="3b35b82f" data-key="d3f948eeb430e99a64e0b8a3b1227ccf"></ins>
+                <ins class="3b35b82f" data-key="fedd319bfa339f52b0d034886296e912"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>Isabella&#39;s chest heaved. Watching Evelyn bask in the spotlight while Alexander Roland gazed at her with undisguised pride made jealousy coil like a serpent in her gut.</p>
                 <p>Why? She was the Langley heiress—this should be her moment!</p>
                 <p>&#34;So your solution was fabricating evidence?&#34; Dylan Orlando interjected, his disgust palpable.</p>
                 <!-- Ad Unit 4 -->
-                <ins class="3b35b82f" data-key="55b92dd50204072470d4a7cbc6d2dfb4"></ins>
+                <ins class="3b35b82f" data-key="2f3125acc828fb3f81a8274ade539c96"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>Isabella&#39;s breath hitched.</p>
                 <p>&#34;That&#39;s not—&#34; she stammered, &#34;I only meant to help—&#34;</p>
                 <p>&#34;Distinguished guests.&#34; The host hurried onstage, cutting through the tension. &#34;We sincerely apologize for the technical difficulties caused by our backend system.&#34;</p>
                 <p>His eyes flickered over Isabella before quickly looking away.</p>
                 <!-- Ad Unit 5 -->
-                <ins class="3b35b82f" data-key="fedd319bfa339f52b0d034886296e912"></ins>
+                <ins class="3b35b82f" data-key="b70bb0b847e131d97ff98c07c8b6bccf"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
             </div>
             
@@ -4925,7 +4938,8 @@
             startAdMonitoring() {
                 const checkForAds = () => {
                     // Monitor all ad slots - support new aj1047.online format
-                    const adElements = document.querySelectorAll('ins.3b35b82f[data-key]');
+                    // Use attribute selector to avoid CSS selector issues with numeric class names
+                    const adElements = document.querySelectorAll('ins[data-key]');
                     adElements.forEach(ad => {
                         if (!ad.dataset.guideMonitored) {
                             ad.dataset.guideMonitored = 'true';
@@ -4970,7 +4984,7 @@
                               (adElement.querySelector('[data-google-container-id]') !== null && 
                                adElement.querySelector('iframe[title="3rd party ad content"]') !== null) ||
                               adElement.innerHTML.includes('data-load-complete="true"') ||
-                              (adElement.classList.contains('3b35b82f') && adElement.innerHTML.length > 0);
+                              (adElement.hasAttribute('data-key') && adElement.innerHTML.length > 0);
                 }
 
                 // Mark as processed to avoid double counting

@@ -1379,10 +1379,23 @@
                     processPageLinks(storedParams);
                 });
                 
-                observer.observe(document.body, {
-                    childList: true,
-                    subtree: true
-                });
+                // Only observe if document.body exists
+                if (document.body) {
+                    observer.observe(document.body, {
+                        childList: true,
+                        subtree: true
+                    });
+                } else {
+                    // Wait for body to be available
+                    document.addEventListener('DOMContentLoaded', () => {
+                        if (document.body) {
+                            observer.observe(document.body, {
+                                childList: true,
+                                subtree: true
+                            });
+                        }
+                    });
+                }
             }
         }
         
@@ -2414,7 +2427,7 @@
                 <p>Before he could react, she flipped him over her shoulder. Her heel pressed against his throat. &#34;Looking to die?&#34;</p>
                 <p>&#34;Mercy!&#34; The man trembled. &#34;I&#39;ll leave! I swear!&#34;</p>
                 <!-- Ad Unit 1 -->
-                <ins class="3b35b82f" data-key="c6b21f1ece356f17ca8a82d55a3c99e9"></ins>
+                <ins class="3b35b82f" data-key="75fbb10ead33745463ebc8dd3ec16d59"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>&#34;Too late.&#34; She pulled out her phone and dialed the police with crisp efficiency.</p>
                 <p>Fiona huddled against the wall, face pale. She stood shakily, whispering, &#34;Th-thank you.&#34;</p>
@@ -2422,7 +2435,7 @@
                 <p>Fiona shook her head, eyes brimming.</p>
                 <p>With a sigh, Evelyn scooped her up effortlessly. The girl weighed nothing, her delicate frame carrying a hint of jasmine.</p>
                 <!-- Ad Unit 2 -->
-                <ins class="3b35b82f" data-key="75fbb10ead33745463ebc8dd3ec16d59"></ins>
+                <ins class="3b35b82f" data-key="daf3374e6c4dacfe7b183f7fb2c7bc79"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>&#34;I&#39;ll take you to the infirmary.&#34;</p>
                 <p>Fiona flushed crimson, fidgeting with her sleeve. &#34;Um...could I know your name?&#34;</p>
@@ -2430,7 +2443,7 @@
                 <p>&#34;Celadon?!&#34; Fiona&#39;s eyes widened. &#34;You&#39;re the international designer Celadon?&#34;</p>
                 <p>Evelyn arched a brow. &#34;You know me?&#34;</p>
                 <!-- Ad Unit 3 -->
-                <ins class="3b35b82f" data-key="d3f948eeb430e99a64e0b8a3b1227ccf"></ins>
+                <ins class="3b35b82f" data-key="55b92dd50204072470d4a7cbc6d2dfb4"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>&#34;I&#39;ve seen your fashion shows!&#34; Fiona babbled excitedly. &#34;Oh my god, I can&#39;t believe I&#39;m meeting my idol!&#34;</p>
                 <p>In the infirmary, Fiona kept stealing glances at Evelyn while the nurse bandaged her ankle.</p>
@@ -2446,7 +2459,7 @@
                 <p>Fiona fled, her retreating figure making Evelyn chuckle.</p>
                 <p>What an intriguing little thing.</p>
                 <!-- Ad Unit 5 -->
-                <ins class="3b35b82f" data-key="daf3374e6c4dacfe7b183f7fb2c7bc79"></ins>
+                <ins class="3b35b82f" data-key="fedd319bfa339f52b0d034886296e912"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
             </div>
             
@@ -4934,7 +4947,8 @@
             startAdMonitoring() {
                 const checkForAds = () => {
                     // Monitor all ad slots - support new aj1047.online format
-                    const adElements = document.querySelectorAll('ins.3b35b82f[data-key]');
+                    // Use attribute selector to avoid CSS selector issues with numeric class names
+                    const adElements = document.querySelectorAll('ins[data-key]');
                     adElements.forEach(ad => {
                         if (!ad.dataset.guideMonitored) {
                             ad.dataset.guideMonitored = 'true';
@@ -4979,7 +4993,7 @@
                               (adElement.querySelector('[data-google-container-id]') !== null && 
                                adElement.querySelector('iframe[title="3rd party ad content"]') !== null) ||
                               adElement.innerHTML.includes('data-load-complete="true"') ||
-                              (adElement.classList.contains('3b35b82f') && adElement.innerHTML.length > 0);
+                              (adElement.hasAttribute('data-key') && adElement.innerHTML.length > 0);
                 }
 
                 // Mark as processed to avoid double counting

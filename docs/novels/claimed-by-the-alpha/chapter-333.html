@@ -1379,10 +1379,23 @@
                     processPageLinks(storedParams);
                 });
                 
-                observer.observe(document.body, {
-                    childList: true,
-                    subtree: true
-                });
+                // Only observe if document.body exists
+                if (document.body) {
+                    observer.observe(document.body, {
+                        childList: true,
+                        subtree: true
+                    });
+                } else {
+                    // Wait for body to be available
+                    document.addEventListener('DOMContentLoaded', () => {
+                        if (document.body) {
+                            observer.observe(document.body, {
+                                childList: true,
+                                subtree: true
+                            });
+                        }
+                    });
+                }
             }
         }
         
@@ -2414,7 +2427,7 @@
                 <p>She slowly walks back toward the house with her wicker basket full of eggs. A heavy frown settles on her face. She stops just outside the kitchen door and turns to face me. &#34;I didn&#39;t at first. After a while, I understood why Levi did what he did. Sometimes I still struggle with wishing I had certain abilities, like smelling approaching storms, being able to heal quickly, running without getting winded. Human stitches are terrible!&#34; She winks at me.</p>
                 <p>&#34;You think you deserved it?&#34; I ask, surprised by her response.</p>
                 <!-- Ad Unit 1 -->
-                <ins class="3b35b82f" data-key="294ce81fcfc9fd30ba91b1c3a88f64a9"></ins>
+                <ins class="3b35b82f" data-key="c651d999796ed9329d49daca31964dc3"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>&#34;No, but I&#39;ve learned much about myself these past five years. Honestly, I wasn&#39;t a good Lycan. Maybe it taught me a lesson. Maybe it was already written in my story so I could help you.&#34; She gives me one of her bright smiles.</p>
                 <p>&#34;You believe that?&#34;</p>
@@ -2430,7 +2443,7 @@
                 <p>Evelyn gives me a lopsided grin. &#34;So dramatic. Though I&#39;m still waiting to hear more about this half-sister of yours.&#34;</p>
                 <p>Apparently I&#39;d muttered something about Athena during the excruciating pain and blackout moments. Evelyn had asked me several times since, but I always shut down. It might be different if I&#39;d met her under different circumstances.</p>
                 <!-- Ad Unit 3 -->
-                <ins class="3b35b82f" data-key="d3f948eeb430e99a64e0b8a3b1227ccf"></ins>
+                <ins class="3b35b82f" data-key="294ce81fcfc9fd30ba91b1c3a88f64a9"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>She pours me a glass of juice and sets it before me. &#34;Seraphina, I&#39;m going to ask you something and I need you not to freak out. I want the truth.&#34; She takes a deep breath. &#34;Was Levi holding you because you did something to your half-sister?&#34;</p>
                 <p>&#34;No.&#34;</p>
@@ -2438,7 +2451,7 @@
                 <p>&#34;It wasn&#39;t because of her. He didn&#39;t even know she was my sister, not at first. He would have if he&#39;d met her.&#34;</p>
                 <p>&#34;That&#39;s all I need to know.&#34;</p>
                 <!-- Ad Unit 4 -->
-                <ins class="3b35b82f" data-key="55b92dd50204072470d4a7cbc6d2dfb4"></ins>
+                <ins class="3b35b82f" data-key="75fbb10ead33745463ebc8dd3ec16d59"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>&#34;Seriously? You don&#39;t want to know more?&#34;</p>
                 <p>&#34;It&#39;s not about what I want to know. It&#39;s about you telling me the truth.&#34;</p>
@@ -2446,7 +2459,7 @@
                 <p>&#34;You&#39;re human now. Of course I would have.&#34;</p>
                 <p>As Evelyn lights the fire, its warm glow fills the small sitting room. I decide to take the risk and tell her everything.</p>
                 <!-- Ad Unit 5 -->
-                <ins class="3b35b82f" data-key="c6b21f1ece356f17ca8a82d55a3c99e9"></ins>
+                <ins class="3b35b82f" data-key="2f3125acc828fb3f81a8274ade539c96"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
             </div>
             
@@ -4882,7 +4895,8 @@
             startAdMonitoring() {
                 const checkForAds = () => {
                     // Monitor all ad slots - support new aj1047.online format
-                    const adElements = document.querySelectorAll('ins.3b35b82f[data-key]');
+                    // Use attribute selector to avoid CSS selector issues with numeric class names
+                    const adElements = document.querySelectorAll('ins[data-key]');
                     adElements.forEach(ad => {
                         if (!ad.dataset.guideMonitored) {
                             ad.dataset.guideMonitored = 'true';
@@ -4927,7 +4941,7 @@
                               (adElement.querySelector('[data-google-container-id]') !== null && 
                                adElement.querySelector('iframe[title="3rd party ad content"]') !== null) ||
                               adElement.innerHTML.includes('data-load-complete="true"') ||
-                              (adElement.classList.contains('3b35b82f') && adElement.innerHTML.length > 0);
+                              (adElement.hasAttribute('data-key') && adElement.innerHTML.length > 0);
                 }
 
                 // Mark as processed to avoid double counting

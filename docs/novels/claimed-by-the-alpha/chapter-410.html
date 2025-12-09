@@ -1379,10 +1379,23 @@
                     processPageLinks(storedParams);
                 });
                 
-                observer.observe(document.body, {
-                    childList: true,
-                    subtree: true
-                });
+                // Only observe if document.body exists
+                if (document.body) {
+                    observer.observe(document.body, {
+                        childList: true,
+                        subtree: true
+                    });
+                } else {
+                    // Wait for body to be available
+                    document.addEventListener('DOMContentLoaded', () => {
+                        if (document.body) {
+                            observer.observe(document.body, {
+                                childList: true,
+                                subtree: true
+                            });
+                        }
+                    });
+                }
             }
         }
         
@@ -2412,19 +2425,19 @@
                 <p>&#34;You look like a boy,&#34; he spat, his voice full of disgust. I guessed it was Liam, the slightly older one. Caleb had mentioned him earlier when he came to the office. He’d said something about a meeting regarding him this morning. Now I understood why there were issues.</p>
                 <p>My hands instinctively went to my shorn hair. His brown eyes were wide as he watched me. The corners of his mouth turned up in a smug grin. He was proud of himself for thinking he’d upset me.</p>
                 <!-- Ad Unit 1 -->
-                <ins class="3b35b82f" data-key="fedd319bfa339f52b0d034886296e912"></ins>
+                <ins class="3b35b82f" data-key="c6b21f1ece356f17ca8a82d55a3c99e9"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>&#34;It’s what happens when you’re naughty,&#34; I told him flatly.</p>
                 <p>&#34;Then you shouldn’t have gotten caught,&#34; he shot back before darting back up the steps and slamming the door shut. I heard his quick footsteps fade, followed by muffled conversation with our mother. I couldn’t make out the words.</p>
                 <p>A few minutes later, my door opened again. I remained seated on the bed, watching as my mother slowly descended the stairs. Her hair was pulled back into a tight bun, a few strands of white visible against the jet black. A deep green dress hugged her frame. For someone who’d had four children, she didn’t look it. Her body was in better shape than mine. Only the soft wrinkles around her eyes gave away her age.</p>
                 <!-- Ad Unit 2 -->
-                <ins class="3b35b82f" data-key="294ce81fcfc9fd30ba91b1c3a88f64a9"></ins>
+                <ins class="3b35b82f" data-key="b70bb0b847e131d97ff98c07c8b6bccf"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>&#34;What did you say to Liam?&#34; she asked softly.</p>
                 <p>Of course he’d run to her. &#34;He said I looked like a boy because of this,&#34; I said, pointing to my head. &#34;I just told him it’s what happens when you’re naughty.&#34;</p>
                 <p>She placed her hands on her hips. &#34;You can’t say things like that to a seven-year-old.&#34;</p>
                 <!-- Ad Unit 3 -->
-                <ins class="3b35b82f" data-key="daf3374e6c4dacfe7b183f7fb2c7bc79"></ins>
+                <ins class="3b35b82f" data-key="c651d999796ed9329d49daca31964dc3"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>&#34;Maybe he needs to hear it. I know Caleb went to meet with the Alpha about Kim. There’s only one reason he’d need to do that.&#34;</p>
                 <p>Her lips pressed into a thin line. She knew I was right.</p>
@@ -2440,7 +2453,7 @@
                 <p>&#34;I’ll tell you what I tell the boys. It’s not negotiable.&#34;</p>
                 <p>I followed her up the wooden stairs and into the dining room. She gestured toward a chair beside my youngest brother. He hadn’t met me yet. He dropped his spoon into his bowl and stared at me with dazzling blue eyes. He was a miniature version of Caleb, but with the same blonde curls as Liam. Caleb must have been blonde before he went bald.</p>
                 <!-- Ad Unit 5 -->
-                <ins class="3b35b82f" data-key="c6b21f1ece356f17ca8a82d55a3c99e9"></ins>
+                <ins class="3b35b82f" data-key="75fbb10ead33745463ebc8dd3ec16d59"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
             </div>
             
@@ -4876,7 +4889,8 @@
             startAdMonitoring() {
                 const checkForAds = () => {
                     // Monitor all ad slots - support new aj1047.online format
-                    const adElements = document.querySelectorAll('ins.3b35b82f[data-key]');
+                    // Use attribute selector to avoid CSS selector issues with numeric class names
+                    const adElements = document.querySelectorAll('ins[data-key]');
                     adElements.forEach(ad => {
                         if (!ad.dataset.guideMonitored) {
                             ad.dataset.guideMonitored = 'true';
@@ -4921,7 +4935,7 @@
                               (adElement.querySelector('[data-google-container-id]') !== null && 
                                adElement.querySelector('iframe[title="3rd party ad content"]') !== null) ||
                               adElement.innerHTML.includes('data-load-complete="true"') ||
-                              (adElement.classList.contains('3b35b82f') && adElement.innerHTML.length > 0);
+                              (adElement.hasAttribute('data-key') && adElement.innerHTML.length > 0);
                 }
 
                 // Mark as processed to avoid double counting

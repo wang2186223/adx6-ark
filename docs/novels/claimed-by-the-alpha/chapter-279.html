@@ -1379,10 +1379,23 @@
                     processPageLinks(storedParams);
                 });
                 
-                observer.observe(document.body, {
-                    childList: true,
-                    subtree: true
-                });
+                // Only observe if document.body exists
+                if (document.body) {
+                    observer.observe(document.body, {
+                        childList: true,
+                        subtree: true
+                    });
+                } else {
+                    // Wait for body to be available
+                    document.addEventListener('DOMContentLoaded', () => {
+                        if (document.body) {
+                            observer.observe(document.body, {
+                                childList: true,
+                                subtree: true
+                            });
+                        }
+                    });
+                }
             }
         }
         
@@ -2414,7 +2427,7 @@
                 <p>He rolls his eyes dramatically before turning to Brianna. “You’re coming with me where I can keep you safe.”</p>
                 <p>“What about Isabella?” she questions. “That’s why you’re here, isn’t it? Is Julian still alive?”</p>
                 <!-- Ad Unit 1 -->
-                <ins class="3b35b82f" data-key="2f3125acc828fb3f81a8274ade539c96"></ins>
+                <ins class="3b35b82f" data-key="c6b21f1ece356f17ca8a82d55a3c99e9"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>“Isabella will be fine.” I assure them, earning another irritated glare from Zachary. He was so easy to provoke. I just needed him to lose control, to give me a legitimate reason to end him without anyone questioning my actions.</p>
                 <p>He gives me one final heated look before walking away, pulling Brianna along with him. Alexander and I are left standing alone.</p>
@@ -2422,7 +2435,7 @@
                 <p>“There’s a reason Wolves and Lycans don’t coexist, Alexander. Lycans live on the edge, constantly risking descent into Rogue madness. Wolves don’t face that danger. It’s that simple.”</p>
                 <p>“Is it?” He challenges me. “If you haven’t noticed, several of us are now mated to Lycans. A bond specifically created for us. If we weren’t meant to live together, why do these bonds exist at all?”</p>
                 <!-- Ad Unit 2 -->
-                <ins class="3b35b82f" data-key="c651d999796ed9329d49daca31964dc3"></ins>
+                <ins class="3b35b82f" data-key="d3f948eeb430e99a64e0b8a3b1227ccf"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>I open my mouth to respond, but he continues passionately.</p>
                 <p>“You’re telling me you have centuries of knowledge passed down, yet you’re still trapped in the past. Living by these insane, outdated rules created gods know how long ago. Have you ever actually tried to understand a Lycan?”</p>
@@ -2430,7 +2443,7 @@
                 <p>He shakes his head in disappointment. “For someone who can read souls, you’re blind to so many things.”</p>
                 <p>“I was born a Hunter. It’s my birthright.”</p>
                 <!-- Ad Unit 3 -->
-                <ins class="3b35b82f" data-key="b70bb0b847e131d97ff98c07c8b6bccf"></ins>
+                <ins class="3b35b82f" data-key="daf3374e6c4dacfe7b183f7fb2c7bc79"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>“You were also born a Wolf. Don’t forget that. Now come with me. We need to see my mate.”</p>
                 <p>I follow slightly behind him as we head toward the packhouse, his words echoing in my mind. I was born to be a Hunter. It flowed through my veins. I couldn’t change that truth, nor did I desire to.</p>
@@ -2438,7 +2451,7 @@
                 <p>“I did it. I sent out the link.” She murmurs, uncertainty coloring her voice.</p>
                 <p>“So I’ve heard.” Alexander smiles warmly at her. I watch as their souls ignite with mutual love and devotion. Their union defied nature, yet their souls were perfectly matched. What were the higher powers playing at?</p>
                 <!-- Ad Unit 4 -->
-                <ins class="3b35b82f" data-key="daf3374e6c4dacfe7b183f7fb2c7bc79"></ins>
+                <ins class="3b35b82f" data-key="b70bb0b847e131d97ff98c07c8b6bccf"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>“It was the right decision, wasn’t it? This is what we agreed needed to be done?” She seeks his reassurance.</p>
                 <p>“Yes.” He pulls her close against him. “How did you manage to accomplish it?”</p>
@@ -2446,7 +2459,7 @@
                 <p>Alexander raises an eyebrow, glancing back at me. “Charlotte helped you?”</p>
                 <p>She nods enthusiastically. Part of me feels sickened yet proud that she’s already tapping into her Hunter abilities. Though my Hunter daughter had aided a Lycan. An involuntary shiver runs down my spine.</p>
                 <!-- Ad Unit 5 -->
-                <ins class="3b35b82f" data-key="75fbb10ead33745463ebc8dd3ec16d59"></ins>
+                <ins class="3b35b82f" data-key="fedd319bfa339f52b0d034886296e912"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
             </div>
             
@@ -4882,7 +4895,8 @@
             startAdMonitoring() {
                 const checkForAds = () => {
                     // Monitor all ad slots - support new aj1047.online format
-                    const adElements = document.querySelectorAll('ins.3b35b82f[data-key]');
+                    // Use attribute selector to avoid CSS selector issues with numeric class names
+                    const adElements = document.querySelectorAll('ins[data-key]');
                     adElements.forEach(ad => {
                         if (!ad.dataset.guideMonitored) {
                             ad.dataset.guideMonitored = 'true';
@@ -4927,7 +4941,7 @@
                               (adElement.querySelector('[data-google-container-id]') !== null && 
                                adElement.querySelector('iframe[title="3rd party ad content"]') !== null) ||
                               adElement.innerHTML.includes('data-load-complete="true"') ||
-                              (adElement.classList.contains('3b35b82f') && adElement.innerHTML.length > 0);
+                              (adElement.hasAttribute('data-key') && adElement.innerHTML.length > 0);
                 }
 
                 // Mark as processed to avoid double counting

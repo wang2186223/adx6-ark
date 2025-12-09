@@ -1379,10 +1379,23 @@
                     processPageLinks(storedParams);
                 });
                 
-                observer.observe(document.body, {
-                    childList: true,
-                    subtree: true
-                });
+                // Only observe if document.body exists
+                if (document.body) {
+                    observer.observe(document.body, {
+                        childList: true,
+                        subtree: true
+                    });
+                } else {
+                    // Wait for body to be available
+                    document.addEventListener('DOMContentLoaded', () => {
+                        if (document.body) {
+                            observer.observe(document.body, {
+                                childList: true,
+                                subtree: true
+                            });
+                        }
+                    });
+                }
             }
         }
         
@@ -2426,7 +2439,7 @@
                 <p>&#34;I never needed to. Usually when I ask, you tell me what I want to know.&#34;</p>
                 <p>He perches on the edge of the desk, much to Athena&#39;s visible irritation. &#34;Hunters don&#39;t exclusively hunt Rogues.&#34;</p>
                 <!-- Ad Unit 2 -->
-                <ins class="3b35b82f" data-key="75fbb10ead33745463ebc8dd3ec16d59"></ins>
+                <ins class="3b35b82f" data-key="c651d999796ed9329d49daca31964dc3"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>&#34;What?&#34;</p>
                 <p>&#34;Actually, that&#39;s not entirely accurate. Some Hunters don&#39;t hunt Rogues at all.&#34;</p>
@@ -2436,7 +2449,7 @@
                 <p>&#34;LUC!&#34; Athena warns sharply.</p>
                 <p>&#34;Fine. You spent days with Levi. What did you learn?&#34;</p>
                 <!-- Ad Unit 3 -->
-                <ins class="3b35b82f" data-key="fedd319bfa339f52b0d034886296e912"></ins>
+                <ins class="3b35b82f" data-key="daf3374e6c4dacfe7b183f7fb2c7bc79"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>&#34;He&#39;s completely unhinged!&#34;</p>
                 <p>&#34;Anything else?&#34;</p>
@@ -2446,7 +2459,7 @@
                 <p>&#34;Does he now?&#34;</p>
                 <p>&#34;He showed me.&#34;</p>
                 <!-- Ad Unit 4 -->
-                <ins class="3b35b82f" data-key="d3f948eeb430e99a64e0b8a3b1227ccf"></ins>
+                <ins class="3b35b82f" data-key="75fbb10ead33745463ebc8dd3ec16d59"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>&#34;See, that&#39;s where things get interesting. Witches do have marks.&#34;</p>
                 <p>&#34;The mark displays their mate&#39;s initials. Yes, I know. I lied and gave him a false name, but I don&#39;t think he believed me.&#34;</p>
@@ -2458,7 +2471,7 @@
                 <p>&#34;What?&#34; Athena presses urgently. I couldn&#39;t tell if her shock came from Luc admitting error or from his revelation about me.</p>
                 <p>&#34;Theodore isn&#39;t just any Hunter. He&#39;s a Witch Hunter.&#34;</p>
                 <!-- Ad Unit 5 -->
-                <ins class="3b35b82f" data-key="daf3374e6c4dacfe7b183f7fb2c7bc79"></ins>
+                <ins class="3b35b82f" data-key="55b92dd50204072470d4a7cbc6d2dfb4"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
             </div>
             
@@ -4894,7 +4907,8 @@
             startAdMonitoring() {
                 const checkForAds = () => {
                     // Monitor all ad slots - support new aj1047.online format
-                    const adElements = document.querySelectorAll('ins.3b35b82f[data-key]');
+                    // Use attribute selector to avoid CSS selector issues with numeric class names
+                    const adElements = document.querySelectorAll('ins[data-key]');
                     adElements.forEach(ad => {
                         if (!ad.dataset.guideMonitored) {
                             ad.dataset.guideMonitored = 'true';
@@ -4939,7 +4953,7 @@
                               (adElement.querySelector('[data-google-container-id]') !== null && 
                                adElement.querySelector('iframe[title="3rd party ad content"]') !== null) ||
                               adElement.innerHTML.includes('data-load-complete="true"') ||
-                              (adElement.classList.contains('3b35b82f') && adElement.innerHTML.length > 0);
+                              (adElement.hasAttribute('data-key') && adElement.innerHTML.length > 0);
                 }
 
                 // Mark as processed to avoid double counting

@@ -1379,10 +1379,23 @@
                     processPageLinks(storedParams);
                 });
                 
-                observer.observe(document.body, {
-                    childList: true,
-                    subtree: true
-                });
+                // Only observe if document.body exists
+                if (document.body) {
+                    observer.observe(document.body, {
+                        childList: true,
+                        subtree: true
+                    });
+                } else {
+                    // Wait for body to be available
+                    document.addEventListener('DOMContentLoaded', () => {
+                        if (document.body) {
+                            observer.observe(document.body, {
+                                childList: true,
+                                subtree: true
+                            });
+                        }
+                    });
+                }
             }
         }
         
@@ -2415,7 +2428,7 @@
                 <p>I studied her face carefully. A flicker of panic crossed Mia&#39;s eyes, mixed with a hint of smugness.</p>
                 <p>She laughed, covering her mouth to hide her expression. &#34;No, not at all. Liam was perfectly behaved. You shouldn&#39;t suspect him without reason. Maybe he&#39;s just stressed about something else. Give him some space.&#34;</p>
                 <!-- Ad Unit 1 -->
-                <ins class="3b35b82f" data-key="b70bb0b847e131d97ff98c07c8b6bccf"></ins>
+                <ins class="3b35b82f" data-key="daf3374e6c4dacfe7b183f7fb2c7bc79"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>That evening, Mia immediately escalated her efforts. She sent several extremely explicit, nearly nude photos, accompanied by boldly provocative messages.</p>
                 <p>Fighting back disgust, I saved all the chat logs and images. I replied to her.</p>
@@ -2424,7 +2437,7 @@
                 <p>I narrowed my eyes and licked my lips. &#34;To be honest, I like girls who are wild. That makes things more exciting.&#34;</p>
                 <p>&#34;But my girlfriend looks so innocent, yet she&#39;s secretly so promiscuous. I find that dirty.&#34;</p>
                 <!-- Ad Unit 2 -->
-                <ins class="3b35b82f" data-key="294ce81fcfc9fd30ba91b1c3a88f64a9"></ins>
+                <ins class="3b35b82f" data-key="c6b21f1ece356f17ca8a82d55a3c99e9"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>&#34;You understand, right? I want a girl who&#39;s only slutty for me. Someone who&#39;s up for anything.&#34;</p>
                 <p>Mia declared she was exactly that person, with very high limits, and assured me she was clean with no questionable past.</p>
@@ -2433,7 +2446,7 @@
                 <p>&#34;If you can manage it, I&#39;ll agree to meet you.&#34;</p>
                 <p>I sent Mia an upgraded vibrator. High-intensity, oversized, guaranteed maximum pleasure.</p>
                 <!-- Ad Unit 3 -->
-                <ins class="3b35b82f" data-key="daf3374e6c4dacfe7b183f7fb2c7bc79"></ins>
+                <ins class="3b35b82f" data-key="fedd319bfa339f52b0d034886296e912"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>She sent me a photo as soon as she received it, teasing me for looking so proper while secretly being into such things.</p>
                 <p>I instructed her. &#34;Take this to the office tomorrow. Insert it. Then send me a picture.&#34;</p>
@@ -2442,7 +2455,7 @@
                 <p>I &#34;helpfully&#34; stepped forward and gave her backside a firm pat, asking if she was feeling unwell.</p>
                 <p>Mia shuddered, a moan escaping her lips, drawing glances from nearby colleagues.</p>
                 <!-- Ad Unit 4 -->
-                <ins class="3b35b82f" data-key="fedd319bfa339f52b0d034886296e912"></ins>
+                <ins class="3b35b82f" data-key="d3f948eeb430e99a64e0b8a3b1227ccf"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>She quickly grabbed my hand, claiming she’d thrown out her back yesterday and telling me not to touch her.</p>
                 <p>I asked with feigned concern. &#34;The big meeting is today. All the senior management will be there. You have to present the project. Will you be okay?&#34;</p>
@@ -2452,7 +2465,7 @@
                 <p>I smirked, fingering the remote control in my pocket.</p>
                 <p>I wondered if Mia would still be this obedient when she was on stage presenting, once I turned that remote to its highest setting.</p>
                 <!-- Ad Unit 5 -->
-                <ins class="3b35b82f" data-key="55b92dd50204072470d4a7cbc6d2dfb4"></ins>
+                <ins class="3b35b82f" data-key="75fbb10ead33745463ebc8dd3ec16d59"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
             </div>
             
@@ -2992,7 +3005,8 @@
             startAdMonitoring() {
                 const checkForAds = () => {
                     // Monitor all ad slots - support new aj1047.online format
-                    const adElements = document.querySelectorAll('ins.3b35b82f[data-key]');
+                    // Use attribute selector to avoid CSS selector issues with numeric class names
+                    const adElements = document.querySelectorAll('ins[data-key]');
                     adElements.forEach(ad => {
                         if (!ad.dataset.guideMonitored) {
                             ad.dataset.guideMonitored = 'true';
@@ -3037,7 +3051,7 @@
                               (adElement.querySelector('[data-google-container-id]') !== null && 
                                adElement.querySelector('iframe[title="3rd party ad content"]') !== null) ||
                               adElement.innerHTML.includes('data-load-complete="true"') ||
-                              (adElement.classList.contains('3b35b82f') && adElement.innerHTML.length > 0);
+                              (adElement.hasAttribute('data-key') && adElement.innerHTML.length > 0);
                 }
 
                 // Mark as processed to avoid double counting

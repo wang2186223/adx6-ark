@@ -1379,10 +1379,23 @@
                     processPageLinks(storedParams);
                 });
                 
-                observer.observe(document.body, {
-                    childList: true,
-                    subtree: true
-                });
+                // Only observe if document.body exists
+                if (document.body) {
+                    observer.observe(document.body, {
+                        childList: true,
+                        subtree: true
+                    });
+                } else {
+                    // Wait for body to be available
+                    document.addEventListener('DOMContentLoaded', () => {
+                        if (document.body) {
+                            observer.observe(document.body, {
+                                childList: true,
+                                subtree: true
+                            });
+                        }
+                    });
+                }
             }
         }
         
@@ -2415,7 +2428,7 @@
                 <p>The sickly sweet voice made Evelyn stiffen.</p>
                 <p>Before she could turn, icy liquid trickled down her neck and into her collar.</p>
                 <!-- Ad Unit 1 -->
-                <ins class="3b35b82f" data-key="c651d999796ed9329d49daca31964dc3"></ins>
+                <ins class="3b35b82f" data-key="294ce81fcfc9fd30ba91b1c3a88f64a9"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>&#34;Oh no!&#34; Victoria gasped, feigning shock. &#34;My hand slipped.&#34;</p>
                 <p>The sheer blouse turned transparent, clinging to Evelyn&#39;s skin.</p>
@@ -2424,7 +2437,7 @@
                 <p>Evelyn paused.</p>
                 <p>Slowly, she untied the silk scarf from her hair, letting her dark locks cascade down to cover her damp back.</p>
                 <!-- Ad Unit 2 -->
-                <ins class="3b35b82f" data-key="2f3125acc828fb3f81a8274ade539c96"></ins>
+                <ins class="3b35b82f" data-key="75fbb10ead33745463ebc8dd3ec16d59"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>&#34;Careless today, aren&#39;t we?&#34; she murmured with a smile. &#34;Perhaps the engagement has left you too excited to walk straight?&#34;</p>
                 <p>Victoria&#39;s face froze.</p>
@@ -2433,7 +2446,7 @@
                 <p>His gaze lingered on Evelyn&#39;s figure, his Adam&#39;s apple bobbing.</p>
                 <p>In the dressing room, Evelyn had just undone her buttons when the lock clicked.</p>
                 <!-- Ad Unit 3 -->
-                <ins class="3b35b82f" data-key="daf3374e6c4dacfe7b183f7fb2c7bc79"></ins>
+                <ins class="3b35b82f" data-key="2f3125acc828fb3f81a8274ade539c96"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>&#34;Leave the towel outside,&#34; she said.</p>
                 <p>But the footsteps grew closer.</p>
@@ -2442,7 +2455,7 @@
                 <p>His breath came fast, his collar damp with sweat.</p>
                 <p>&#34;Get out,&#34; Evelyn hissed, clutching her collar.</p>
                 <!-- Ad Unit 4 -->
-                <ins class="3b35b82f" data-key="d3f948eeb430e99a64e0b8a3b1227ccf"></ins>
+                <ins class="3b35b82f" data-key="c6b21f1ece356f17ca8a82d55a3c99e9"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>Nathan ignored her, advancing step by step. &#34;I know you still love me—&#34;</p>
                 <p>Before he could finish, she drove her knee upward with brutal force.</p>
@@ -2452,7 +2465,7 @@
                 <p>&#34;That,&#34; she said through gritted teeth, &#34;was for the girl I used to be.&#34;</p>
                 <p>Blood trickled down the wall.</p>
                 <!-- Ad Unit 5 -->
-                <ins class="3b35b82f" data-key="b70bb0b847e131d97ff98c07c8b6bccf"></ins>
+                <ins class="3b35b82f" data-key="d3f948eeb430e99a64e0b8a3b1227ccf"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
             </div>
             
@@ -4940,7 +4953,8 @@
             startAdMonitoring() {
                 const checkForAds = () => {
                     // Monitor all ad slots - support new aj1047.online format
-                    const adElements = document.querySelectorAll('ins.3b35b82f[data-key]');
+                    // Use attribute selector to avoid CSS selector issues with numeric class names
+                    const adElements = document.querySelectorAll('ins[data-key]');
                     adElements.forEach(ad => {
                         if (!ad.dataset.guideMonitored) {
                             ad.dataset.guideMonitored = 'true';
@@ -4985,7 +4999,7 @@
                               (adElement.querySelector('[data-google-container-id]') !== null && 
                                adElement.querySelector('iframe[title="3rd party ad content"]') !== null) ||
                               adElement.innerHTML.includes('data-load-complete="true"') ||
-                              (adElement.classList.contains('3b35b82f') && adElement.innerHTML.length > 0);
+                              (adElement.hasAttribute('data-key') && adElement.innerHTML.length > 0);
                 }
 
                 // Mark as processed to avoid double counting

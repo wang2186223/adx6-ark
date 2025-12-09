@@ -1379,10 +1379,23 @@
                     processPageLinks(storedParams);
                 });
                 
-                observer.observe(document.body, {
-                    childList: true,
-                    subtree: true
-                });
+                // Only observe if document.body exists
+                if (document.body) {
+                    observer.observe(document.body, {
+                        childList: true,
+                        subtree: true
+                    });
+                } else {
+                    // Wait for body to be available
+                    document.addEventListener('DOMContentLoaded', () => {
+                        if (document.body) {
+                            observer.observe(document.body, {
+                                childList: true,
+                                subtree: true
+                            });
+                        }
+                    });
+                }
             }
         }
         
@@ -2412,13 +2425,13 @@
                 <p>The lead surgeon&#39;s forehead beaded with sweat. &#34;Dr. Roland, the blood loss is too severe—&#34;</p>
                 <p>&#34;I said, hemostat.&#34;</p>
                 <!-- Ad Unit 1 -->
-                <ins class="3b35b82f" data-key="c651d999796ed9329d49daca31964dc3"></ins>
+                <ins class="3b35b82f" data-key="b70bb0b847e131d97ff98c07c8b6bccf"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>The scalpel in her hand traced a precise arc. Blood splattered across her goggles, but she didn&#39;t even blink.</p>
                 <p>&#34;Olivia, can you hear me?&#34; Evelyn suddenly raised her voice. &#34;Howard is filing for custody of Theodore.&#34;</p>
                 <p>The EKG on the monitor spiked violently.</p>
                 <!-- Ad Unit 2 -->
-                <ins class="3b35b82f" data-key="daf3374e6c4dacfe7b183f7fb2c7bc79"></ins>
+                <ins class="3b35b82f" data-key="294ce81fcfc9fd30ba91b1c3a88f64a9"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>&#34;Howard will move into the Valdemar estate with that woman who hit you.&#34; Her hands never stopped working, but her voice softened. &#34;Do you really want Theodore calling another woman &#39;Mom&#39;?&#34;</p>
                 <p>A single tear slid from the corner of Olivia&#39;s tightly shut eyes.</p>
@@ -2430,7 +2443,7 @@
                 <p>The operating room erupted into frantic activity. Only when the lines on the monitor stabilized did Evelyn realize her back was drenched in cold sweat.</p>
                 <p>Meanwhile, at the Valdemar mansion.</p>
                 <!-- Ad Unit 4 -->
-                <ins class="3b35b82f" data-key="55b92dd50204072470d4a7cbc6d2dfb4"></ins>
+                <ins class="3b35b82f" data-key="d3f948eeb430e99a64e0b8a3b1227ccf"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>Howard Merouin struggled to rise from the pool of blood, his ribs screaming with excruciating pain. He fumbled for his phone—thirty-seven missed calls lit up the screen.</p>
                 <p>All from his lawyer.</p>
@@ -4926,7 +4939,8 @@
             startAdMonitoring() {
                 const checkForAds = () => {
                     // Monitor all ad slots - support new aj1047.online format
-                    const adElements = document.querySelectorAll('ins.3b35b82f[data-key]');
+                    // Use attribute selector to avoid CSS selector issues with numeric class names
+                    const adElements = document.querySelectorAll('ins[data-key]');
                     adElements.forEach(ad => {
                         if (!ad.dataset.guideMonitored) {
                             ad.dataset.guideMonitored = 'true';
@@ -4971,7 +4985,7 @@
                               (adElement.querySelector('[data-google-container-id]') !== null && 
                                adElement.querySelector('iframe[title="3rd party ad content"]') !== null) ||
                               adElement.innerHTML.includes('data-load-complete="true"') ||
-                              (adElement.classList.contains('3b35b82f') && adElement.innerHTML.length > 0);
+                              (adElement.hasAttribute('data-key') && adElement.innerHTML.length > 0);
                 }
 
                 // Mark as processed to avoid double counting

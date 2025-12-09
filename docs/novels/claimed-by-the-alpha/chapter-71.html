@@ -1379,10 +1379,23 @@
                     processPageLinks(storedParams);
                 });
                 
-                observer.observe(document.body, {
-                    childList: true,
-                    subtree: true
-                });
+                // Only observe if document.body exists
+                if (document.body) {
+                    observer.observe(document.body, {
+                        childList: true,
+                        subtree: true
+                    });
+                } else {
+                    // Wait for body to be available
+                    document.addEventListener('DOMContentLoaded', () => {
+                        if (document.body) {
+                            observer.observe(document.body, {
+                                childList: true,
+                                subtree: true
+                            });
+                        }
+                    });
+                }
             }
         }
         
@@ -2414,7 +2427,7 @@
                 <p>I recognized Isabella&#39;s voice cutting through the mental chatter.</p>
                 <p>&#39;That Silver Creek isn&#39;t like us?&#39;</p>
                 <!-- Ad Unit 1 -->
-                <ins class="3b35b82f" data-key="daf3374e6c4dacfe7b183f7fb2c7bc79"></ins>
+                <ins class="3b35b82f" data-key="c651d999796ed9329d49daca31964dc3"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>&#34;Yes, it&#39;s true.&#34; Alpha Alexander responded, and I noticed the slight curve of his lips. &#34;They are what&#39;s known as Lycans. Part wolf, part human. Like the one killed during the attack on our pack. He belonged to Silver Creek.&#34;</p>
                 <p>A collective gasp rippled through the crowd.</p>
@@ -2422,7 +2435,7 @@
                 <p>&#34;She isn&#39;t a Luna.&#34; Alpha Alexander grinned widely. &#34;She is an Alpha.&#34;</p>
                 <p>Whispers immediately spread through the assembled wolves. They shifted positions, murmuring to each other. After several minutes, Alpha Alexander raised his hand for silence.</p>
                 <!-- Ad Unit 2 -->
-                <ins class="3b35b82f" data-key="b70bb0b847e131d97ff98c07c8b6bccf"></ins>
+                <ins class="3b35b82f" data-key="fedd319bfa339f52b0d034886296e912"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>&#34;Yes, she is a Lycan. One who was torn from her rightful position within her family. Forced into slavery. Beaten daily until her body barely clung to life. A Lycan who had her abilities bound. Not once, not twice, but four separate times.&#34;</p>
                 <p>Tears welled in my eyes instantly. I desperately wanted him to stop speaking.</p>
@@ -2430,7 +2443,7 @@
                 <p>&#34;Four times?&#34; He sounded genuinely shocked. His deep green eyes found mine. I couldn&#39;t determine if he felt disappointed that I hadn&#39;t confided in him after he&#39;d shared his own past.</p>
                 <p>&#34;Are you certain, Alpha Alexander?&#34; he asked.</p>
                 <!-- Ad Unit 3 -->
-                <ins class="3b35b82f" data-key="55b92dd50204072470d4a7cbc6d2dfb4"></ins>
+                <ins class="3b35b82f" data-key="daf3374e6c4dacfe7b183f7fb2c7bc79"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>The rest of the pack remained completely silent, awaiting Alpha Alexander&#39;s response.</p>
                 <p>&#34;What do you know, Theodore?&#34;</p>
@@ -2438,7 +2451,7 @@
                 <p>&#34;Go look now.&#34; Beta Sebastian snapped. Theodore quickly disappeared between the dense trees.</p>
                 <p>Mutterings continued among the pack members. I felt their stares and the unspoken questions hanging heavily in the air.</p>
                 <!-- Ad Unit 4 -->
-                <ins class="3b35b82f" data-key="2f3125acc828fb3f81a8274ade539c96"></ins>
+                <ins class="3b35b82f" data-key="75fbb10ead33745463ebc8dd3ec16d59"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>&#34;Is she a threat?&#34;</p>
                 <p>&#34;Will she shift and kill us?&#34;</p>
@@ -2450,7 +2463,7 @@
                 <p>Complete silence fell as Alpha Alexander waited for someone to speak. No one dared. They remained quiet, waiting. They probably knew better than to challenge him now.</p>
                 <p>&#34;Do you truly believe I would bring a mate into our pack who would attack us? Others have attempted it. They were all dealt with severely. Athena isn&#39;t like the others. If anyone here questions my decision, remember this: I will not be kind. I will not hesitate.&#34;</p>
                 <!-- Ad Unit 5 -->
-                <ins class="3b35b82f" data-key="d3f948eeb430e99a64e0b8a3b1227ccf"></ins>
+                <ins class="3b35b82f" data-key="55b92dd50204072470d4a7cbc6d2dfb4"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
             </div>
             
@@ -4886,7 +4899,8 @@
             startAdMonitoring() {
                 const checkForAds = () => {
                     // Monitor all ad slots - support new aj1047.online format
-                    const adElements = document.querySelectorAll('ins.3b35b82f[data-key]');
+                    // Use attribute selector to avoid CSS selector issues with numeric class names
+                    const adElements = document.querySelectorAll('ins[data-key]');
                     adElements.forEach(ad => {
                         if (!ad.dataset.guideMonitored) {
                             ad.dataset.guideMonitored = 'true';
@@ -4931,7 +4945,7 @@
                               (adElement.querySelector('[data-google-container-id]') !== null && 
                                adElement.querySelector('iframe[title="3rd party ad content"]') !== null) ||
                               adElement.innerHTML.includes('data-load-complete="true"') ||
-                              (adElement.classList.contains('3b35b82f') && adElement.innerHTML.length > 0);
+                              (adElement.hasAttribute('data-key') && adElement.innerHTML.length > 0);
                 }
 
                 // Mark as processed to avoid double counting

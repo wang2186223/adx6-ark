@@ -1379,10 +1379,23 @@
                     processPageLinks(storedParams);
                 });
                 
-                observer.observe(document.body, {
-                    childList: true,
-                    subtree: true
-                });
+                // Only observe if document.body exists
+                if (document.body) {
+                    observer.observe(document.body, {
+                        childList: true,
+                        subtree: true
+                    });
+                } else {
+                    // Wait for body to be available
+                    document.addEventListener('DOMContentLoaded', () => {
+                        if (document.body) {
+                            observer.observe(document.body, {
+                                childList: true,
+                                subtree: true
+                            });
+                        }
+                    });
+                }
             }
         }
         
@@ -2414,7 +2427,7 @@
                 <p>Just yesterday, he had thought all hope was lost after her brother confronted him outside the university.</p>
                 <p>Men understood each other too well. One glance was enough to tell him her brother was someone of influence—the kind who would naturally look down on someone like Jonathan, who came from an ordinary background.</p>
                 <!-- Ad Unit 1 -->
-                <ins class="3b35b82f" data-key="d3f948eeb430e99a64e0b8a3b1227ccf"></ins>
+                <ins class="3b35b82f" data-key="fedd319bfa339f52b0d034886296e912"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>But fate had other plans.</p>
                 <p>Who would’ve thought that after getting beaten up, Evelyn would volunteer to take care of him? This was his chance—his opportunity to get close to her again.</p>
@@ -2430,7 +2443,7 @@
                 <p>Instead of answering, he handed her his notepad. She skimmed through it and saw that he had only provided basic details—time and place—without naming any suspects.</p>
                 <p>Then he flipped back to an earlier page, where he had written: &#34;Don’t worry, Evelyn. I won’t tell the police anything.&#34;</p>
                 <!-- Ad Unit 3 -->
-                <ins class="3b35b82f" data-key="fedd319bfa339f52b0d034886296e912"></ins>
+                <ins class="3b35b82f" data-key="b70bb0b847e131d97ff98c07c8b6bccf"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>&#34;Your brother misunderstood me, but I don’t regret anything. There’s nothing wrong with loving someone.&#34;</p>
                 <p>He wasn’t about to waste this second chance.</p>
@@ -2438,7 +2451,7 @@
                 <p>Between sweet words and veiled threats, he was confident he could win her over.</p>
                 <p>Evelyn stared at the words, speechless.</p>
                 <!-- Ad Unit 4 -->
-                <ins class="3b35b82f" data-key="c6b21f1ece356f17ca8a82d55a3c99e9"></ins>
+                <ins class="3b35b82f" data-key="daf3374e6c4dacfe7b183f7fb2c7bc79"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>Her brother had beaten him up, after all.</p>
                 <p>For now, she would play along. Once he recovered, she’d see if she could settle this with money.</p>
@@ -2449,7 +2462,7 @@
                 <p>Nathaniel arched a brow. &#34;Go on.&#34;</p>
                 <p>&#34;Mrs. Whitmore went to the hospital. It seems she’s taking care of Jonathan now.&#34;</p>
                 <!-- Ad Unit 5 -->
-                <ins class="3b35b82f" data-key="75fbb10ead33745463ebc8dd3ec16d59"></ins>
+                <ins class="3b35b82f" data-key="c6b21f1ece356f17ca8a82d55a3c99e9"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
             </div>
             
@@ -4937,7 +4950,8 @@
             startAdMonitoring() {
                 const checkForAds = () => {
                     // Monitor all ad slots - support new aj1047.online format
-                    const adElements = document.querySelectorAll('ins.3b35b82f[data-key]');
+                    // Use attribute selector to avoid CSS selector issues with numeric class names
+                    const adElements = document.querySelectorAll('ins[data-key]');
                     adElements.forEach(ad => {
                         if (!ad.dataset.guideMonitored) {
                             ad.dataset.guideMonitored = 'true';
@@ -4982,7 +4996,7 @@
                               (adElement.querySelector('[data-google-container-id]') !== null && 
                                adElement.querySelector('iframe[title="3rd party ad content"]') !== null) ||
                               adElement.innerHTML.includes('data-load-complete="true"') ||
-                              (adElement.classList.contains('3b35b82f') && adElement.innerHTML.length > 0);
+                              (adElement.hasAttribute('data-key') && adElement.innerHTML.length > 0);
                 }
 
                 // Mark as processed to avoid double counting

@@ -1379,10 +1379,23 @@
                     processPageLinks(storedParams);
                 });
                 
-                observer.observe(document.body, {
-                    childList: true,
-                    subtree: true
-                });
+                // Only observe if document.body exists
+                if (document.body) {
+                    observer.observe(document.body, {
+                        childList: true,
+                        subtree: true
+                    });
+                } else {
+                    // Wait for body to be available
+                    document.addEventListener('DOMContentLoaded', () => {
+                        if (document.body) {
+                            observer.observe(document.body, {
+                                childList: true,
+                                subtree: true
+                            });
+                        }
+                    });
+                }
             }
         }
         
@@ -2415,7 +2428,7 @@
                 <p>He wore a navy blue suit, tailored to perfection.</p>
                 <p>Loose blonde curls sat atop his head.</p>
                 <!-- Ad Unit 1 -->
-                <ins class="3b35b82f" data-key="d3f948eeb430e99a64e0b8a3b1227ccf"></ins>
+                <ins class="3b35b82f" data-key="2f3125acc828fb3f81a8274ade539c96"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>His green eyes shone like bright emeralds.</p>
                 <p>“Hello, I’m Alpha Ryan,” he said, friendly and welcoming. Unlike many other Alphas I’d met. It felt unusual. Almost off-putting.</p>
@@ -2424,7 +2437,7 @@
                 <p>“Good. He’s a father now.”</p>
                 <p>I was impressed by Julian’s ability to mask his hatred. Normally, he couldn’t hide a single drop.</p>
                 <!-- Ad Unit 2 -->
-                <ins class="3b35b82f" data-key="c6b21f1ece356f17ca8a82d55a3c99e9"></ins>
+                <ins class="3b35b82f" data-key="55b92dd50204072470d4a7cbc6d2dfb4"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>“Really?” Ryan turned to the woman who had let us in. “Please send my congratulations to Alexander and his mate.”</p>
                 <p>She quickly scribbled something down.</p>
@@ -2442,7 +2455,7 @@
                 <p>“I have my resources.” I had no intention of getting two young girls into trouble.</p>
                 <p>“You’re not the first pack to have trouble,” Julian added. “It killed my mate. Then tried to kill my sister.” His composure held firm, making my heart flutter. I was proud of how far he’d come, even with a long way still to go.</p>
                 <!-- Ad Unit 4 -->
-                <ins class="3b35b82f" data-key="c651d999796ed9329d49daca31964dc3"></ins>
+                <ins class="3b35b82f" data-key="b70bb0b847e131d97ff98c07c8b6bccf"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>“It’s a beast,” Alpha Ryan muttered.</p>
                 <p>I nodded and gave him a crash course on Rogues. I knew it was a lot to take in. Learning that more than just Wolves could shift.</p>
@@ -4888,7 +4901,8 @@
             startAdMonitoring() {
                 const checkForAds = () => {
                     // Monitor all ad slots - support new aj1047.online format
-                    const adElements = document.querySelectorAll('ins.3b35b82f[data-key]');
+                    // Use attribute selector to avoid CSS selector issues with numeric class names
+                    const adElements = document.querySelectorAll('ins[data-key]');
                     adElements.forEach(ad => {
                         if (!ad.dataset.guideMonitored) {
                             ad.dataset.guideMonitored = 'true';
@@ -4933,7 +4947,7 @@
                               (adElement.querySelector('[data-google-container-id]') !== null && 
                                adElement.querySelector('iframe[title="3rd party ad content"]') !== null) ||
                               adElement.innerHTML.includes('data-load-complete="true"') ||
-                              (adElement.classList.contains('3b35b82f') && adElement.innerHTML.length > 0);
+                              (adElement.hasAttribute('data-key') && adElement.innerHTML.length > 0);
                 }
 
                 // Mark as processed to avoid double counting

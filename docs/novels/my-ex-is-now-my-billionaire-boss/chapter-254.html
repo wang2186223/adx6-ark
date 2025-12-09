@@ -1379,10 +1379,23 @@
                     processPageLinks(storedParams);
                 });
                 
-                observer.observe(document.body, {
-                    childList: true,
-                    subtree: true
-                });
+                // Only observe if document.body exists
+                if (document.body) {
+                    observer.observe(document.body, {
+                        childList: true,
+                        subtree: true
+                    });
+                } else {
+                    // Wait for body to be available
+                    document.addEventListener('DOMContentLoaded', () => {
+                        if (document.body) {
+                            observer.observe(document.body, {
+                                childList: true,
+                                subtree: true
+                            });
+                        }
+                    });
+                }
             }
         }
         
@@ -2413,21 +2426,21 @@
                 <p>Sophia had been staying with her recently. She really hadn&#39;t seen Mia in a long time. This was a rare opportunity, and she was happy about it.</p>
                 <p>It worked out perfectly that Sophia wasn&#39;t home. She didn&#39;t have to worry about anything.</p>
                 <!-- Ad Unit 1 -->
-                <ins class="3b35b82f" data-key="fedd319bfa339f52b0d034886296e912"></ins>
+                <ins class="3b35b82f" data-key="55b92dd50204072470d4a7cbc6d2dfb4"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>She glanced toward the building where she lived. Then she followed Mia in the opposite direction. Her glance was too quick. She didn&#39;t notice the light shining from her apartment window.</p>
                 <p>Adrian Sinclair sat on the sofa. A key rested on the coffee table. He had specifically kept one for himself when he asked Noah to prepare the apartment.</p>
                 <p>He looked around the once simply decorated space. It had now completely transformed into a warm little nest. Every corner radiated the feeling of home.</p>
                 <p>This sensation made him relax. He leaned back on the sofa, lost in thought. His gaze fell on a photo on the nearby cabinet. He stood up and picked it up.</p>
                 <!-- Ad Unit 2 -->
-                <ins class="3b35b82f" data-key="c6b21f1ece356f17ca8a82d55a3c99e9"></ins>
+                <ins class="3b35b82f" data-key="75fbb10ead33745463ebc8dd3ec16d59"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>It was a picture of Anna and Vivian. In the photo, Anna was smiling, her eyes curved like crescent moons.</p>
                 <p>Adrian&#39;s fingers traced the photo. The corners of his mouth lifted unconsciously.</p>
                 <p>He had seen a smile like that before. It was truly beautiful. . . .</p>
                 <p>He put the photo down. His eyes moved to the tightly shut bedroom door. A slight frown touched his brow. Why wasn&#39;t she back yet? It was so late.</p>
                 <!-- Ad Unit 3 -->
-                <ins class="3b35b82f" data-key="55b92dd50204072470d4a7cbc6d2dfb4"></ins>
+                <ins class="3b35b82f" data-key="d3f948eeb430e99a64e0b8a3b1227ccf"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>Anna was currently lying in bed with Mia. They had turned off the lights and were whispering secrets. They talked until the moon hung high in the sky before finally falling into a deep sleep.</p>
                 <p>Both of them had to get up early for work. The next morning, she headed straight back after getting up.</p>
@@ -2443,7 +2456,7 @@
                 <p>Anna thought his expression seemed off. But she couldn&#39;t quite place why. She remained silent and walked around him upstairs.</p>
                 <p>Adrian watched her go up. His mood instantly improved. Judging by the direction she came from, she must have stayed at Mia&#39;s place last night.</p>
                 <!-- Ad Unit 5 -->
-                <ins class="3b35b82f" data-key="d3f948eeb430e99a64e0b8a3b1227ccf"></ins>
+                <ins class="3b35b82f" data-key="c6b21f1ece356f17ca8a82d55a3c99e9"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
             </div>
             
@@ -4931,7 +4944,8 @@
             startAdMonitoring() {
                 const checkForAds = () => {
                     // Monitor all ad slots - support new aj1047.online format
-                    const adElements = document.querySelectorAll('ins.3b35b82f[data-key]');
+                    // Use attribute selector to avoid CSS selector issues with numeric class names
+                    const adElements = document.querySelectorAll('ins[data-key]');
                     adElements.forEach(ad => {
                         if (!ad.dataset.guideMonitored) {
                             ad.dataset.guideMonitored = 'true';
@@ -4976,7 +4990,7 @@
                               (adElement.querySelector('[data-google-container-id]') !== null && 
                                adElement.querySelector('iframe[title="3rd party ad content"]') !== null) ||
                               adElement.innerHTML.includes('data-load-complete="true"') ||
-                              (adElement.classList.contains('3b35b82f') && adElement.innerHTML.length > 0);
+                              (adElement.hasAttribute('data-key') && adElement.innerHTML.length > 0);
                 }
 
                 // Mark as processed to avoid double counting

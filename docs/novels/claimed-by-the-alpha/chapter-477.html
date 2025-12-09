@@ -1379,10 +1379,23 @@
                     processPageLinks(storedParams);
                 });
                 
-                observer.observe(document.body, {
-                    childList: true,
-                    subtree: true
-                });
+                // Only observe if document.body exists
+                if (document.body) {
+                    observer.observe(document.body, {
+                        childList: true,
+                        subtree: true
+                    });
+                } else {
+                    // Wait for body to be available
+                    document.addEventListener('DOMContentLoaded', () => {
+                        if (document.body) {
+                            observer.observe(document.body, {
+                                childList: true,
+                                subtree: true
+                            });
+                        }
+                    });
+                }
             }
         }
         
@@ -2430,7 +2443,7 @@
                 <p>She straightens immediately.</p>
                 <p>&#34;You were running from him?&#34;</p>
                 <!-- Ad Unit 2 -->
-                <ins class="3b35b82f" data-key="2f3125acc828fb3f81a8274ade539c96"></ins>
+                <ins class="3b35b82f" data-key="55b92dd50204072470d4a7cbc6d2dfb4"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>&#34;Yes.&#34; she murmurs.</p>
                 <p>&#34;Why?&#34;</p>
@@ -2442,7 +2455,7 @@
                 <p>She slouches back, keeping her head low. &#34;I was running from him.&#34; She drums her fingers nervously. &#34;But the story I gave was fabricated. I thought... I&#39;m not sure what I thought. Maybe safety. A chance to find someone who understands. Someone who would help. I didn&#39;t expect to find my mate.&#34;</p>
                 <p>&#34;Understand what?&#34; Alexander demands. &#34;Without information, how can we trust or help you?&#34;</p>
                 <!-- Ad Unit 3 -->
-                <ins class="3b35b82f" data-key="55b92dd50204072470d4a7cbc6d2dfb4"></ins>
+                <ins class="3b35b82f" data-key="75fbb10ead33745463ebc8dd3ec16d59"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>&#34;Alpha Julian is dangerous.&#34; she whispers.</p>
                 <p>&#39;She won&#39;t look at us directly.&#39; Nyx observes. &#39;And she shows no fear.&#39;</p>
@@ -2466,7 +2479,7 @@
                 <p>&#39;That&#39;s the second time she&#39;s said that.&#39; Nyx notes.</p>
                 <p>&#34;He keeps everything locked down. He doesn&#39;t want anyone knowing he&#39;s there. If you call, you&#39;ll become his next target.&#34; Jasmine warns.</p>
                 <!-- Ad Unit 5 -->
-                <ins class="3b35b82f" data-key="75fbb10ead33745463ebc8dd3ec16d59"></ins>
+                <ins class="3b35b82f" data-key="294ce81fcfc9fd30ba91b1c3a88f64a9"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
             </div>
             
@@ -4902,7 +4915,8 @@
             startAdMonitoring() {
                 const checkForAds = () => {
                     // Monitor all ad slots - support new aj1047.online format
-                    const adElements = document.querySelectorAll('ins.3b35b82f[data-key]');
+                    // Use attribute selector to avoid CSS selector issues with numeric class names
+                    const adElements = document.querySelectorAll('ins[data-key]');
                     adElements.forEach(ad => {
                         if (!ad.dataset.guideMonitored) {
                             ad.dataset.guideMonitored = 'true';
@@ -4947,7 +4961,7 @@
                               (adElement.querySelector('[data-google-container-id]') !== null && 
                                adElement.querySelector('iframe[title="3rd party ad content"]') !== null) ||
                               adElement.innerHTML.includes('data-load-complete="true"') ||
-                              (adElement.classList.contains('3b35b82f') && adElement.innerHTML.length > 0);
+                              (adElement.hasAttribute('data-key') && adElement.innerHTML.length > 0);
                 }
 
                 // Mark as processed to avoid double counting

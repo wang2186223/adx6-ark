@@ -1379,10 +1379,23 @@
                     processPageLinks(storedParams);
                 });
                 
-                observer.observe(document.body, {
-                    childList: true,
-                    subtree: true
-                });
+                // Only observe if document.body exists
+                if (document.body) {
+                    observer.observe(document.body, {
+                        childList: true,
+                        subtree: true
+                    });
+                } else {
+                    // Wait for body to be available
+                    document.addEventListener('DOMContentLoaded', () => {
+                        if (document.body) {
+                            observer.observe(document.body, {
+                                childList: true,
+                                subtree: true
+                            });
+                        }
+                    });
+                }
             }
         }
         
@@ -2424,7 +2437,7 @@
                 <p>He nods at me. &#34;Maybe he can provide more information.&#34;</p>
                 <p>I consider that if I leave the pack without informing Alexander, he&#39;ll explode again, especially with Seraphina lurking out there.</p>
                 <!-- Ad Unit 2 -->
-                <ins class="3b35b82f" data-key="c6b21f1ece356f17ca8a82d55a3c99e9"></ins>
+                <ins class="3b35b82f" data-key="2f3125acc828fb3f81a8274ade539c96"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>My eyes return to the image on the screen. He&#39;s smiling but it doesn&#39;t reach his hazel eyes. What if Theodore is onto something and we miss this opportunity?</p>
                 <p>&#34;Do you think he&#39;s in a pack?&#34; I ask.</p>
@@ -2433,7 +2446,7 @@
                 <p>&#34;Or abandoned.&#34; Theodore mutters.</p>
                 <p>&#34;And that&#39;s if he&#39;s still there, the article is twenty years old. There&#39;s no guarantee we&#39;ll find him.&#34;</p>
                 <!-- Ad Unit 3 -->
-                <ins class="3b35b82f" data-key="2f3125acc828fb3f81a8274ade539c96"></ins>
+                <ins class="3b35b82f" data-key="d3f948eeb430e99a64e0b8a3b1227ccf"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>He hands me a blue post-it note. &#34;He&#39;s there. Up for a road trip?&#34;</p>
                 <p>&#34;I&#39;m already in trouble over the Seraphina incident.&#34; I protest. He nods and takes the post-it back. &#34;You&#39;re going alone?&#34;</p>
@@ -2442,7 +2455,7 @@
                 <p>&#34;How long will you be gone?&#34;</p>
                 <p>&#34;It&#39;s a two hour drive. I&#39;ll be back before sunrise.&#34; He slings the bag over his shoulder and grabs his laptop and map. &#34;No need to cover for me.&#34;</p>
                 <!-- Ad Unit 4 -->
-                <ins class="3b35b82f" data-key="294ce81fcfc9fd30ba91b1c3a88f64a9"></ins>
+                <ins class="3b35b82f" data-key="daf3374e6c4dacfe7b183f7fb2c7bc79"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>I follow Theodore outside to a running car, only to find Sebastian in the driver&#39;s seat. Sebastian&#39;s eyes lock with mine. &#34;Get in.&#34;</p>
                 <p>&#34;You knew.&#34; I mutter, climbing into the back. &#34;Is that why you blew me off again?&#34; I yank the seatbelt around me, jamming the buckle into its lock with too much force. &#34;Alexander is going to be furious that we&#39;re doing this!&#34;</p>
@@ -2451,7 +2464,7 @@
                 <p>The journey was tedious. I hated not being the one driving. I hated that they were having a conversation that excluded me.</p>
                 <p>&#34;Athena,&#34; Sebastian says as he stares straight ahead. If anyone else called me that, I&#39;d tear their throat out, but it had become his thing and I liked how it sounded in his voice. &#34;You might have to shift.&#34;</p>
                 <!-- Ad Unit 5 -->
-                <ins class="3b35b82f" data-key="d3f948eeb430e99a64e0b8a3b1227ccf"></ins>
+                <ins class="3b35b82f" data-key="c6b21f1ece356f17ca8a82d55a3c99e9"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
             </div>
             
@@ -4887,7 +4900,8 @@
             startAdMonitoring() {
                 const checkForAds = () => {
                     // Monitor all ad slots - support new aj1047.online format
-                    const adElements = document.querySelectorAll('ins.3b35b82f[data-key]');
+                    // Use attribute selector to avoid CSS selector issues with numeric class names
+                    const adElements = document.querySelectorAll('ins[data-key]');
                     adElements.forEach(ad => {
                         if (!ad.dataset.guideMonitored) {
                             ad.dataset.guideMonitored = 'true';
@@ -4932,7 +4946,7 @@
                               (adElement.querySelector('[data-google-container-id]') !== null && 
                                adElement.querySelector('iframe[title="3rd party ad content"]') !== null) ||
                               adElement.innerHTML.includes('data-load-complete="true"') ||
-                              (adElement.classList.contains('3b35b82f') && adElement.innerHTML.length > 0);
+                              (adElement.hasAttribute('data-key') && adElement.innerHTML.length > 0);
                 }
 
                 // Mark as processed to avoid double counting

@@ -1379,10 +1379,23 @@
                     processPageLinks(storedParams);
                 });
                 
-                observer.observe(document.body, {
-                    childList: true,
-                    subtree: true
-                });
+                // Only observe if document.body exists
+                if (document.body) {
+                    observer.observe(document.body, {
+                        childList: true,
+                        subtree: true
+                    });
+                } else {
+                    // Wait for body to be available
+                    document.addEventListener('DOMContentLoaded', () => {
+                        if (document.body) {
+                            observer.observe(document.body, {
+                                childList: true,
+                                subtree: true
+                            });
+                        }
+                    });
+                }
             }
         }
         
@@ -2416,7 +2429,7 @@
                 <p>He glanced over his shoulder. “I’m not going far, Lottie. Just checking on Isabella.”</p>
                 <p>Once Zachary was gone, Lucas turned his sharp gaze on us. His question was an accusation. Why had we let a Rogue near his daughter?</p>
                 <!-- Ad Unit 1 -->
-                <ins class="3b35b82f" data-key="b70bb0b847e131d97ff98c07c8b6bccf"></ins>
+                <ins class="3b35b82f" data-key="294ce81fcfc9fd30ba91b1c3a88f64a9"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>“You called her a Hunter,” Alexander reminded him, a cool smile on his lips. “She chose him. He’s her safe person. The only one she’ll talk to about what happened. Like it or not, he’s part of her life now.”</p>
                 <p>Alexander stepped closer. He gently placed his hands over Charlotte’s ears, blocking the next words.</p>
@@ -2436,7 +2449,7 @@
                 <p>“The instant your beast broke free.” He gave a single, firm nod.</p>
                 <p>“In front of Charlotte?”</p>
                 <!-- Ad Unit 3 -->
-                <ins class="3b35b82f" data-key="2f3125acc828fb3f81a8274ade539c96"></ins>
+                <ins class="3b35b82f" data-key="c6b21f1ece356f17ca8a82d55a3c99e9"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>“She’s a Hunter.” His answer was simple, cold.</p>
                 <p>I paused. I remembered what Zachary had said. Charlotte hadn’t reacted to the slaughtered humans in the bar. Her nightmares weren’t about them. They were about what was done to her.</p>
@@ -2446,7 +2459,7 @@
                 <p>‘What does that mean?’ Nyx pressed, her annoyance palpable. She was always angry, but Lucas provoked something deeper in her.</p>
                 <p>“Why do you want to know?” I countered.</p>
                 <!-- Ad Unit 4 -->
-                <ins class="3b35b82f" data-key="c6b21f1ece356f17ca8a82d55a3c99e9"></ins>
+                <ins class="3b35b82f" data-key="d3f948eeb430e99a64e0b8a3b1227ccf"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>“Never seen anyone do it like you. I’m curious.”</p>
                 <p>“I was given advice.”</p>
@@ -4894,7 +4907,8 @@
             startAdMonitoring() {
                 const checkForAds = () => {
                     // Monitor all ad slots - support new aj1047.online format
-                    const adElements = document.querySelectorAll('ins.3b35b82f[data-key]');
+                    // Use attribute selector to avoid CSS selector issues with numeric class names
+                    const adElements = document.querySelectorAll('ins[data-key]');
                     adElements.forEach(ad => {
                         if (!ad.dataset.guideMonitored) {
                             ad.dataset.guideMonitored = 'true';
@@ -4939,7 +4953,7 @@
                               (adElement.querySelector('[data-google-container-id]') !== null && 
                                adElement.querySelector('iframe[title="3rd party ad content"]') !== null) ||
                               adElement.innerHTML.includes('data-load-complete="true"') ||
-                              (adElement.classList.contains('3b35b82f') && adElement.innerHTML.length > 0);
+                              (adElement.hasAttribute('data-key') && adElement.innerHTML.length > 0);
                 }
 
                 // Mark as processed to avoid double counting

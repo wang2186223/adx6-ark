@@ -1379,10 +1379,23 @@
                     processPageLinks(storedParams);
                 });
                 
-                observer.observe(document.body, {
-                    childList: true,
-                    subtree: true
-                });
+                // Only observe if document.body exists
+                if (document.body) {
+                    observer.observe(document.body, {
+                        childList: true,
+                        subtree: true
+                    });
+                } else {
+                    // Wait for body to be available
+                    document.addEventListener('DOMContentLoaded', () => {
+                        if (document.body) {
+                            observer.observe(document.body, {
+                                childList: true,
+                                subtree: true
+                            });
+                        }
+                    });
+                }
             }
         }
         
@@ -2414,7 +2427,7 @@
                 <p>Turning to Daniel, she bit her lip. &#34;Will these rumors cause problems for you?&#34;</p>
                 <p>&#34;Not at all.&#34; He flashed a reassuring smile. &#34;I&#39;ve already handled the media. That single back-view photo is all they&#39;ll ever get.&#34;</p>
                 <!-- Ad Unit 1 -->
-                <ins class="3b35b82f" data-key="2f3125acc828fb3f81a8274ade539c96"></ins>
+                <ins class="3b35b82f" data-key="daf3374e6c4dacfe7b183f7fb2c7bc79"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>A pang of sadness hit him. How he wished he could proudly claim Evelyn as his beloved cousin. But the timing wasn&#39;t right.</p>
                 <p>Alexander cleared his throat. &#34;Evelyn, with your competition win, you must have companies lining up. Vista Properties is the organizer—they&#39;d offer the best terms.&#34;</p>
@@ -2422,7 +2435,7 @@
                 <p>Vista Properties? Evelyn&#39;s nose wrinkled. Wasn&#39;t that one of Victoria&#39;s family companies?</p>
                 <p>&#34;I&#39;ve already accepted a part-time position elsewhere,&#34; she said firmly.</p>
                 <!-- Ad Unit 2 -->
-                <ins class="3b35b82f" data-key="75fbb10ead33745463ebc8dd3ec16d59"></ins>
+                <ins class="3b35b82f" data-key="2f3125acc828fb3f81a8274ade539c96"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>Disappointment flickered across Alexander&#39;s face, but he nodded. Her happiness mattered most.</p>
                 <p>After seeing them off, Evelyn headed to Jonathan&#39;s studio. En route, her phone rang.</p>
@@ -2430,7 +2443,7 @@
                 <p>Whitmore Group? Evelyn&#39;s grip tightened on her phone. &#34;Why me?&#34;</p>
                 <p>The manager hesitated. &#34;Well... you&#39;re Genevieve, aren&#39;t you? We approached your friend twice before, but you declined.&#34;</p>
                 <!-- Ad Unit 3 -->
-                <ins class="3b35b82f" data-key="55b92dd50204072470d4a7cbc6d2dfb4"></ins>
+                <ins class="3b35b82f" data-key="c6b21f1ece356f17ca8a82d55a3c99e9"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>A chill ran down Evelyn&#39;s spine. Nathaniel knew her identity now. Why still pursue her?</p>
                 <p>&#34;Our CEO genuinely admires your talent,&#34; the manager pressed. &#34;This could elevate your career.&#34;</p>
@@ -2438,7 +2451,7 @@
                 <p>&#34;Surely you recognize which opportunity holds more value, Ms. Carter?&#34;</p>
                 <p>&#34;First come, first served.&#34; She ended the call abruptly, staring at her darkened screen in confusion.</p>
                 <!-- Ad Unit 4 -->
-                <ins class="3b35b82f" data-key="c6b21f1ece356f17ca8a82d55a3c99e9"></ins>
+                <ins class="3b35b82f" data-key="fedd319bfa339f52b0d034886296e912"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>Why was Nathaniel still chasing her? Did his team not know...?</p>
                 <p>Meanwhile, the HR manager set down his phone, casting a nervous glance at Nathaniel. &#34;She&#39;s... not interested, sir.&#34;</p>
@@ -4935,7 +4948,8 @@
             startAdMonitoring() {
                 const checkForAds = () => {
                     // Monitor all ad slots - support new aj1047.online format
-                    const adElements = document.querySelectorAll('ins.3b35b82f[data-key]');
+                    // Use attribute selector to avoid CSS selector issues with numeric class names
+                    const adElements = document.querySelectorAll('ins[data-key]');
                     adElements.forEach(ad => {
                         if (!ad.dataset.guideMonitored) {
                             ad.dataset.guideMonitored = 'true';
@@ -4980,7 +4994,7 @@
                               (adElement.querySelector('[data-google-container-id]') !== null && 
                                adElement.querySelector('iframe[title="3rd party ad content"]') !== null) ||
                               adElement.innerHTML.includes('data-load-complete="true"') ||
-                              (adElement.classList.contains('3b35b82f') && adElement.innerHTML.length > 0);
+                              (adElement.hasAttribute('data-key') && adElement.innerHTML.length > 0);
                 }
 
                 // Mark as processed to avoid double counting

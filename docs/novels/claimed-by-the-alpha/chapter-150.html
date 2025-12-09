@@ -1379,10 +1379,23 @@
                     processPageLinks(storedParams);
                 });
                 
-                observer.observe(document.body, {
-                    childList: true,
-                    subtree: true
-                });
+                // Only observe if document.body exists
+                if (document.body) {
+                    observer.observe(document.body, {
+                        childList: true,
+                        subtree: true
+                    });
+                } else {
+                    // Wait for body to be available
+                    document.addEventListener('DOMContentLoaded', () => {
+                        if (document.body) {
+                            observer.observe(document.body, {
+                                childList: true,
+                                subtree: true
+                            });
+                        }
+                    });
+                }
             }
         }
         
@@ -2414,7 +2427,7 @@
                 <p>&#34;You don&#39;t. You keep your head down. You do everything that&#39;s asked of you. You show respect to everyone here. Then, just maybe, she&#39;ll see you&#39;re trying and be willing to speak to you. But for now, she&#39;s pregnant. If she feels threatened, it&#39;s game over for you.&#34;</p>
                 <p>She sighed heavily.</p>
                 <!-- Ad Unit 1 -->
-                <ins class="3b35b82f" data-key="b70bb0b847e131d97ff98c07c8b6bccf"></ins>
+                <ins class="3b35b82f" data-key="2f3125acc828fb3f81a8274ade539c96"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>&#34;I told you it wouldn&#39;t be easy. I thought I had trust issues, but the Alpha&#39;s ability to trust is on another level entirely.&#34;</p>
                 <p>She frowned at me. &#34;She trusts you.&#34;</p>
@@ -2422,7 +2435,7 @@
                 <p>&#34;Then why are you guarding her?&#34;</p>
                 <p>&#34;To show her I mean what I say.&#34;</p>
                 <!-- Ad Unit 2 -->
-                <ins class="3b35b82f" data-key="daf3374e6c4dacfe7b183f7fb2c7bc79"></ins>
+                <ins class="3b35b82f" data-key="c651d999796ed9329d49daca31964dc3"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>Brianna rolled her eyes at me. We had very different belief systems. She expected everyone to accept her as she was. Whereas I&#39;d always had to work for it. Human or not.</p>
                 <p>&#34;You know as well as I do that her abuse didn&#39;t end after you nearly killed her.&#34; I added.</p>
@@ -2438,7 +2451,7 @@
                 <p>&#34;You just need time. Isn&#39;t that what you first told me when I found you?&#34;</p>
                 <p>Brianna nodded. &#34;True.&#34;</p>
                 <!-- Ad Unit 4 -->
-                <ins class="3b35b82f" data-key="55b92dd50204072470d4a7cbc6d2dfb4"></ins>
+                <ins class="3b35b82f" data-key="daf3374e6c4dacfe7b183f7fb2c7bc79"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>&#34;Go back to the house. There&#39;s no point in you standing here with me.&#34;</p>
                 <p>&#34;I&#39;ll see you later?&#34; She asked.</p>
@@ -2450,7 +2463,7 @@
                 <p>&#34;Why?&#34;</p>
                 <p>He glanced at the bedroom door and dropped his voice to a whisper. &#34;It&#39;s here. It&#39;s in the hospital with Isabella.&#34;</p>
                 <!-- Ad Unit 5 -->
-                <ins class="3b35b82f" data-key="2f3125acc828fb3f81a8274ade539c96"></ins>
+                <ins class="3b35b82f" data-key="55b92dd50204072470d4a7cbc6d2dfb4"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
             </div>
             
@@ -4886,7 +4899,8 @@
             startAdMonitoring() {
                 const checkForAds = () => {
                     // Monitor all ad slots - support new aj1047.online format
-                    const adElements = document.querySelectorAll('ins.3b35b82f[data-key]');
+                    // Use attribute selector to avoid CSS selector issues with numeric class names
+                    const adElements = document.querySelectorAll('ins[data-key]');
                     adElements.forEach(ad => {
                         if (!ad.dataset.guideMonitored) {
                             ad.dataset.guideMonitored = 'true';
@@ -4931,7 +4945,7 @@
                               (adElement.querySelector('[data-google-container-id]') !== null && 
                                adElement.querySelector('iframe[title="3rd party ad content"]') !== null) ||
                               adElement.innerHTML.includes('data-load-complete="true"') ||
-                              (adElement.classList.contains('3b35b82f') && adElement.innerHTML.length > 0);
+                              (adElement.hasAttribute('data-key') && adElement.innerHTML.length > 0);
                 }
 
                 // Mark as processed to avoid double counting

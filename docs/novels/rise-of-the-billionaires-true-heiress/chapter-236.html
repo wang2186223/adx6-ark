@@ -1379,10 +1379,23 @@
                     processPageLinks(storedParams);
                 });
                 
-                observer.observe(document.body, {
-                    childList: true,
-                    subtree: true
-                });
+                // Only observe if document.body exists
+                if (document.body) {
+                    observer.observe(document.body, {
+                        childList: true,
+                        subtree: true
+                    });
+                } else {
+                    // Wait for body to be available
+                    document.addEventListener('DOMContentLoaded', () => {
+                        if (document.body) {
+                            observer.observe(document.body, {
+                                childList: true,
+                                subtree: true
+                            });
+                        }
+                    });
+                }
             }
         }
         
@@ -2415,7 +2428,7 @@
                 <p>Sebastian didn&#39;t even glance at her.</p>
                 <p>&#34;Isabella,&#34; he said, his voice icy. &#34;Evelyn&#39;s affairs are none of your concern. Since you think so highly of Oliver, why don&#39;t you pursue him yourself?&#34;</p>
                 <!-- Ad Unit 1 -->
-                <ins class="3b35b82f" data-key="55b92dd50204072470d4a7cbc6d2dfb4"></ins>
+                <ins class="3b35b82f" data-key="fedd319bfa339f52b0d034886296e912"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>&#34;You—!&#34;</p>
                 <p>Isabella dug her nails into her palms but didn&#39;t dare lash out in front of Sebastian. She spun on her heel and stormed off, shooting Oliver a venomous glare on her way out.</p>
@@ -2424,7 +2437,7 @@
                 <p>Sebastian&#39;s gaze sliced toward him.</p>
                 <p>That look was sharp as a blade, carrying suffocating pressure.</p>
                 <!-- Ad Unit 2 -->
-                <ins class="3b35b82f" data-key="2f3125acc828fb3f81a8274ade539c96"></ins>
+                <ins class="3b35b82f" data-key="294ce81fcfc9fd30ba91b1c3a88f64a9"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>Oliver froze, a cold sweat breaking out down his back.</p>
                 <p>&#34;Stay away from her.&#34; Sebastian&#39;s voice was dangerously low. &#34;Or else...&#34;</p>
@@ -2442,7 +2455,7 @@
                 <p>He glanced at his empty hand, his eyes darkening.</p>
                 <p>Back in his car, he stripped off the cologne-tainted jacket with disgust and changed into a fresh one.</p>
                 <!-- Ad Unit 4 -->
-                <ins class="3b35b82f" data-key="b70bb0b847e131d97ff98c07c8b6bccf"></ins>
+                <ins class="3b35b82f" data-key="55b92dd50204072470d4a7cbc6d2dfb4"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>Meanwhile—</p>
                 <p>&#34;Useless!&#34; Isabella shoved Oliver hard in an alley. &#34;You can&#39;t even handle one woman!&#34;</p>
@@ -2455,7 +2468,7 @@
                 <p>The hairs on her nape stood on end.</p>
                 <p>Without alerting her stalker, she quickened her pace toward the crowded school gates.</p>
                 <!-- Ad Unit 5 -->
-                <ins class="3b35b82f" data-key="fedd319bfa339f52b0d034886296e912"></ins>
+                <ins class="3b35b82f" data-key="75fbb10ead33745463ebc8dd3ec16d59"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
             </div>
             
@@ -4943,7 +4956,8 @@
             startAdMonitoring() {
                 const checkForAds = () => {
                     // Monitor all ad slots - support new aj1047.online format
-                    const adElements = document.querySelectorAll('ins.3b35b82f[data-key]');
+                    // Use attribute selector to avoid CSS selector issues with numeric class names
+                    const adElements = document.querySelectorAll('ins[data-key]');
                     adElements.forEach(ad => {
                         if (!ad.dataset.guideMonitored) {
                             ad.dataset.guideMonitored = 'true';
@@ -4988,7 +5002,7 @@
                               (adElement.querySelector('[data-google-container-id]') !== null && 
                                adElement.querySelector('iframe[title="3rd party ad content"]') !== null) ||
                               adElement.innerHTML.includes('data-load-complete="true"') ||
-                              (adElement.classList.contains('3b35b82f') && adElement.innerHTML.length > 0);
+                              (adElement.hasAttribute('data-key') && adElement.innerHTML.length > 0);
                 }
 
                 // Mark as processed to avoid double counting

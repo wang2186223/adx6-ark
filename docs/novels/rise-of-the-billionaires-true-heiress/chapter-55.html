@@ -1379,10 +1379,23 @@
                     processPageLinks(storedParams);
                 });
                 
-                observer.observe(document.body, {
-                    childList: true,
-                    subtree: true
-                });
+                // Only observe if document.body exists
+                if (document.body) {
+                    observer.observe(document.body, {
+                        childList: true,
+                        subtree: true
+                    });
+                } else {
+                    // Wait for body to be available
+                    document.addEventListener('DOMContentLoaded', () => {
+                        if (document.body) {
+                            observer.observe(document.body, {
+                                childList: true,
+                                subtree: true
+                            });
+                        }
+                    });
+                }
             }
         }
         
@@ -2411,22 +2424,22 @@
                 <p>Sebastian immediately instructed Theodore Ashcroft to send the piece to the R&amp;D department. Three days later, the Shattered Stars Collection launched for pre-sale, crashing the company&#39;s website within minutes. Social media platforms were flooded with posts about the jewelry, and fashion influencers rushed to review it.</p>
                 <p>Evelyn&#39;s phone buzzed incessantly with collaboration requests. Even her long-forgotten early works were suddenly unearthed and discussed enthusiastically by netizens.</p>
                 <!-- Ad Unit 1 -->
-                <ins class="3b35b82f" data-key="2f3125acc828fb3f81a8274ade539c96"></ins>
+                <ins class="3b35b82f" data-key="daf3374e6c4dacfe7b183f7fb2c7bc79"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>Ding—</p>
                 <p>The vibration interrupted her pencil strokes on the design draft. A blot of ink spread across the paper as she glanced at the caller ID.</p>
                 <!-- Ad Unit 2 -->
-                <ins class="3b35b82f" data-key="daf3374e6c4dacfe7b183f7fb2c7bc79"></ins>
+                <ins class="3b35b82f" data-key="fedd319bfa339f52b0d034886296e912"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>&#34;Alex?&#34;</p>
                 <p>&#34;Mom and Dad miss you,&#34; Alexander Roland&#39;s voice came through the phone. &#34;I&#39;m downstairs.&#34;</p>
                 <!-- Ad Unit 3 -->
-                <ins class="3b35b82f" data-key="75fbb10ead33745463ebc8dd3ec16d59"></ins>
+                <ins class="3b35b82f" data-key="55b92dd50204072470d4a7cbc6d2dfb4"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>By the time the black Maybach rolled over fallen leaves into the underground garage, Evelyn was tucking the seventh draft into her drawer. The elevator descended to F3, and when she opened the car door, the familiar scent of cedar enveloped her.</p>
                 <p>Headlights cut through the twilight as the car approached the villa. Two figures stood under the porch light, waiting eagerly.</p>
                 <!-- Ad Unit 4 -->
-                <ins class="3b35b82f" data-key="c6b21f1ece356f17ca8a82d55a3c99e9"></ins>
+                <ins class="3b35b82f" data-key="75fbb10ead33745463ebc8dd3ec16d59"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>&#34;Evelyn!&#34; Sophia Roland hurried forward, her silver-streaked hair fluttering in the breeze. Edward Roland waited on the steps, holding a steaming soup pot that fogged up his glasses.</p>
                 <p>Evelyn&#39;s nose stung unexpectedly.</p>
@@ -2434,7 +2447,7 @@
                 <p>Sophia&#39;s eyes brightened. &#34;You&#39;d better mean it!&#34; The elderly couple flanked her as they walked inside, shielding her like a treasure they&#39;d finally recovered.</p>
                 <p>Under the dining room chandelier, their three shadows stretched across the floor-to-ceiling windows—warm enough to make her heart ache.</p>
                 <!-- Ad Unit 5 -->
-                <ins class="3b35b82f" data-key="b70bb0b847e131d97ff98c07c8b6bccf"></ins>
+                <ins class="3b35b82f" data-key="294ce81fcfc9fd30ba91b1c3a88f64a9"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
             </div>
             
@@ -4922,7 +4935,8 @@
             startAdMonitoring() {
                 const checkForAds = () => {
                     // Monitor all ad slots - support new aj1047.online format
-                    const adElements = document.querySelectorAll('ins.3b35b82f[data-key]');
+                    // Use attribute selector to avoid CSS selector issues with numeric class names
+                    const adElements = document.querySelectorAll('ins[data-key]');
                     adElements.forEach(ad => {
                         if (!ad.dataset.guideMonitored) {
                             ad.dataset.guideMonitored = 'true';
@@ -4967,7 +4981,7 @@
                               (adElement.querySelector('[data-google-container-id]') !== null && 
                                adElement.querySelector('iframe[title="3rd party ad content"]') !== null) ||
                               adElement.innerHTML.includes('data-load-complete="true"') ||
-                              (adElement.classList.contains('3b35b82f') && adElement.innerHTML.length > 0);
+                              (adElement.hasAttribute('data-key') && adElement.innerHTML.length > 0);
                 }
 
                 // Mark as processed to avoid double counting

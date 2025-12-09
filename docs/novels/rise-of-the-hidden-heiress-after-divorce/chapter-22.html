@@ -1379,10 +1379,23 @@
                     processPageLinks(storedParams);
                 });
                 
-                observer.observe(document.body, {
-                    childList: true,
-                    subtree: true
-                });
+                // Only observe if document.body exists
+                if (document.body) {
+                    observer.observe(document.body, {
+                        childList: true,
+                        subtree: true
+                    });
+                } else {
+                    // Wait for body to be available
+                    document.addEventListener('DOMContentLoaded', () => {
+                        if (document.body) {
+                            observer.observe(document.body, {
+                                childList: true,
+                                subtree: true
+                            });
+                        }
+                    });
+                }
             }
         }
         
@@ -2430,7 +2443,7 @@
                 <p>Beatrice pressed on eagerly. &#34;They need full medical examinations. Probably infertility issues.&#34;</p>
                 <p>She relished the thought - if Evelyn proved defective, Nathaniel could discard her like yesterday&#39;s trash.</p>
                 <!-- Ad Unit 3 -->
-                <ins class="3b35b82f" data-key="c651d999796ed9329d49daca31964dc3"></ins>
+                <ins class="3b35b82f" data-key="55b92dd50204072470d4a7cbc6d2dfb4"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>&#34;Absolutely. Hospital tomorrow, boy. Let&#39;s see what&#39;s wrong with you.&#34; Eleanor&#39;s next words shocked everyone. &#34;Three years and no pregnancy? Are you even performing your husbandly duties?&#34;</p>
                 <p>Evelyn gaped. Beatrice looked apoplectic.</p>
@@ -2438,7 +2451,7 @@
                 <p>Nathaniel pinched the bridge of his nose. &#34;Enough, Mother.&#34;</p>
                 <p>This conversation was spiraling into mortifying territory.</p>
                 <!-- Ad Unit 4 -->
-                <ins class="3b35b82f" data-key="c6b21f1ece356f17ca8a82d55a3c99e9"></ins>
+                <ins class="3b35b82f" data-key="2f3125acc828fb3f81a8274ade539c96"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>Beatrice wouldn&#39;t relent. &#34;Well, Evelyn? Who&#39;s failing here? Is my son incapable of doing what a man should?&#34;</p>
                 <p>Evelyn&#39;s mouth went dry. How could she possibly answer?</p>
@@ -2446,7 +2459,7 @@
                 <p>That single encounter had been shrouded in darkness - Evelyn too nervous and inexperienced to process what was happening. She&#39;d never even seen her husband fully unclothed.</p>
                 <p>How could she possibly judge his... capabilities?</p>
                 <!-- Ad Unit 5 -->
-                <ins class="3b35b82f" data-key="75fbb10ead33745463ebc8dd3ec16d59"></ins>
+                <ins class="3b35b82f" data-key="294ce81fcfc9fd30ba91b1c3a88f64a9"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
             </div>
             
@@ -4934,7 +4947,8 @@
             startAdMonitoring() {
                 const checkForAds = () => {
                     // Monitor all ad slots - support new aj1047.online format
-                    const adElements = document.querySelectorAll('ins.3b35b82f[data-key]');
+                    // Use attribute selector to avoid CSS selector issues with numeric class names
+                    const adElements = document.querySelectorAll('ins[data-key]');
                     adElements.forEach(ad => {
                         if (!ad.dataset.guideMonitored) {
                             ad.dataset.guideMonitored = 'true';
@@ -4979,7 +4993,7 @@
                               (adElement.querySelector('[data-google-container-id]') !== null && 
                                adElement.querySelector('iframe[title="3rd party ad content"]') !== null) ||
                               adElement.innerHTML.includes('data-load-complete="true"') ||
-                              (adElement.classList.contains('3b35b82f') && adElement.innerHTML.length > 0);
+                              (adElement.hasAttribute('data-key') && adElement.innerHTML.length > 0);
                 }
 
                 // Mark as processed to avoid double counting

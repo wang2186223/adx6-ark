@@ -1379,10 +1379,23 @@
                     processPageLinks(storedParams);
                 });
                 
-                observer.observe(document.body, {
-                    childList: true,
-                    subtree: true
-                });
+                // Only observe if document.body exists
+                if (document.body) {
+                    observer.observe(document.body, {
+                        childList: true,
+                        subtree: true
+                    });
+                } else {
+                    // Wait for body to be available
+                    document.addEventListener('DOMContentLoaded', () => {
+                        if (document.body) {
+                            observer.observe(document.body, {
+                                childList: true,
+                                subtree: true
+                            });
+                        }
+                    });
+                }
             }
         }
         
@@ -2415,7 +2428,7 @@
                 <p>&#34;Miss Roland!&#34; Oliver snapped, his voice sharp. &#34;You&#39;re deliberately causing trouble!&#34;</p>
                 <p>Evelyn ignored him and dialed an international number.</p>
                 <!-- Ad Unit 1 -->
-                <ins class="3b35b82f" data-key="c651d999796ed9329d49daca31964dc3"></ins>
+                <ins class="3b35b82f" data-key="2f3125acc828fb3f81a8274ade539c96"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>&#34;Hi, Charles.&#34;</p>
                 <p>Her flawless British accent stunned the room.</p>
@@ -2424,7 +2437,7 @@
                 <p>&#34;My God! You&#39;ve finally come to your senses! Is the stone still intact?&#34;</p>
                 <p>&#34;Save me a cutting! I owe the auction house director big time for helping you secure it!&#34;</p>
                 <!-- Ad Unit 2 -->
-                <ins class="3b35b82f" data-key="75fbb10ead33745463ebc8dd3ec16d59"></ins>
+                <ins class="3b35b82f" data-key="fedd319bfa339f52b0d034886296e912"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>The man&#39;s excited chatter filled the hall, his rapid-fire English punctuated with enthusiasm.</p>
                 <p>&#34;Shut up.&#34; Evelyn&#39;s brow furrowed. &#34;Two minutes. No results, and you&#39;ll never speak again.&#34;</p>
@@ -2433,7 +2446,7 @@
                 <p>&#34;Stop this charade!&#34; he hissed, voice trembling. &#34;Evelyn Roland, you&#39;ve crossed the line!&#34;</p>
                 <p>Two minutes later, Evelyn lifted her gaze.</p>
                 <!-- Ad Unit 3 -->
-                <ins class="3b35b82f" data-key="c6b21f1ece356f17ca8a82d55a3c99e9"></ins>
+                <ins class="3b35b82f" data-key="daf3374e6c4dacfe7b183f7fb2c7bc79"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>&#34;Time&#39;s up.&#34;</p>
                 <p>She scanned the room. &#34;Everyone, please check the auction house&#39;s official website for their latest announcement.&#34;</p>
@@ -2442,7 +2455,7 @@
                 <p>The image showed Evelyn cradling an emerald-green rough stone, her smile serene.</p>
                 <p>&#34;This...&#34;</p>
                 <!-- Ad Unit 4 -->
-                <ins class="3b35b82f" data-key="294ce81fcfc9fd30ba91b1c3a88f64a9"></ins>
+                <ins class="3b35b82f" data-key="c6b21f1ece356f17ca8a82d55a3c99e9"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>Someone whispered, &#34;Could Mr. Valrose&#39;s stone be fake?&#34;</p>
                 <p>&#34;Impossible!&#34; Oliver shot to his feet. &#34;This must be photoshopped!&#34;</p>
@@ -4939,7 +4952,8 @@
             startAdMonitoring() {
                 const checkForAds = () => {
                     // Monitor all ad slots - support new aj1047.online format
-                    const adElements = document.querySelectorAll('ins.3b35b82f[data-key]');
+                    // Use attribute selector to avoid CSS selector issues with numeric class names
+                    const adElements = document.querySelectorAll('ins[data-key]');
                     adElements.forEach(ad => {
                         if (!ad.dataset.guideMonitored) {
                             ad.dataset.guideMonitored = 'true';
@@ -4984,7 +4998,7 @@
                               (adElement.querySelector('[data-google-container-id]') !== null && 
                                adElement.querySelector('iframe[title="3rd party ad content"]') !== null) ||
                               adElement.innerHTML.includes('data-load-complete="true"') ||
-                              (adElement.classList.contains('3b35b82f') && adElement.innerHTML.length > 0);
+                              (adElement.hasAttribute('data-key') && adElement.innerHTML.length > 0);
                 }
 
                 // Mark as processed to avoid double counting

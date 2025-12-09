@@ -1379,10 +1379,23 @@
                     processPageLinks(storedParams);
                 });
                 
-                observer.observe(document.body, {
-                    childList: true,
-                    subtree: true
-                });
+                // Only observe if document.body exists
+                if (document.body) {
+                    observer.observe(document.body, {
+                        childList: true,
+                        subtree: true
+                    });
+                } else {
+                    // Wait for body to be available
+                    document.addEventListener('DOMContentLoaded', () => {
+                        if (document.body) {
+                            observer.observe(document.body, {
+                                childList: true,
+                                subtree: true
+                            });
+                        }
+                    });
+                }
             }
         }
         
@@ -2414,7 +2427,7 @@
                 <p>Christopher still hadn’t pieced it together. Reluctantly, he set the dessert aside, accepting her refusal.</p>
                 <p>Nathaniel’s eyes narrowed. He draped his arm over the back of Evelyn’s chair. &#34;Since you&#39;re done eating, let’s head back.&#34;</p>
                 <!-- Ad Unit 1 -->
-                <ins class="3b35b82f" data-key="daf3374e6c4dacfe7b183f7fb2c7bc79"></ins>
+                <ins class="3b35b82f" data-key="294ce81fcfc9fd30ba91b1c3a88f64a9"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>Evelyn was stunned. When would he stop with these ridiculous displays?</p>
                 <p>His arm made it seem like she was tucked against him. Furious, Christopher shoved Nathaniel’s arm away. &#34;Back off, you bastard! Stay the hell away from her!&#34;</p>
@@ -2422,7 +2435,7 @@
                 <p>He’d chosen his side quickly. Nathaniel was the wealthiest man in Bern City, while Christopher hailed from the Montgomerys of Nord City—impressive, but not enough to intimidate Theodore.</p>
                 <p>Christopher scoffed. &#34;A couple? They’re divorced. Cut the act!&#34;</p>
                 <!-- Ad Unit 2 -->
-                <ins class="3b35b82f" data-key="d3f948eeb430e99a64e0b8a3b1227ccf"></ins>
+                <ins class="3b35b82f" data-key="daf3374e6c4dacfe7b183f7fb2c7bc79"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>Theodore’s jaw dropped. He looked like he’d just been slapped.</p>
                 <p>Nathaniel remained unshaken. He met Christopher’s glare. &#34;The divorce isn’t finalized. Legally, she’s still my wife.&#34;</p>
@@ -2430,7 +2443,7 @@
                 <p>The air grew heavier.</p>
                 <p>Theodore quickly ushered the remaining guests out of the private room. The less they witnessed, the better.</p>
                 <!-- Ad Unit 3 -->
-                <ins class="3b35b82f" data-key="2f3125acc828fb3f81a8274ade539c96"></ins>
+                <ins class="3b35b82f" data-key="55b92dd50204072470d4a7cbc6d2dfb4"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>He never expected Evelyn to be this sought after. The fact that a Montgomery was pursuing her too? Unbelievable.</p>
                 <p>Silence reclaimed the room.</p>
@@ -2450,7 +2463,7 @@
                 <p>She nodded. &#34;I’ll make time. Anything else?&#34;</p>
                 <p>Nathaniel’s fists clenched. The words he’d rehearsed a thousand times lodged in his throat.</p>
                 <!-- Ad Unit 5 -->
-                <ins class="3b35b82f" data-key="55b92dd50204072470d4a7cbc6d2dfb4"></ins>
+                <ins class="3b35b82f" data-key="fedd319bfa339f52b0d034886296e912"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
             </div>
             
@@ -4938,7 +4951,8 @@
             startAdMonitoring() {
                 const checkForAds = () => {
                     // Monitor all ad slots - support new aj1047.online format
-                    const adElements = document.querySelectorAll('ins.3b35b82f[data-key]');
+                    // Use attribute selector to avoid CSS selector issues with numeric class names
+                    const adElements = document.querySelectorAll('ins[data-key]');
                     adElements.forEach(ad => {
                         if (!ad.dataset.guideMonitored) {
                             ad.dataset.guideMonitored = 'true';
@@ -4983,7 +4997,7 @@
                               (adElement.querySelector('[data-google-container-id]') !== null && 
                                adElement.querySelector('iframe[title="3rd party ad content"]') !== null) ||
                               adElement.innerHTML.includes('data-load-complete="true"') ||
-                              (adElement.classList.contains('3b35b82f') && adElement.innerHTML.length > 0);
+                              (adElement.hasAttribute('data-key') && adElement.innerHTML.length > 0);
                 }
 
                 // Mark as processed to avoid double counting

@@ -1379,10 +1379,23 @@
                     processPageLinks(storedParams);
                 });
                 
-                observer.observe(document.body, {
-                    childList: true,
-                    subtree: true
-                });
+                // Only observe if document.body exists
+                if (document.body) {
+                    observer.observe(document.body, {
+                        childList: true,
+                        subtree: true
+                    });
+                } else {
+                    // Wait for body to be available
+                    document.addEventListener('DOMContentLoaded', () => {
+                        if (document.body) {
+                            observer.observe(document.body, {
+                                childList: true,
+                                subtree: true
+                            });
+                        }
+                    });
+                }
             }
         }
         
@@ -2413,28 +2426,28 @@
                 <p>&#34;Tenth place goes to… Ninth place…&#34;</p>
                 <p>The countdown continued until only four finalists remained. Evelyn bit her lip. The unranked one would be eliminated.</p>
                 <!-- Ad Unit 1 -->
-                <ins class="3b35b82f" data-key="fedd319bfa339f52b0d034886296e912"></ins>
+                <ins class="3b35b82f" data-key="c651d999796ed9329d49daca31964dc3"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>Penelope smirked at her. &#34;Don’t tell me you actually thought you’d make top three, Evelyn. This year’s competition is brutal, and that Zoe girl is still in the running.&#34;</p>
                 <p>Evelyn almost laughed. She was Zoe. Should she thank Penelope for the backhanded compliment?</p>
                 <p>Victoria announced third and second place. Evelyn wasn’t among them. She caught Nathaniel glancing her way, but when she turned to look, he had already averted his gaze.</p>
                 <p>Her fists clenched as she waited for the final announcement. Victoria’s smile faltered slightly when she noticed the tension between them.</p>
                 <!-- Ad Unit 2 -->
-                <ins class="3b35b82f" data-key="75fbb10ead33745463ebc8dd3ec16d59"></ins>
+                <ins class="3b35b82f" data-key="2f3125acc828fb3f81a8274ade539c96"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>&#34;And in first place… Cassandra Blake!&#34;</p>
                 <p>Two seats away, a young woman leapt up and rushed to the stage, beaming. Evelyn remained seated, her nails digging into her palms. For one fleeting moment, she had dared to hope.</p>
                 <p>But reality crashed down. She hadn’t even placed.</p>
                 <p>Penelope scoffed. &#34;See, Evelyn? I told you to give up. People like you don’t belong in first place. Go crawl back to whatever gutter you came from.&#34;</p>
                 <!-- Ad Unit 3 -->
-                <ins class="3b35b82f" data-key="b70bb0b847e131d97ff98c07c8b6bccf"></ins>
+                <ins class="3b35b82f" data-key="75fbb10ead33745463ebc8dd3ec16d59"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>Evelyn stood abruptly and headed for the restroom. She splashed cold water on her face, trying to steady her breathing. Her phone rang—Daniel again.</p>
                 <p>She ignored it. She didn’t want comfort. She just needed to be alone.</p>
                 <p>When she stepped out, someone was leaning against the wall—tall, devastatingly handsome.</p>
                 <p>Nathaniel.</p>
                 <!-- Ad Unit 4 -->
-                <ins class="3b35b82f" data-key="daf3374e6c4dacfe7b183f7fb2c7bc79"></ins>
+                <ins class="3b35b82f" data-key="b70bb0b847e131d97ff98c07c8b6bccf"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>Evelyn lowered her head and tried to walk past, but he caught her wrist. &#34;Is this what you wanted?&#34;</p>
                 <p>She met his gaze. &#34;I don’t know what you mean.&#34;</p>
@@ -2444,7 +2457,7 @@
                 <p>Evelyn’s jaw tightened. &#34;I don’t need your help.&#34;</p>
                 <p>His smirk was infuriating. &#34;We’ll see.&#34;</p>
                 <!-- Ad Unit 5 -->
-                <ins class="3b35b82f" data-key="c651d999796ed9329d49daca31964dc3"></ins>
+                <ins class="3b35b82f" data-key="fedd319bfa339f52b0d034886296e912"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
             </div>
             
@@ -4932,7 +4945,8 @@
             startAdMonitoring() {
                 const checkForAds = () => {
                     // Monitor all ad slots - support new aj1047.online format
-                    const adElements = document.querySelectorAll('ins.3b35b82f[data-key]');
+                    // Use attribute selector to avoid CSS selector issues with numeric class names
+                    const adElements = document.querySelectorAll('ins[data-key]');
                     adElements.forEach(ad => {
                         if (!ad.dataset.guideMonitored) {
                             ad.dataset.guideMonitored = 'true';
@@ -4977,7 +4991,7 @@
                               (adElement.querySelector('[data-google-container-id]') !== null && 
                                adElement.querySelector('iframe[title="3rd party ad content"]') !== null) ||
                               adElement.innerHTML.includes('data-load-complete="true"') ||
-                              (adElement.classList.contains('3b35b82f') && adElement.innerHTML.length > 0);
+                              (adElement.hasAttribute('data-key') && adElement.innerHTML.length > 0);
                 }
 
                 // Mark as processed to avoid double counting

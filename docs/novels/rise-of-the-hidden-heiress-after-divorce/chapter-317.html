@@ -1379,10 +1379,23 @@
                     processPageLinks(storedParams);
                 });
                 
-                observer.observe(document.body, {
-                    childList: true,
-                    subtree: true
-                });
+                // Only observe if document.body exists
+                if (document.body) {
+                    observer.observe(document.body, {
+                        childList: true,
+                        subtree: true
+                    });
+                } else {
+                    // Wait for body to be available
+                    document.addEventListener('DOMContentLoaded', () => {
+                        if (document.body) {
+                            observer.observe(document.body, {
+                                childList: true,
+                                subtree: true
+                            });
+                        }
+                    });
+                }
             }
         }
         
@@ -2415,7 +2428,7 @@
                 <p>Eleanor&#39;s gaze turned steely. &#34;It&#39;s not Nathaniel I distrust. It&#39;s the vultures circling this family.&#34;</p>
                 <p>She pointed a bony finger at the document. &#34;No matter what happens between these two, Evelyn&#39;s children will inherit. That&#39;s final.&#34;</p>
                 <!-- Ad Unit 1 -->
-                <ins class="3b35b82f" data-key="c651d999796ed9329d49daca31964dc3"></ins>
+                <ins class="3b35b82f" data-key="c6b21f1ece356f17ca8a82d55a3c99e9"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>Beatrice swallowed hard. &#34;And if she bears daughters?&#34;</p>
                 <p>&#34;Gender is irrelevant!&#34; Eleanor snapped.</p>
@@ -2424,7 +2437,7 @@
                 <p>Beatrice saw this as an obvious trap.</p>
                 <p>Their plan had been simple: have Nathaniel divorce Evelyn post-surgery. But signing this document changed everything.</p>
                 <!-- Ad Unit 2 -->
-                <ins class="3b35b82f" data-key="55b92dd50204072470d4a7cbc6d2dfb4"></ins>
+                <ins class="3b35b82f" data-key="daf3374e6c4dacfe7b183f7fb2c7bc79"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>Evelyn could use legal technicalities to avoid divorce, even manipulate Nathaniel into conceiving again.</p>
                 <p>Beatrice wouldn&#39;t allow it. Victoria was her chosen daughter-in-law, and Evelyn wouldn&#39;t stand in the way.</p>
@@ -2433,7 +2446,7 @@
                 <p>Beatrice nodded vigorously. &#34;Exactly! This isn&#39;t the time for such decisions.&#34;</p>
                 <p>Eleanor&#39;s piercing gaze locked onto Nathaniel. &#34;Explain yourself.&#34;</p>
                 <!-- Ad Unit 3 -->
-                <ins class="3b35b82f" data-key="c6b21f1ece356f17ca8a82d55a3c99e9"></ins>
+                <ins class="3b35b82f" data-key="d3f948eeb430e99a64e0b8a3b1227ccf"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>Nathaniel&#39;s jaw tightened. &#34;I&#39;ll sign... after your surgery. Not a moment before.&#34;</p>
                 <p>Evelyn&#39;s head snapped up in shock. She studied Nathaniel&#39;s profile, searching for some clue to his sudden compliance.</p>
@@ -2442,7 +2455,7 @@
                 <p>If he consented now, what future would Victoria&#39;s children have? Would her son be denied his birthright?</p>
                 <p>Nathaniel ignored his mother&#39;s outburst.</p>
                 <!-- Ad Unit 4 -->
-                <ins class="3b35b82f" data-key="294ce81fcfc9fd30ba91b1c3a88f64a9"></ins>
+                <ins class="3b35b82f" data-key="2f3125acc828fb3f81a8274ade539c96"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>He tossed the document onto Eleanor&#39;s bedside table. &#34;If you have so little faith in me, perhaps you should handle family matters yourself.&#34;</p>
                 <p>The air crackled with tension as grandmother and grandson engaged in a silent battle of wills.</p>
@@ -2452,7 +2465,7 @@
                 <p>Nathaniel&#39;s lips thinned. &#34;Must you be so unreasonable?&#34;</p>
                 <p>Eleanor&#39;s eyes flashed. &#34;At my age, I&#39;ve earned the right to be unreasonable. Sign the damn papers, boy. Must we argue over everything?&#34;</p>
                 <!-- Ad Unit 5 -->
-                <ins class="3b35b82f" data-key="fedd319bfa339f52b0d034886296e912"></ins>
+                <ins class="3b35b82f" data-key="55b92dd50204072470d4a7cbc6d2dfb4"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
             </div>
             
@@ -4940,7 +4953,8 @@
             startAdMonitoring() {
                 const checkForAds = () => {
                     // Monitor all ad slots - support new aj1047.online format
-                    const adElements = document.querySelectorAll('ins.3b35b82f[data-key]');
+                    // Use attribute selector to avoid CSS selector issues with numeric class names
+                    const adElements = document.querySelectorAll('ins[data-key]');
                     adElements.forEach(ad => {
                         if (!ad.dataset.guideMonitored) {
                             ad.dataset.guideMonitored = 'true';
@@ -4985,7 +4999,7 @@
                               (adElement.querySelector('[data-google-container-id]') !== null && 
                                adElement.querySelector('iframe[title="3rd party ad content"]') !== null) ||
                               adElement.innerHTML.includes('data-load-complete="true"') ||
-                              (adElement.classList.contains('3b35b82f') && adElement.innerHTML.length > 0);
+                              (adElement.hasAttribute('data-key') && adElement.innerHTML.length > 0);
                 }
 
                 // Mark as processed to avoid double counting

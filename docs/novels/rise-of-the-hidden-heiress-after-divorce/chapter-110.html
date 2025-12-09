@@ -1379,10 +1379,23 @@
                     processPageLinks(storedParams);
                 });
                 
-                observer.observe(document.body, {
-                    childList: true,
-                    subtree: true
-                });
+                // Only observe if document.body exists
+                if (document.body) {
+                    observer.observe(document.body, {
+                        childList: true,
+                        subtree: true
+                    });
+                } else {
+                    // Wait for body to be available
+                    document.addEventListener('DOMContentLoaded', () => {
+                        if (document.body) {
+                            observer.observe(document.body, {
+                                childList: true,
+                                subtree: true
+                            });
+                        }
+                    });
+                }
             }
         }
         
@@ -2415,7 +2428,7 @@
                 <p>Evelyn wanted no complications, especially with Eleanor&#39;s surgery scheduled in just seven days.</p>
                 <p>Once she survived this week&#39;s charade, true freedom would be hers.</p>
                 <!-- Ad Unit 1 -->
-                <ins class="3b35b82f" data-key="c651d999796ed9329d49daca31964dc3"></ins>
+                <ins class="3b35b82f" data-key="fedd319bfa339f52b0d034886296e912"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>As Evelyn lifted her suitcase, Julian entered the room. Seeing her luggage, realization dawned on him.</p>
                 <p>&#34;Evelyn, why didn&#39;t you tell us today was move-in day? We would have loved to accompany you,&#34; he exclaimed.</p>
@@ -2424,7 +2437,7 @@
                 <p>Evelyn noticed the dark shadows beneath Julian&#39;s eyes - clear evidence of sleepless nights spent performing surgeries.</p>
                 <p>Knowing refusal was pointless, she decided to leave early so Julian could return home and rest.</p>
                 <!-- Ad Unit 2 -->
-                <ins class="3b35b82f" data-key="75fbb10ead33745463ebc8dd3ec16d59"></ins>
+                <ins class="3b35b82f" data-key="b70bb0b847e131d97ff98c07c8b6bccf"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>They departed together.</p>
                 <p>During the drive, Julian&#39;s phone vibrated repeatedly. Evelyn glimpsed the caller ID displaying &#34;Victoria Sinclair&#34; before he silenced it.</p>
@@ -2433,7 +2446,7 @@
                 <p>&#34;Focus on your studies. Don&#39;t worry about finances or work,&#34; Julian advised.</p>
                 <p>&#34;I understand,&#34; Evelyn nodded. &#34;I&#39;ve got a part-time job at the studio that covers my expenses.&#34;</p>
                 <!-- Ad Unit 3 -->
-                <ins class="3b35b82f" data-key="fedd319bfa339f52b0d034886296e912"></ins>
+                <ins class="3b35b82f" data-key="2f3125acc828fb3f81a8274ade539c96"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>Julian sighed quietly. His sister&#39;s independence often made him feel unnecessary.</p>
                 <p>Soon they arrived at Halvard University.</p>
@@ -2454,7 +2467,7 @@
                 <p>It made no sense to her. Julian performed free surgeries for strangers yet refused to operate on Eleanor. She suspected he harbored some secret resentment against her.</p>
                 <p>His attitude had clearly changed, but the reason remained a mystery Victoria couldn&#39;t solve.</p>
                 <!-- Ad Unit 5 -->
-                <ins class="3b35b82f" data-key="294ce81fcfc9fd30ba91b1c3a88f64a9"></ins>
+                <ins class="3b35b82f" data-key="55b92dd50204072470d4a7cbc6d2dfb4"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
             </div>
             
@@ -4942,7 +4955,8 @@
             startAdMonitoring() {
                 const checkForAds = () => {
                     // Monitor all ad slots - support new aj1047.online format
-                    const adElements = document.querySelectorAll('ins.3b35b82f[data-key]');
+                    // Use attribute selector to avoid CSS selector issues with numeric class names
+                    const adElements = document.querySelectorAll('ins[data-key]');
                     adElements.forEach(ad => {
                         if (!ad.dataset.guideMonitored) {
                             ad.dataset.guideMonitored = 'true';
@@ -4987,7 +5001,7 @@
                               (adElement.querySelector('[data-google-container-id]') !== null && 
                                adElement.querySelector('iframe[title="3rd party ad content"]') !== null) ||
                               adElement.innerHTML.includes('data-load-complete="true"') ||
-                              (adElement.classList.contains('3b35b82f') && adElement.innerHTML.length > 0);
+                              (adElement.hasAttribute('data-key') && adElement.innerHTML.length > 0);
                 }
 
                 // Mark as processed to avoid double counting

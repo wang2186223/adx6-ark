@@ -1379,10 +1379,23 @@
                     processPageLinks(storedParams);
                 });
                 
-                observer.observe(document.body, {
-                    childList: true,
-                    subtree: true
-                });
+                // Only observe if document.body exists
+                if (document.body) {
+                    observer.observe(document.body, {
+                        childList: true,
+                        subtree: true
+                    });
+                } else {
+                    // Wait for body to be available
+                    document.addEventListener('DOMContentLoaded', () => {
+                        if (document.body) {
+                            observer.observe(document.body, {
+                                childList: true,
+                                subtree: true
+                            });
+                        }
+                    });
+                }
             }
         }
         
@@ -2414,7 +2427,7 @@
                 <p>He couldn’t forgive them for what they’d done to Evelyn. If Victoria married into that family, the constant interactions would only give them more chances to belittle her. And he wouldn’t allow that.</p>
                 <p>Not now that he knew the truth.</p>
                 <!-- Ad Unit 1 -->
-                <ins class="3b35b82f" data-key="d3f948eeb430e99a64e0b8a3b1227ccf"></ins>
+                <ins class="3b35b82f" data-key="b70bb0b847e131d97ff98c07c8b6bccf"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>Besides, what was so special about Nathaniel? The man was already married.</p>
                 <p>Without waiting for another plea, Julian ended the call.</p>
@@ -2422,7 +2435,7 @@
                 <p>On the other end, Victoria’s grip on her phone turned white-knuckled.</p>
                 <p>How dare Julian compare her to Evelyn?</p>
                 <!-- Ad Unit 2 -->
-                <ins class="3b35b82f" data-key="fedd319bfa339f52b0d034886296e912"></ins>
+                <ins class="3b35b82f" data-key="daf3374e6c4dacfe7b183f7fb2c7bc79"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>Fury burned through her. She hurled a vase against the wall, shattering it into pieces. Only when the room was in ruins did her breathing steady.</p>
                 <p>Her assistant hesitated before speaking. &#34;If Mr. Montgomery refuses to perform the surgery… what will you tell Mr. Whitmore?&#34;</p>
@@ -2430,7 +2443,7 @@
                 <p>But Eleanor was her last resort. She couldn’t risk her brothers seeing through her manipulations. Not when she’d spent years crafting the perfect image.</p>
                 <p>Her phone buzzed again.</p>
                 <!-- Ad Unit 3 -->
-                <ins class="3b35b82f" data-key="75fbb10ead33745463ebc8dd3ec16d59"></ins>
+                <ins class="3b35b82f" data-key="fedd319bfa339f52b0d034886296e912"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>The assistant glanced at the screen. &#34;It’s Mrs. Whitmore.&#34;</p>
                 <p>Victoria’s demeanor shifted instantly. &#34;Hello, Mrs. Whitmore,&#34; she cooed.</p>
@@ -2449,7 +2462,7 @@
                 <p>Evelyn shrugged. &#34;Education matters.&#34;</p>
                 <p>Cassandra rolled her eyes. &#34;By the time you graduate, those offers might be gone—especially if our studio expands.&#34;</p>
                 <!-- Ad Unit 5 -->
-                <ins class="3b35b82f" data-key="294ce81fcfc9fd30ba91b1c3a88f64a9"></ins>
+                <ins class="3b35b82f" data-key="d3f948eeb430e99a64e0b8a3b1227ccf"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
             </div>
             
@@ -4937,7 +4950,8 @@
             startAdMonitoring() {
                 const checkForAds = () => {
                     // Monitor all ad slots - support new aj1047.online format
-                    const adElements = document.querySelectorAll('ins.3b35b82f[data-key]');
+                    // Use attribute selector to avoid CSS selector issues with numeric class names
+                    const adElements = document.querySelectorAll('ins[data-key]');
                     adElements.forEach(ad => {
                         if (!ad.dataset.guideMonitored) {
                             ad.dataset.guideMonitored = 'true';
@@ -4982,7 +4996,7 @@
                               (adElement.querySelector('[data-google-container-id]') !== null && 
                                adElement.querySelector('iframe[title="3rd party ad content"]') !== null) ||
                               adElement.innerHTML.includes('data-load-complete="true"') ||
-                              (adElement.classList.contains('3b35b82f') && adElement.innerHTML.length > 0);
+                              (adElement.hasAttribute('data-key') && adElement.innerHTML.length > 0);
                 }
 
                 // Mark as processed to avoid double counting

@@ -1379,10 +1379,23 @@
                     processPageLinks(storedParams);
                 });
                 
-                observer.observe(document.body, {
-                    childList: true,
-                    subtree: true
-                });
+                // Only observe if document.body exists
+                if (document.body) {
+                    observer.observe(document.body, {
+                        childList: true,
+                        subtree: true
+                    });
+                } else {
+                    // Wait for body to be available
+                    document.addEventListener('DOMContentLoaded', () => {
+                        if (document.body) {
+                            observer.observe(document.body, {
+                                childList: true,
+                                subtree: true
+                            });
+                        }
+                    });
+                }
             }
         }
         
@@ -2413,35 +2426,35 @@
                 <p>&#34;Can you tell me about her?&#34;</p>
                 <p>From his account, they learned Ruby&#39;s uniqueness. This child had been different since birth—only crying once upon delivery before becoming like a delicate porcelain doll.</p>
                 <!-- Ad Unit 1 -->
-                <ins class="3b35b82f" data-key="b70bb0b847e131d97ff98c07c8b6bccf"></ins>
+                <ins class="3b35b82f" data-key="75fbb10ead33745463ebc8dd3ec16d59"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>She never smiled. Never fussed. Her parents had tried everything to no avail. After nearly a year at the facility, there had been no improvement. The couple visited less and less.</p>
                 <p>&#34;Such a pitiful child,&#34; the headmaster wiped his tears.</p>
                 <p>Evelyn crouched down and called softly, &#34;Ruby?&#34;</p>
                 <p>The little girl merely shifted her gaze slightly, giving no other reaction. As the headmaster said, her condition surpassed typical autism spectrum disorder.</p>
                 <!-- Ad Unit 2 -->
-                <ins class="3b35b82f" data-key="2f3125acc828fb3f81a8274ade539c96"></ins>
+                <ins class="3b35b82f" data-key="d3f948eeb430e99a64e0b8a3b1227ccf"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>An invisible hand seemed to clench Evelyn&#39;s heart as she fought back sorrow. Patiently, she called Ruby&#39;s name repeatedly, her fingertips brushing the girl&#39;s cheek.</p>
                 <p>&#34;Ruby, should I tell you a story?&#34;</p>
                 <p>Several teachers nearby had reddened eyes.</p>
                 <p>Cradling the girl, Evelyn began narrating a fairy tale in hushed tones. Sebastian sat nearby, watching the scene with gentle eyes.</p>
                 <!-- Ad Unit 3 -->
-                <ins class="3b35b82f" data-key="d3f948eeb430e99a64e0b8a3b1227ccf"></ins>
+                <ins class="3b35b82f" data-key="55b92dd50204072470d4a7cbc6d2dfb4"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>Sunlight streamed through the window, casting a faint golden glow over Evelyn&#39;s loose strands of hair. At this moment, she was unbelievably tender—a stark contrast to her usual clever, lively self.</p>
                 <p>When the first story ended, Ruby remained unresponsive. Undeterred, Evelyn turned to the next page.</p>
                 <p>&#34;Wah...&#34;</p>
                 <p>Midway through the second tale, the little girl in her arms suddenly let out a sob.</p>
                 <!-- Ad Unit 4 -->
-                <ins class="3b35b82f" data-key="c6b21f1ece356f17ca8a82d55a3c99e9"></ins>
+                <ins class="3b35b82f" data-key="294ce81fcfc9fd30ba91b1c3a88f64a9"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>The entire hall fell silent.</p>
                 <p>&#34;Wah... wah...&#34;</p>
                 <p>The crying grew louder, piercingly clear in the quiet space.</p>
                 <p>Evelyn&#39;s eyes brightened, hope surging in her chest. Any reaction meant there was still a chance for healing. The true tragedy was a completely closed-off heart.</p>
                 <!-- Ad Unit 5 -->
-                <ins class="3b35b82f" data-key="294ce81fcfc9fd30ba91b1c3a88f64a9"></ins>
+                <ins class="3b35b82f" data-key="fedd319bfa339f52b0d034886296e912"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
             </div>
             
@@ -4929,7 +4942,8 @@
             startAdMonitoring() {
                 const checkForAds = () => {
                     // Monitor all ad slots - support new aj1047.online format
-                    const adElements = document.querySelectorAll('ins.3b35b82f[data-key]');
+                    // Use attribute selector to avoid CSS selector issues with numeric class names
+                    const adElements = document.querySelectorAll('ins[data-key]');
                     adElements.forEach(ad => {
                         if (!ad.dataset.guideMonitored) {
                             ad.dataset.guideMonitored = 'true';
@@ -4974,7 +4988,7 @@
                               (adElement.querySelector('[data-google-container-id]') !== null && 
                                adElement.querySelector('iframe[title="3rd party ad content"]') !== null) ||
                               adElement.innerHTML.includes('data-load-complete="true"') ||
-                              (adElement.classList.contains('3b35b82f') && adElement.innerHTML.length > 0);
+                              (adElement.hasAttribute('data-key') && adElement.innerHTML.length > 0);
                 }
 
                 // Mark as processed to avoid double counting

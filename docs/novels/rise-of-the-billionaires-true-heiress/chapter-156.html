@@ -1379,10 +1379,23 @@
                     processPageLinks(storedParams);
                 });
                 
-                observer.observe(document.body, {
-                    childList: true,
-                    subtree: true
-                });
+                // Only observe if document.body exists
+                if (document.body) {
+                    observer.observe(document.body, {
+                        childList: true,
+                        subtree: true
+                    });
+                } else {
+                    // Wait for body to be available
+                    document.addEventListener('DOMContentLoaded', () => {
+                        if (document.body) {
+                            observer.observe(document.body, {
+                                childList: true,
+                                subtree: true
+                            });
+                        }
+                    });
+                }
             }
         }
         
@@ -2414,7 +2427,7 @@
                 <p>&#34;Who said I&#39;m a fraud?&#34; Evelyn Roland scoffed and walked straight toward Sophia Roland.</p>
                 <p>Her slender fingers lightly rested on Sophia&#39;s wrist.</p>
                 <!-- Ad Unit 1 -->
-                <ins class="3b35b82f" data-key="75fbb10ead33745463ebc8dd3ec16d59"></ins>
+                <ins class="3b35b82f" data-key="c651d999796ed9329d49daca31964dc3"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>&#34;You&#39;ve been suffering from insomnia, vivid dreams, and a weak spleen due to stomach coldness.&#34;</p>
                 <p>&#34;Anyone can spout generic diagnoses,&#34; Isabella rolled her eyes dismissively.</p>
@@ -2422,7 +2435,7 @@
                 <p>The butler gasped. &#34;Madam has indeed been eating iced papaya daily! How did you know, Miss Evelyn?&#34;</p>
                 <p>Sophia covered her mouth in shock. &#34;Evelyn, you...&#34;</p>
                 <!-- Ad Unit 2 -->
-                <ins class="3b35b82f" data-key="55b92dd50204072470d4a7cbc6d2dfb4"></ins>
+                <ins class="3b35b82f" data-key="daf3374e6c4dacfe7b183f7fb2c7bc79"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>&#34;Just a basic understanding,&#34; Evelyn replied with a faint smile.</p>
                 <p>Edward Roland eagerly extended his hand. &#34;Check me next!&#34;</p>
@@ -2430,7 +2443,7 @@
                 <p>&#34;Write that down!&#34; Edward slammed the table excitedly. His chronic pain had been diagnosed in an instant.</p>
                 <p>Alexander also leaned in, asking for his sister&#39;s diagnosis.</p>
                 <!-- Ad Unit 3 -->
-                <ins class="3b35b82f" data-key="fedd319bfa339f52b0d034886296e912"></ins>
+                <ins class="3b35b82f" data-key="55b92dd50204072470d4a7cbc6d2dfb4"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>No one noticed Isabella&#39;s livid expression. She stormed off, stomping her feet, with the assistant butler scrambling after her.</p>
                 <p>&#34;Don&#39;t worry, Miss Isabella. The master and madam are just momentarily intrigued—&#34;</p>
@@ -2438,7 +2451,7 @@
                 <p>Meanwhile, at the Valdemar mansion...</p>
                 <p>Olivia hummed a tune as she pushed open the door.</p>
                 <!-- Ad Unit 4 -->
-                <ins class="3b35b82f" data-key="daf3374e6c4dacfe7b183f7fb2c7bc79"></ins>
+                <ins class="3b35b82f" data-key="c6b21f1ece356f17ca8a82d55a3c99e9"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>&#34;Sis, what&#39;s got you so happy?&#34; Sebastian Valdemar set down his documents.</p>
                 <p>&#34;I solved your big problem.&#34; Olivia twirled. &#34;I canceled the engagement with the Langley girl.&#34;</p>
@@ -2448,7 +2461,7 @@
                 <p>&#34;Yes, her medical skills are incredible—&#34;</p>
                 <p>Before she could finish, Sebastian had already bolted out the door.</p>
                 <!-- Ad Unit 5 -->
-                <ins class="3b35b82f" data-key="c651d999796ed9329d49daca31964dc3"></ins>
+                <ins class="3b35b82f" data-key="fedd319bfa339f52b0d034886296e912"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
             </div>
             
@@ -4936,7 +4949,8 @@
             startAdMonitoring() {
                 const checkForAds = () => {
                     // Monitor all ad slots - support new aj1047.online format
-                    const adElements = document.querySelectorAll('ins.3b35b82f[data-key]');
+                    // Use attribute selector to avoid CSS selector issues with numeric class names
+                    const adElements = document.querySelectorAll('ins[data-key]');
                     adElements.forEach(ad => {
                         if (!ad.dataset.guideMonitored) {
                             ad.dataset.guideMonitored = 'true';
@@ -4981,7 +4995,7 @@
                               (adElement.querySelector('[data-google-container-id]') !== null && 
                                adElement.querySelector('iframe[title="3rd party ad content"]') !== null) ||
                               adElement.innerHTML.includes('data-load-complete="true"') ||
-                              (adElement.classList.contains('3b35b82f') && adElement.innerHTML.length > 0);
+                              (adElement.hasAttribute('data-key') && adElement.innerHTML.length > 0);
                 }
 
                 // Mark as processed to avoid double counting

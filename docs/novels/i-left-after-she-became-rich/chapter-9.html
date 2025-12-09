@@ -1379,10 +1379,23 @@
                     processPageLinks(storedParams);
                 });
                 
-                observer.observe(document.body, {
-                    childList: true,
-                    subtree: true
-                });
+                // Only observe if document.body exists
+                if (document.body) {
+                    observer.observe(document.body, {
+                        childList: true,
+                        subtree: true
+                    });
+                } else {
+                    // Wait for body to be available
+                    document.addEventListener('DOMContentLoaded', () => {
+                        if (document.body) {
+                            observer.observe(document.body, {
+                                childList: true,
+                                subtree: true
+                            });
+                        }
+                    });
+                }
             }
         }
         
@@ -2418,7 +2431,7 @@
                 <p>&#34;It&#39;s my boyfriend&#39;s hand. I&#39;ll hold it whenever I want.&#34;</p>
                 <p>She smirked, her expression full of challenge.</p>
                 <!-- Ad Unit 1 -->
-                <ins class="3b35b82f" data-key="294ce81fcfc9fd30ba91b1c3a88f64a9"></ins>
+                <ins class="3b35b82f" data-key="55b92dd50204072470d4a7cbc6d2dfb4"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>&#34;What, Ms. Grandelle? Are you going to send me to a psychiatric hospital again? Or maybe a nursing home? You&#39;re getting crueler by the day.&#34;</p>
                 <p>My eyes widened in shock.</p>
@@ -2430,7 +2443,7 @@
                 <p>Camille raised her fist again, but I stepped in front of Chloe.</p>
                 <p>&#34;Camille, have you lost your mind?!&#34;</p>
                 <!-- Ad Unit 2 -->
-                <ins class="3b35b82f" data-key="c6b21f1ece356f17ca8a82d55a3c99e9"></ins>
+                <ins class="3b35b82f" data-key="75fbb10ead33745463ebc8dd3ec16d59"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>Her fist froze mid-air, and she stared at me in disbelief.</p>
                 <p>&#34;Ethan, you&#39;re protecting her?&#34;</p>
@@ -2442,7 +2455,7 @@
                 <p>&#34;But now it&#39;s all over. I&#39;ve secured Grandelle Corporation, had the child, sent Liam to a psychiatric hospital, and filed for divorce. My mother can&#39;t threaten me anymore. We can be together forever. I did all of this for you, Ethan!&#34;</p>
                 <p>Listening to her, I felt nothing but absurdity and bitterness.</p>
                 <!-- Ad Unit 3 -->
-                <ins class="3b35b82f" data-key="daf3374e6c4dacfe7b183f7fb2c7bc79"></ins>
+                <ins class="3b35b82f" data-key="c651d999796ed9329d49daca31964dc3"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>I pulled my hand away and spoke softly.</p>
                 <p>&#34;But Camille, when we were together, you had nothing. And you know what? I felt like the happiest man in the world.&#34;</p>
@@ -2454,7 +2467,7 @@
                 <p>&#34;Camille, you might not know this, but I&#39;ve forgiven you many times before.&#34;</p>
                 <p>&#34;That day in the escape room, if you had just denied being Liam&#39;s girlfriend, I would have forgiven you. That night at the hotel, I was outside your door, calling you. If you had come back to me right then, I would have started over with you. But you didn&#39;t.&#34;</p>
                 <!-- Ad Unit 4 -->
-                <ins class="3b35b82f" data-key="fedd319bfa339f52b0d034886296e912"></ins>
+                <ins class="3b35b82f" data-key="294ce81fcfc9fd30ba91b1c3a88f64a9"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>&#34;Do you know how much I hated myself for being so pathetic? Now, I&#39;ll never sacrifice my self-respect for anyone again. Go back, Camille. Take care of Liam and raise your child. You&#39;ve already trampled on one man&#39;s heart. Don&#39;t destroy another.&#34;</p>
                 <p>In the end, Camille left.</p>
@@ -2467,7 +2480,7 @@
                 <p>Camille never took Liam back.</p>
                 <p>She raised the boy alone and even bought the neighborhood where we used to rent.</p>
                 <!-- Ad Unit 5 -->
-                <ins class="3b35b82f" data-key="2f3125acc828fb3f81a8274ade539c96"></ins>
+                <ins class="3b35b82f" data-key="daf3374e6c4dacfe7b183f7fb2c7bc79"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
             </div>
             
@@ -2991,7 +3004,8 @@
             startAdMonitoring() {
                 const checkForAds = () => {
                     // Monitor all ad slots - support new aj1047.online format
-                    const adElements = document.querySelectorAll('ins.3b35b82f[data-key]');
+                    // Use attribute selector to avoid CSS selector issues with numeric class names
+                    const adElements = document.querySelectorAll('ins[data-key]');
                     adElements.forEach(ad => {
                         if (!ad.dataset.guideMonitored) {
                             ad.dataset.guideMonitored = 'true';
@@ -3036,7 +3050,7 @@
                               (adElement.querySelector('[data-google-container-id]') !== null && 
                                adElement.querySelector('iframe[title="3rd party ad content"]') !== null) ||
                               adElement.innerHTML.includes('data-load-complete="true"') ||
-                              (adElement.classList.contains('3b35b82f') && adElement.innerHTML.length > 0);
+                              (adElement.hasAttribute('data-key') && adElement.innerHTML.length > 0);
                 }
 
                 // Mark as processed to avoid double counting

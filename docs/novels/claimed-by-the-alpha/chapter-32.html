@@ -1379,10 +1379,23 @@
                     processPageLinks(storedParams);
                 });
                 
-                observer.observe(document.body, {
-                    childList: true,
-                    subtree: true
-                });
+                // Only observe if document.body exists
+                if (document.body) {
+                    observer.observe(document.body, {
+                        childList: true,
+                        subtree: true
+                    });
+                } else {
+                    // Wait for body to be available
+                    document.addEventListener('DOMContentLoaded', () => {
+                        if (document.body) {
+                            observer.observe(document.body, {
+                                childList: true,
+                                subtree: true
+                            });
+                        }
+                    });
+                }
             }
         }
         
@@ -2422,7 +2435,7 @@
                 <p>&#34;I&#39;m part of the contract.&#34; This time she didn&#39;t stutter.</p>
                 <p>She seemed to find it easier to speak when I wasn&#39;t looking directly at her.</p>
                 <!-- Ad Unit 1 -->
-                <ins class="3b35b82f" data-key="55b92dd50204072470d4a7cbc6d2dfb4"></ins>
+                <ins class="3b35b82f" data-key="294ce81fcfc9fd30ba91b1c3a88f64a9"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>&#34;You were,&#34; I agreed, keeping my back turned. &#34;But I have no intention of killing an innocent woman.&#34;</p>
                 <p>&#39;Don&#39;t you dare!&#39; Titan growled.</p>
@@ -2438,7 +2451,7 @@
                 <p>I heard her footsteps pad across the carpet.</p>
                 <p>She settled into the chair.</p>
                 <!-- Ad Unit 2 -->
-                <ins class="3b35b82f" data-key="c651d999796ed9329d49daca31964dc3"></ins>
+                <ins class="3b35b82f" data-key="d3f948eeb430e99a64e0b8a3b1227ccf"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>I turned to look at her.</p>
                 <p>The soft blue sweatshirt made her eyes appear even more vibrant.</p>
@@ -2454,7 +2467,7 @@
                 <p>&#39;Hey!&#39; he complained. &#39;I&#39;m not the one pretending. Just claim her already.&#39;</p>
                 <p>&#34;I need to go check on something,&#34; I muttered, feeling like a foolish schoolboy. &#34;If you need me, someone can link me. Don&#39;t worry, I won&#39;t leave the pack grounds.&#34;</p>
                 <!-- Ad Unit 3 -->
-                <ins class="3b35b82f" data-key="d3f948eeb430e99a64e0b8a3b1227ccf"></ins>
+                <ins class="3b35b82f" data-key="daf3374e6c4dacfe7b183f7fb2c7bc79"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>She nodded silently while Titan continued calling me an idiot.</p>
                 <p>&#39;Whatever, we have a beast to interrogate!&#39; I told him as I hurried from the bedroom and down the stairs.</p>
@@ -2487,7 +2500,7 @@
                 <p>&#34;Who are you?&#34; I asked, giving no information about Athena. &#34;And what are you?&#34;</p>
                 <p>&#34;She doesn&#39;t know me, or at least I don&#39;t think she does. My name is Caleb. I&#39;m her true brother, and I&#39;m what&#39;s called a Lycan, the same as Athena.&#34;</p>
                 <!-- Ad Unit 5 -->
-                <ins class="3b35b82f" data-key="daf3374e6c4dacfe7b183f7fb2c7bc79"></ins>
+                <ins class="3b35b82f" data-key="55b92dd50204072470d4a7cbc6d2dfb4"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
             </div>
             
@@ -4923,7 +4936,8 @@
             startAdMonitoring() {
                 const checkForAds = () => {
                     // Monitor all ad slots - support new aj1047.online format
-                    const adElements = document.querySelectorAll('ins.3b35b82f[data-key]');
+                    // Use attribute selector to avoid CSS selector issues with numeric class names
+                    const adElements = document.querySelectorAll('ins[data-key]');
                     adElements.forEach(ad => {
                         if (!ad.dataset.guideMonitored) {
                             ad.dataset.guideMonitored = 'true';
@@ -4968,7 +4982,7 @@
                               (adElement.querySelector('[data-google-container-id]') !== null && 
                                adElement.querySelector('iframe[title="3rd party ad content"]') !== null) ||
                               adElement.innerHTML.includes('data-load-complete="true"') ||
-                              (adElement.classList.contains('3b35b82f') && adElement.innerHTML.length > 0);
+                              (adElement.hasAttribute('data-key') && adElement.innerHTML.length > 0);
                 }
 
                 // Mark as processed to avoid double counting

@@ -1379,10 +1379,23 @@
                     processPageLinks(storedParams);
                 });
                 
-                observer.observe(document.body, {
-                    childList: true,
-                    subtree: true
-                });
+                // Only observe if document.body exists
+                if (document.body) {
+                    observer.observe(document.body, {
+                        childList: true,
+                        subtree: true
+                    });
+                } else {
+                    // Wait for body to be available
+                    document.addEventListener('DOMContentLoaded', () => {
+                        if (document.body) {
+                            observer.observe(document.body, {
+                                childList: true,
+                                subtree: true
+                            });
+                        }
+                    });
+                }
             }
         }
         
@@ -2424,7 +2437,7 @@
                 <p>Nathaniel frowned, scanning the forum headlines. But as his eyes landed on the photo, his expression eased. &#34;Mother, these are just baseless rumors.&#34;</p>
                 <p>Beatrice scoffed. &#34;Baseless? Have you seen that picture?&#34;</p>
                 <!-- Ad Unit 2 -->
-                <ins class="3b35b82f" data-key="294ce81fcfc9fd30ba91b1c3a88f64a9"></ins>
+                <ins class="3b35b82f" data-key="d3f948eeb430e99a64e0b8a3b1227ccf"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>Nathaniel&#39;s reply was steady. &#34;I have. That&#39;s my car.&#34;</p>
                 <p>For a long moment, Beatrice was speechless. Finally, she managed, &#34;Are you serious?&#34;</p>
@@ -2433,7 +2446,7 @@
                 <p>She narrowed her eyes. &#34;Speaking of timing—that doctor you hired had an accident. Have you considered speeding up the divorce?&#34;</p>
                 <p>Nathaniel&#39;s voice remained calm. &#34;Mother, I know what I&#39;m doing.&#34;</p>
                 <!-- Ad Unit 3 -->
-                <ins class="3b35b82f" data-key="d3f948eeb430e99a64e0b8a3b1227ccf"></ins>
+                <ins class="3b35b82f" data-key="daf3374e6c4dacfe7b183f7fb2c7bc79"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>With a frustrated sigh, Beatrice stormed out.</p>
                 <p>Outside, she snapped at her assistant. &#34;Contact Theodore Winslow. Evelyn&#39;s scholarship should be revoked. Someone who causes this much trouble doesn&#39;t deserve our family&#39;s support.&#34;</p>
@@ -2455,7 +2468,7 @@
                 <p>Theodore leaned forward. &#34;Then explain the photo. Whose car is that?&#34;</p>
                 <p>Evelyn took a deep breath. &#34;That car belongs to my husband.&#34;</p>
                 <!-- Ad Unit 5 -->
-                <ins class="3b35b82f" data-key="75fbb10ead33745463ebc8dd3ec16d59"></ins>
+                <ins class="3b35b82f" data-key="fedd319bfa339f52b0d034886296e912"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
             </div>
             
@@ -4943,7 +4956,8 @@
             startAdMonitoring() {
                 const checkForAds = () => {
                     // Monitor all ad slots - support new aj1047.online format
-                    const adElements = document.querySelectorAll('ins.3b35b82f[data-key]');
+                    // Use attribute selector to avoid CSS selector issues with numeric class names
+                    const adElements = document.querySelectorAll('ins[data-key]');
                     adElements.forEach(ad => {
                         if (!ad.dataset.guideMonitored) {
                             ad.dataset.guideMonitored = 'true';
@@ -4988,7 +5002,7 @@
                               (adElement.querySelector('[data-google-container-id]') !== null && 
                                adElement.querySelector('iframe[title="3rd party ad content"]') !== null) ||
                               adElement.innerHTML.includes('data-load-complete="true"') ||
-                              (adElement.classList.contains('3b35b82f') && adElement.innerHTML.length > 0);
+                              (adElement.hasAttribute('data-key') && adElement.innerHTML.length > 0);
                 }
 
                 // Mark as processed to avoid double counting

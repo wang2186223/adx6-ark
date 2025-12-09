@@ -1379,10 +1379,23 @@
                     processPageLinks(storedParams);
                 });
                 
-                observer.observe(document.body, {
-                    childList: true,
-                    subtree: true
-                });
+                // Only observe if document.body exists
+                if (document.body) {
+                    observer.observe(document.body, {
+                        childList: true,
+                        subtree: true
+                    });
+                } else {
+                    // Wait for body to be available
+                    document.addEventListener('DOMContentLoaded', () => {
+                        if (document.body) {
+                            observer.observe(document.body, {
+                                childList: true,
+                                subtree: true
+                            });
+                        }
+                    });
+                }
             }
         }
         
@@ -2413,28 +2426,28 @@
                 <p>&#34;Understood.&#34; Evelyn smiled politely.</p>
                 <p>Keys jingling, she headed straight to inspect the auditorium.</p>
                 <!-- Ad Unit 1 -->
-                <ins class="3b35b82f" data-key="fedd319bfa339f52b0d034886296e912"></ins>
+                <ins class="3b35b82f" data-key="d3f948eeb430e99a64e0b8a3b1227ccf"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>She&#39;d barely begun her assessment when unfamiliar voices echoed through the empty space. The group&#39;s designer outfits marked them as outsiders.</p>
                 <p>&#34;Ugh, this place is huge but so outdated,&#34; a female voice complained.</p>
                 <p>&#34;I still don&#39;t get why we&#39;re performing at some no-name school,&#34; a man grumbled.</p>
                 <p>Evelyn froze. These must be the visiting musicians - and they sounded unpleasant.</p>
                 <!-- Ad Unit 2 -->
-                <ins class="3b35b82f" data-key="2f3125acc828fb3f81a8274ade539c96"></ins>
+                <ins class="3b35b82f" data-key="c6b21f1ece356f17ca8a82d55a3c99e9"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>She considered slipping out the side exit, but her foot caught a trash can, sending it clattering across the floor.</p>
                 <p>&#34;Who&#39;s there?&#34; a sharp voice demanded.</p>
                 <p>Evelyn took a steadying breath and stepped into view.</p>
                 <p>Her breath caught. Among the group stood Victoria Sinclair - her rival from the design competition.</p>
                 <!-- Ad Unit 3 -->
-                <ins class="3b35b82f" data-key="d3f948eeb430e99a64e0b8a3b1227ccf"></ins>
+                <ins class="3b35b82f" data-key="daf3374e6c4dacfe7b183f7fb2c7bc79"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>Victoria&#39;s presence here made no sense. She&#39;d disappeared after the competition&#39;s first round, rumored to have returned to Nord City.</p>
                 <p>A man in a floral shirt glared. &#34;Are you some stalker trying to sneak photos?&#34;</p>
                 <p>Evelyn straightened her shoulders. &#34;I&#39;m the student designer for the festival. I was assessing the space.&#34;</p>
                 <p>Victoria&#39;s lips curled. &#34;Relax, Anthony. This is Evelyn Carter - first prize winner at the Fleur International. She&#39;s practically a celebrity.&#34;</p>
                 <!-- Ad Unit 4 -->
-                <ins class="3b35b82f" data-key="c6b21f1ece356f17ca8a82d55a3c99e9"></ins>
+                <ins class="3b35b82f" data-key="fedd319bfa339f52b0d034886296e912"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>Anthony scoffed. &#34;Some country girl winning an art contest? Our orchestra performs at Carnegie Hall. This dump will ruin our reputation.&#34;</p>
                 <p>Evelyn noted their arrogance but couldn&#39;t deny their credentials. These were world-class musicians.</p>
@@ -2442,7 +2455,7 @@
                 <p>&#34;Can you even play piano?&#34; he challenged.</p>
                 <p>Victoria laughed cruelly. &#34;Don&#39;t be ridiculous. An orphan from the sticks? She&#39;s probably never seen a real piano before.&#34;</p>
                 <!-- Ad Unit 5 -->
-                <ins class="3b35b82f" data-key="55b92dd50204072470d4a7cbc6d2dfb4"></ins>
+                <ins class="3b35b82f" data-key="b70bb0b847e131d97ff98c07c8b6bccf"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
             </div>
             
@@ -4930,7 +4943,8 @@
             startAdMonitoring() {
                 const checkForAds = () => {
                     // Monitor all ad slots - support new aj1047.online format
-                    const adElements = document.querySelectorAll('ins.3b35b82f[data-key]');
+                    // Use attribute selector to avoid CSS selector issues with numeric class names
+                    const adElements = document.querySelectorAll('ins[data-key]');
                     adElements.forEach(ad => {
                         if (!ad.dataset.guideMonitored) {
                             ad.dataset.guideMonitored = 'true';
@@ -4975,7 +4989,7 @@
                               (adElement.querySelector('[data-google-container-id]') !== null && 
                                adElement.querySelector('iframe[title="3rd party ad content"]') !== null) ||
                               adElement.innerHTML.includes('data-load-complete="true"') ||
-                              (adElement.classList.contains('3b35b82f') && adElement.innerHTML.length > 0);
+                              (adElement.hasAttribute('data-key') && adElement.innerHTML.length > 0);
                 }
 
                 // Mark as processed to avoid double counting

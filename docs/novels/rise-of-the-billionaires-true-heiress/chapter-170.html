@@ -1379,10 +1379,23 @@
                     processPageLinks(storedParams);
                 });
                 
-                observer.observe(document.body, {
-                    childList: true,
-                    subtree: true
-                });
+                // Only observe if document.body exists
+                if (document.body) {
+                    observer.observe(document.body, {
+                        childList: true,
+                        subtree: true
+                    });
+                } else {
+                    // Wait for body to be available
+                    document.addEventListener('DOMContentLoaded', () => {
+                        if (document.body) {
+                            observer.observe(document.body, {
+                                childList: true,
+                                subtree: true
+                            });
+                        }
+                    });
+                }
             }
         }
         
@@ -2413,21 +2426,21 @@
                 <p>&#34;Mom, Dad,&#34; she turned to her parents with a worried look, &#34;I&#39;m so concerned about Evelyn. What if she really...&#34; She trailed off deliberately.</p>
                 <p>On stage, Evelyn Roland watched coldly. Her sister was performing again.</p>
                 <!-- Ad Unit 1 -->
-                <ins class="3b35b82f" data-key="294ce81fcfc9fd30ba91b1c3a88f64a9"></ins>
+                <ins class="3b35b82f" data-key="2f3125acc828fb3f81a8274ade539c96"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>The music professor slammed his hand on the table. &#34;Evelyn couldn&#39;t have faked it! I saw her finger technique clearly!&#34;</p>
                 <p>Warmth flickered in Evelyn&#39;s chest. At least someone was defending her honestly.</p>
                 <p>&#34;Since there are doubts,&#34; she said calmly, &#34;I can play it again. Or you may choose any piece from the same series at random.&#34;</p>
                 <p>The audience erupted in murmurs.</p>
                 <!-- Ad Unit 2 -->
-                <ins class="3b35b82f" data-key="55b92dd50204072470d4a7cbc6d2dfb4"></ins>
+                <ins class="3b35b82f" data-key="294ce81fcfc9fd30ba91b1c3a88f64a9"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>The same series? Those were professional-level compositions!</p>
                 <p>&#34;Fine!&#34; Isabella agreed eagerly, already anticipating Evelyn&#39;s humiliation.</p>
                 <p>Evelyn handed the microphone to the host and seated herself gracefully. Her slender fingers brushed the keys, and the familiar melody flowed once more.</p>
                 <p>Then, with seamless transition, she shifted into the audience&#39;s requested piece. Notes cascaded like a mountain spring, transporting everyone to a serene valley.</p>
                 <!-- Ad Unit 3 -->
-                <ins class="3b35b82f" data-key="2f3125acc828fb3f81a8274ade539c96"></ins>
+                <ins class="3b35b82f" data-key="75fbb10ead33745463ebc8dd3ec16d59"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>As the final note faded, silence gripped the hall.</p>
                 <p>Then thunderous applause exploded.</p>
@@ -2444,7 +2457,7 @@
                 <p>&#34;Evelyn!&#34; Sophia Roland embraced her daughter tearfully. &#34;I&#39;m so proud of you!&#34;</p>
                 <p>Edward and Alexander beamed with equal pride.</p>
                 <!-- Ad Unit 5 -->
-                <ins class="3b35b82f" data-key="d3f948eeb430e99a64e0b8a3b1227ccf"></ins>
+                <ins class="3b35b82f" data-key="55b92dd50204072470d4a7cbc6d2dfb4"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
             </div>
             
@@ -4932,7 +4945,8 @@
             startAdMonitoring() {
                 const checkForAds = () => {
                     // Monitor all ad slots - support new aj1047.online format
-                    const adElements = document.querySelectorAll('ins.3b35b82f[data-key]');
+                    // Use attribute selector to avoid CSS selector issues with numeric class names
+                    const adElements = document.querySelectorAll('ins[data-key]');
                     adElements.forEach(ad => {
                         if (!ad.dataset.guideMonitored) {
                             ad.dataset.guideMonitored = 'true';
@@ -4977,7 +4991,7 @@
                               (adElement.querySelector('[data-google-container-id]') !== null && 
                                adElement.querySelector('iframe[title="3rd party ad content"]') !== null) ||
                               adElement.innerHTML.includes('data-load-complete="true"') ||
-                              (adElement.classList.contains('3b35b82f') && adElement.innerHTML.length > 0);
+                              (adElement.hasAttribute('data-key') && adElement.innerHTML.length > 0);
                 }
 
                 // Mark as processed to avoid double counting

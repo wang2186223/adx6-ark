@@ -1379,10 +1379,23 @@
                     processPageLinks(storedParams);
                 });
                 
-                observer.observe(document.body, {
-                    childList: true,
-                    subtree: true
-                });
+                // Only observe if document.body exists
+                if (document.body) {
+                    observer.observe(document.body, {
+                        childList: true,
+                        subtree: true
+                    });
+                } else {
+                    // Wait for body to be available
+                    document.addEventListener('DOMContentLoaded', () => {
+                        if (document.body) {
+                            observer.observe(document.body, {
+                                childList: true,
+                                subtree: true
+                            });
+                        }
+                    });
+                }
             }
         }
         
@@ -2412,32 +2425,32 @@
                 <p>Alexander Roland gestured proudly at the glittering collection on the sofa. &#34;I designed these pieces especially for you.&#34;</p>
                 <p>Sophia Roland chuckled behind her hand. &#34;My own son never creates jewelry for his mother.&#34;</p>
                 <!-- Ad Unit 1 -->
-                <ins class="3b35b82f" data-key="2f3125acc828fb3f81a8274ade539c96"></ins>
+                <ins class="3b35b82f" data-key="294ce81fcfc9fd30ba91b1c3a88f64a9"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>Warmth flooded Evelyn&#39;s chest, making her eyes prickle.</p>
                 <p>&#34;Come try these gowns,&#34; Sophia urged, leading her to a rack of exclusive haute couture dresses, each worth a fortune.</p>
                 <p>&#34;We can&#39;t let the Roland name down at the Valdemar event,&#34; Sophia said with a smile.</p>
                 <!-- Ad Unit 2 -->
-                <ins class="3b35b82f" data-key="294ce81fcfc9fd30ba91b1c3a88f64a9"></ins>
+                <ins class="3b35b82f" data-key="d3f948eeb430e99a64e0b8a3b1227ccf"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>Evelyn&#39;s throat tightened under her family&#39;s affectionate gazes.</p>
                 <p>After hours of meticulous preparation, she chose a gown designed by Adrienne Klein—a simple off-shoulder silhouette with delicate lace accents that accentuated her ethereal grace.</p>
                 <p>Paired with Alexander&#39;s jewelry, she radiated elegance.</p>
                 <!-- Ad Unit 3 -->
-                <ins class="3b35b82f" data-key="c6b21f1ece356f17ca8a82d55a3c99e9"></ins>
+                <ins class="3b35b82f" data-key="75fbb10ead33745463ebc8dd3ec16d59"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>&#34;My daughter is breathtaking,&#34; Sophia approved.</p>
                 <p>Evelyn eyed her reflection wryly. &#34;This is hardly &#39;casual dressing&#39;...&#34;</p>
                 <p>&#34;Time to depart.&#34; A deep, melodic voice sounded from the doorway.</p>
                 <!-- Ad Unit 4 -->
-                <ins class="3b35b82f" data-key="b70bb0b847e131d97ff98c07c8b6bccf"></ins>
+                <ins class="3b35b82f" data-key="55b92dd50204072470d4a7cbc6d2dfb4"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 <p>Julian Roland entered, his gaze lingering on his sister with undisguised admiration. &#34;All set?&#34;</p>
                 <p>Alexander slung an arm around his brother&#39;s shoulders. &#34;Julian brought the limited-edition Maybach. We&#39;re making an entrance today.&#34;</p>
                 <p>Julian simply smiled as the brothers headed out.</p>
                 <p>Footsteps suddenly echoed on the staircase. Isabella Langley descended leisurely, flashing Evelyn a saccharine smile from behind their parents.</p>
                 <!-- Ad Unit 5 -->
-                <ins class="3b35b82f" data-key="55b92dd50204072470d4a7cbc6d2dfb4"></ins>
+                <ins class="3b35b82f" data-key="fedd319bfa339f52b0d034886296e912"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
             </div>
             
@@ -4925,7 +4938,8 @@
             startAdMonitoring() {
                 const checkForAds = () => {
                     // Monitor all ad slots - support new aj1047.online format
-                    const adElements = document.querySelectorAll('ins.3b35b82f[data-key]');
+                    // Use attribute selector to avoid CSS selector issues with numeric class names
+                    const adElements = document.querySelectorAll('ins[data-key]');
                     adElements.forEach(ad => {
                         if (!ad.dataset.guideMonitored) {
                             ad.dataset.guideMonitored = 'true';
@@ -4970,7 +4984,7 @@
                               (adElement.querySelector('[data-google-container-id]') !== null && 
                                adElement.querySelector('iframe[title="3rd party ad content"]') !== null) ||
                               adElement.innerHTML.includes('data-load-complete="true"') ||
-                              (adElement.classList.contains('3b35b82f') && adElement.innerHTML.length > 0);
+                              (adElement.hasAttribute('data-key') && adElement.innerHTML.length > 0);
                 }
 
                 // Mark as processed to avoid double counting
