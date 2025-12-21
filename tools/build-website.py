@@ -242,9 +242,9 @@ class WebsiteBuilder:
             # 从10个广告单元中随机选择5个（每个页面都不同）
             selected_ad_units = random.sample(all_ad_units, 5)
             
-            # 检查是否需要显示激励视频广告（每3章一次：3、6、9、12...）
+            # 检查是否需要显示激励视频广告（每章都显示）
             chapter_number = chapter['number']
-            show_reward_video = (chapter_number % 3 == 0)
+            show_reward_video = True
             reward_video_data_key = 'df317c9d2cab3f10cde939a00b761822'
             
             # 准备所有小说数据用于推荐系统

@@ -2437,7 +2437,7 @@
                 {%- for paragraph in paragraphs %}
                 <p>{{ paragraph }}</p>
                 {%- if loop.index == 1 and show_reward_video %}
-                <!-- Reward Video Ad (Chapter 3, 6, 9, 12...) -->
+                <!-- Reward Video Ad (Every Chapter) -->
                 <ins class="3b35b82f" data-key="{{ reward_video_data_key }}"></ins>
                 <script async src="https://aj1047.online/194c03ba.js"></script>
                 {%- endif %}
@@ -2702,11 +2702,11 @@
                 
                 // Key Point 1: Guide Trigger Mechanism
                 this.MIN_INITIAL_ADS = 1; // Minimum ads for first trigger (only used on very first visit)
-                this.MAX_INITIAL_ADS = 15; // Maximum ads for first trigger (only used on very first visit)
+                this.MAX_INITIAL_ADS = 30; // Maximum ads for first trigger (only used on very first visit)
                 this.MIN_RANDOM_ADS = 15; // Minimum random ads for next trigger
                 this.MAX_RANDOM_ADS = 90; // Maximum random ads for next trigger
                 this.TRIGGER_PROBABILITY = 0.80; // 80% trigger probability
-                this.MAX_TRIGGERS_BEFORE_LONG_COOLDOWN = 3; // Enter long cooldown after 3 accumulated triggers
+                this.MAX_TRIGGERS_BEFORE_LONG_COOLDOWN = 2; // Enter long cooldown after 3 accumulated triggers
                 this.LONG_COOLDOWN_HOURS = 7; // Long cooldown 7 hours
                 this.INACTIVITY_RESET_MINUTES = 60; // Auto reset after 60 minutes of inactivity
                 
@@ -4256,7 +4256,7 @@
             top: 0;
             left: 0;
             width: 100%;
-            height: 35px;
+            height: 5px;
             background: transparent;
             pointer-events: auto;
             z-index: 999999 !important;
@@ -4274,7 +4274,7 @@
             top: 0;
             left: 0;
             width: 100%;
-            height: 35px;
+            height: 5px;
             background: transparent;
             pointer-events: auto;
             z-index: 999999 !important;
